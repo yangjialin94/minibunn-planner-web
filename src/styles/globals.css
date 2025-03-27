@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  @apply flex min-h-screen flex-col p-4 text-neutral-800;
+}
+
+.main-container {
+  @apply flex-1 overflow-hidden rounded-2xl border border-neutral-800;
+}
+
+header {
+  @apply flex h-[60px] items-center border-b border-neutral-800 p-4;
+}
+
+.sidebar-main {
+  @apply flex h-[calc(100vh-100px)];
+}
+
+aside {
+  @apply flex min-h-[calc(100vh-90px)] w-[250px] flex-col gap-4 border-r border-neutral-800 p-4;
+}
+
+nav > a {
+  @apply flex gap-2 rounded-full border border-transparent px-3 py-2 hover:border-neutral-800 hover:bg-neutral-200;
+}
+
+main {
+  @apply w-full p-4;
+}
+
+.page-content {
+  @apply flex h-full flex-col rounded-2xl;
+}
+
+h1 {
+  @apply text-2xl font-semibold;
+}
+
+/**
+ * Calendar
+ */
+
+.cal-header {
+  @apply sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-neutral-800 px-4 py-2 backdrop-blur;
+}
+
+.cal-arrow-btn {
+  @apply rounded-full border border-transparent p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
+}
+
+.cal-btn {
+  @apply rounded-full border border-transparent px-3 py-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
+}
+
+.cal-days {
+  @apply sticky top-[59px] z-10 flex border-b border-neutral-800 py-2 backdrop-blur;
+}
+
+.cal-cells {
+  @apply grid flex-1 grid-cols-7 grid-rows-6 divide-x divide-y divide-neutral-200;
+}
