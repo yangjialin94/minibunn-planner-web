@@ -10,7 +10,7 @@ body {
 }
 
 header {
-  @apply flex h-[60px] items-center border-b border-neutral-800 p-4;
+  @apply flex h-[60px] items-center justify-between border-b border-neutral-800 p-4;
 }
 
 .sidebar-main {
