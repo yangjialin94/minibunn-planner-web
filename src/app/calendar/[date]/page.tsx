@@ -78,17 +78,22 @@ function DailyPage() {
   const { date } = useParams();
   const setPage = usePageStore((state) => state.setPage);
 
-  const localDate = parseLocalDate(date);
-
   // Update sidebar
   useEffect(() => {
     setPage("daily");
   }, [setPage]);
 
+  if (!date) {
+    return <div>Error: Date parameter is missing.</div>;
+  }
+
+  const dateStr = Array.isArray(date) ? date[0] : date;
+  const localDate = parseLocalDate(dateStr);
+
   return (
     <div>
       <Header date={localDate} />
-      <Tasks dateStr={date} />
+      <Tasks dateStr={dateStr} />
     </div>
   );
 }
