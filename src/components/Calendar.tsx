@@ -12,6 +12,7 @@ import {
   subMonths,
 } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Calendar() {
@@ -38,27 +39,23 @@ function Header({
 }) {
   const formattedDate = format(currentDate, "MMMM yyyy");
 
-  const handleAddMonth = () => {
-    setCurrentDate(addMonths(currentDate, 1));
-  };
-  const handleSubMonth = () => {
-    setCurrentDate(subMonths(currentDate, 1));
-  };
-  const handleSetToday = () => {
-    setCurrentDate(new Date());
-  };
-
   return (
     <div className="cal-header">
       <div className="pl-2 text-lg font-bold">{formattedDate}</div>
       <div className="flex items-center gap-2">
-        <button className="cal-arrow-btn" onClick={handleSubMonth}>
+        <button
+          className="cal-arrow-btn"
+          onClick={() => setCurrentDate(subMonths(currentDate, 1))}
+        >
           <ChevronLeft />
         </button>
-        <button className="cal-btn" onClick={handleSetToday}>
+        <button className="cal-btn" onClick={() => setCurrentDate(new Date())}>
           Today
         </button>
-        <button className="cal-arrow-btn" onClick={handleAddMonth}>
+        <button
+          className="cal-arrow-btn"
+          onClick={() => setCurrentDate(addMonths(currentDate, 1))}
+        >
           <ChevronRight />
         </button>
       </div>
@@ -87,8 +84,10 @@ function Days({ currentDate }: { currentDate: Date }) {
  * Render the cells of the calendar
  */
 function Cells({ currentDate }: { currentDate: Date }) {
-  const monthStart = startOfMonth(currentDate);
-  const startDate = startOfWeek(monthStart, { weekStartsOn: 0 });
+  const router = useRouter();
+
+  const monthStart = startOfMonth(currentDate); // first day of the month
+  const startDate = startOfWeek(monthStart, { weekStartsOn: 0 }); // previous Sunday
 
   const cells = [];
   for (let i = 0; i < 42; i++) {
@@ -100,12 +99,12 @@ function Cells({ currentDate }: { currentDate: Date }) {
     cells.push(
       <div
         key={day.toString()}
-        className="relative aspect-square cursor-pointer hover:bg-neutral-200"
-        onClick={() => window.alert(`Date clicked: ${day.toDateString()}`)}
+        className="relative aspect-square cursor-pointer border border-neutral-200 hover:bg-neutral-200"
+        onClick={() => router.push(`/calendar/${format(day, "yyyy-MM-dd")}`)}
       >
         <div
           className={clsx(
-            "absolute top-4 right-4 flex size-8 items-center justify-center rounded-full border p-2 text-sm",
+            "absolute top-2 right-2 flex size-8 items-center justify-center rounded-full border p-2 text-sm",
             { "border-neutral-200 text-neutral-200": !isCurrentMonth },
             { "border-neutral-800 text-neutral-800": isCurrentMonth },
             { "bg-green-300 font-bold": isToday },

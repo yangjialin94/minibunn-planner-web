@@ -1,6 +1,16 @@
-import React from "react";
+"use client";
 
-function page() {
+import React, { useEffect } from "react";
+
+import { usePageStore } from "@/hooks/usePageStore";
+
+function StreakPage() {
+  const setPage = usePageStore((state) => state.setPage);
+
+  useEffect(() => {
+    setPage("streak");
+  }, [setPage]);
+
   return (
     <>
       <h1>Streak</h1>
@@ -8,4 +18,4 @@ function page() {
   );
 }
 
-export default page;
+export default StreakPage;
