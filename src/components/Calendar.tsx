@@ -15,18 +15,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-export default function Calendar() {
-  const [currentDate, setCurrentDate] = useState(new Date());
-
-  return (
-    <div className="scrollbar-thin h-full w-full overflow-y-scroll rounded-2xl border border-neutral-800">
-      <Header currentDate={currentDate} setCurrentDate={setCurrentDate} />
-      <Days currentDate={currentDate} />
-      <Cells currentDate={currentDate} />
-    </div>
-  );
-}
-
 /**
  * Header component for the calendar
  */
@@ -118,3 +106,17 @@ function Cells({ currentDate }: { currentDate: Date }) {
 
   return <div className="cal-cells">{cells}</div>;
 }
+
+function Calendar() {
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  return (
+    <div className="scrollbar-thin h-full w-full overflow-y-scroll border-neutral-800">
+      <Header currentDate={currentDate} setCurrentDate={setCurrentDate} />
+      <Days currentDate={currentDate} />
+      <Cells currentDate={currentDate} />
+    </div>
+  );
+}
+
+export default Calendar;

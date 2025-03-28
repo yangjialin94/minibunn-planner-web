@@ -1,24 +1,28 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+import { formatDateLocal } from "@/lib/dateUtils";
 
 function Header() {
-  const date = new Date();
-  const formatted = date.toLocaleString("en-US", {
-    weekday: "short", // e.g. "Thu"
-    month: "short", // e.g. "Mar"
-    day: "numeric", // e.g. "27"
-    hour: "numeric",
-    minute: "numeric",
-    hour12: true, // Use 12-hour format (AM/PM)
-  });
+  const [currentLocalTime, setCurrentLocalTime] = useState(() =>
+    formatDateLocal(new Date()),
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentLocalTime(formatDateLocal(new Date()));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <header>
       <h1>Minimal Planner</h1>
       <div className="flex items-center gap-4">
-        <p>{formatted}</p>
+        <p>{currentLocalTime}</p>
         <button
           className="rounded-full border border-transparent hover:cursor-pointer hover:border-neutral-800"
           onClick={() => window.alert("Profile clicked")}

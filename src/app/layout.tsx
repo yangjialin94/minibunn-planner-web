@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import Header from "@/components/layout/Header";
 import SideBar from "@/components/layout/SideBar";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 export const metadata: Metadata = {
   title: "Minimal Planner",
@@ -24,7 +25,9 @@ export default function RootLayout({
           <div className="sidebar-main">
             <SideBar />
             <main>
-              <div className="page-content">{children}</div>
+              <div className="page-content">
+                <ReactQueryProvider>{children}</ReactQueryProvider>
+              </div>
             </main>
           </div>
         </div>

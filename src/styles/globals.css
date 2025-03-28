@@ -18,7 +18,7 @@ header {
 }
 
 main {
-  @apply w-full p-4;
+  @apply w-full;
 }
 
 .page-content {
@@ -49,7 +49,7 @@ nav > a.selected {
  */
 
 .cal-header {
-  @apply sticky top-0 z-10 flex items-center justify-between rounded-t-2xl border-b border-neutral-800 px-4 py-2 backdrop-blur;
+  @apply sticky top-0 z-10 flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur;
 }
 
 .cal-arrow-btn {
@@ -66,4 +66,19 @@ nav > a.selected {
 
 .cal-cells {
   @apply grid flex-1 grid-cols-7 grid-rows-6;
+}
+
+/**
+  * Daily View
+  */
+.daily-header {
+  @apply sticky top-0 z-10 flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur;
+}
+
+.daily-arrow-btn {
+  @apply rounded-full border border-transparent p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
+}
+
+.daily-today-btn {
+  @apply rounded-full border border-transparent px-3 py-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
 }
