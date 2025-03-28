@@ -14,11 +14,11 @@ header {
 }
 
 .sidebar-main {
-  @apply flex h-[calc(100vh-100px)];
+  @apply flex h-[calc(100vh-94px)];
 }
 
 aside {
-  @apply flex min-h-[calc(100vh-90px)] w-[250px] flex-col gap-4 border-r border-neutral-800 p-4;
+  @apply flex min-h-[calc(100vh-94px)] w-[250px] flex-col gap-4 border-r border-neutral-800 p-4;
 }
 
 nav > a {
