@@ -30,10 +30,7 @@ function TaskFilter() {
     <Listbox value={selected} onChange={setSelected}>
       {({ open }) => (
         <div>
-          <ListboxButton
-            anchor="bottom"
-            className="flex min-w-[200px] justify-between rounded-2xl border border-neutral-800 px-3 py-2 hover:bg-neutral-200"
-          >
+          <ListboxButton className="flex min-w-[200px] justify-between rounded-2xl border border-neutral-800 px-3 py-2 hover:bg-neutral-200">
             <p className="font-semibold">Filter: {selected.label}</p>
             {open ? <ChevronUp /> : <ChevronDown />}
           </ListboxButton>

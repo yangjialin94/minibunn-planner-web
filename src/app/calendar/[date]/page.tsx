@@ -101,17 +101,22 @@ function DailyPage() {
   const setPage = usePageStore((state) => state.setPage);
   const setTaskDate = usePageStore((state) => state.setTaskDate);
 
+  const dateStr = date
+    ? Array.isArray(date)
+      ? date[0]
+      : date
+    : formatDateLocalNoTime(new Date());
+
   // Update page state
   useEffect(() => {
     setPage("daily");
-    setTaskDate(date);
-  }, [date, setPage, setTaskDate]);
+    setTaskDate(dateStr);
+  }, [dateStr, setPage, setTaskDate]);
 
   if (!date) {
     return <div>Error: Date parameter is missing.</div>;
   }
 
-  const dateStr = Array.isArray(date) ? date[0] : date;
   const localDate = parseLocalDate(dateStr);
 
   return (
