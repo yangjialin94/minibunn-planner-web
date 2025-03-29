@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 import { fetchTasksByDate } from "@/api/tasks";
+import TaskCard from "@/components/task/TaskCard";
+import TaskFilter from "@/components/task/TaskFilter";
 import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocalNoTime, parseLocalDate } from "@/lib/dateUtils";
 
@@ -54,7 +56,23 @@ function Header({ date }: { date: Date }) {
   );
 }
 
+function StatusBar({ dateStr }: { dateStr: string }) {
+  return (
+    <div className="flex justify-between p-4">
+      <div>
+        <TaskFilter />
+      </div>
+      <div>
+        <span className="text-sm font-bold text-gray-500">
+          [ Get daily completion status by date ({dateStr}): 1/3 ]
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function Tasks({ dateStr }: { dateStr: string }) {
+  const taskFilter = usePageStore((state) => state.taskFilter);
   const { data, isLoading, error } = useQuery({
     queryKey: ["tasks", dateStr],
     queryFn: () => fetchTasksByDate(dateStr),
@@ -63,13 +81,17 @@ function Tasks({ dateStr }: { dateStr: string }) {
   if (isLoading) return <div className="p-4">Loading tasks...</div>;
 
   if (error) {
-    console.error(error); // Log the real error
+    console.error(error);
     return <div className="p-4">Error loading tasks.</div>;
   }
 
   return (
     <div className="grid flex-1 grid-cols-2 gap-4 p-4">
-      {data?.tasks.map((task) => <div key={task.id}>{task.name}</div>)}
+      {data?.tasks.map((task) => {
+        if (taskFilter === "completed" && !task.isCompleted) return null;
+        if (taskFilter === "incomplete" && task.isCompleted) return null;
+        return <TaskCard key={task.id} task={task} />;
+      })}
     </div>
   );
 }
@@ -77,11 +99,13 @@ function Tasks({ dateStr }: { dateStr: string }) {
 function DailyPage() {
   const { date } = useParams();
   const setPage = usePageStore((state) => state.setPage);
+  const setTaskDate = usePageStore((state) => state.setTaskDate);
 
-  // Update sidebar
+  // Update page state
   useEffect(() => {
     setPage("daily");
-  }, [setPage]);
+    setTaskDate(date);
+  }, [date, setPage, setTaskDate]);
 
   if (!date) {
     return <div>Error: Date parameter is missing.</div>;
@@ -91,8 +115,9 @@ function DailyPage() {
   const localDate = parseLocalDate(dateStr);
 
   return (
-    <div>
+    <div className="scrollable-content">
       <Header date={localDate} />
+      <StatusBar dateStr={dateStr} />
       <Tasks dateStr={dateStr} />
     </div>
   );

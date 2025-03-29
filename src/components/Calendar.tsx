@@ -111,7 +111,7 @@ function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   return (
-    <div className="scrollbar-thin h-full w-full overflow-y-scroll border-neutral-800">
+    <div className="scrollable-content">
       <Header currentDate={currentDate} setCurrentDate={setCurrentDate} />
       <Days currentDate={currentDate} />
       <Cells currentDate={currentDate} />

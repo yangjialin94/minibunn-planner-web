@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, ChartBarBig } from "lucide-react";
+import { Calendar, ListCheck, NotebookPen } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -8,6 +8,7 @@ import { usePageStore } from "@/hooks/usePageStore";
 
 function SideBar() {
   const currentPage = usePageStore((state) => state.currentPage);
+  const taskDateStr = usePageStore((state) => state.taskDateStr);
 
   return (
     <aside>
@@ -19,11 +20,20 @@ function SideBar() {
       </nav>
       <nav>
         <Link
-          href="/streak"
-          className={currentPage === "streak" ? "selected" : ""}
+          href={`/calendar/${taskDateStr}`}
+          className={currentPage === "daily" ? "selected" : ""}
         >
-          <ChartBarBig />
-          Streak
+          <ListCheck />
+          <span>Task</span>
+        </Link>
+      </nav>
+      <nav>
+        <Link
+          href="/journal"
+          className={currentPage === "journal" ? "selected" : ""}
+        >
+          <NotebookPen />
+          Journal
         </Link>
       </nav>
     </aside>

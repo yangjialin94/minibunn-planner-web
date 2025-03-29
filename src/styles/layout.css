@@ -1,0 +1,46 @@
+body {
+  @apply flex min-h-screen flex-col p-4 text-neutral-800;
+}
+
+.main-container {
+  @apply flex-1 overflow-hidden rounded-2xl border border-neutral-800;
+}
+
+header {
+  @apply flex h-[60px] items-center justify-between border-b border-neutral-800 p-4;
+}
+
+.sidebar-main {
+  @apply flex h-[calc(100vh-94px)];
+}
+
+main {
+  @apply w-full;
+}
+
+h1 {
+  @apply text-2xl font-semibold;
+}
+
+.page-content {
+  @apply flex h-full flex-col rounded-2xl;
+}
+
+.scrollable-content {
+  @apply h-full w-full overflow-y-scroll;
+}
+
+/**
+  * Sidebar
+  */
+
+aside {
+  @apply flex min-h-[calc(100vh-94px)] w-[250px] flex-col gap-4 border-r border-neutral-800 p-4;
+}
+
+nav > a {
+  @apply flex gap-2 rounded-full border border-transparent px-3 py-2 hover:border-neutral-800 hover:bg-neutral-200;
+}
+nav > a.selected {
+  @apply pointer-events-none flex gap-2 rounded-full border border-neutral-800 bg-neutral-200 px-3 py-2;
+}

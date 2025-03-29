@@ -1,0 +1,6 @@
+/**
+ * Task Card
+ */
+.action-btn {
+  @apply rounded-full border border-transparent p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
+}

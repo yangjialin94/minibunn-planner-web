@@ -8,13 +8,13 @@ function StreakPage() {
   const setPage = usePageStore((state) => state.setPage);
 
   useEffect(() => {
-    setPage("streak");
+    setPage("journal");
   }, [setPage]);
 
   return (
-    <>
-      <h1>Streak</h1>
-    </>
+    <div className="p-4">
+      <h1>Journal</h1>
+    </div>
   );
 }
 
