@@ -1,5 +1,5 @@
 body {
-  @apply flex min-h-screen flex-col p-4 text-neutral-800;
+  @apply flex min-h-screen flex-col bg-neutral-100 p-4 text-neutral-800;
 }
 
 .main-container {

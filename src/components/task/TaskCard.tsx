@@ -1,10 +1,13 @@
 import clsx from "clsx";
-import { Check, Pencil } from "lucide-react";
-import React from "react";
+import { Check, X } from "lucide-react";
+import React, { useState } from "react";
 
 import { Task } from "@/types/task";
 
 function TaskCard({ task }: { task: Task }) {
+  const [name, setName] = useState(task.name);
+  const [note, setNote] = useState(task.note);
+
   return (
     <div
       className={clsx(
@@ -15,19 +18,26 @@ function TaskCard({ task }: { task: Task }) {
       )}
     >
       <div className="pb-2">
-        <p className="truncate overflow-hidden text-lg font-semibold whitespace-nowrap">
-          {task.name}
-        </p>
+        <input
+          className="truncate overflow-hidden text-lg font-semibold whitespace-nowrap outline-none"
+          onChange={(e) => setName(e.target.value)}
+          value={name}
+        />
       </div>
 
       <div className="flex-1 border-t py-2">
-        <p className="line-clamp-4">{task.note}</p>
+        <textarea
+          className="h-full w-full flex-1 resize-none outline-none"
+          placeholder="Write your entry here..."
+          onChange={(e) => setNote(e.target.value)}
+          value={note}
+        />
       </div>
 
       {!task.isCompleted && (
         <div className="flex justify-between">
           <button className="action-btn">
-            <Pencil />
+            <X />
           </button>
           <button className="action-btn">
             <Check />

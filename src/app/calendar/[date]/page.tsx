@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { addDays, subDays } from "date-fns";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
@@ -15,7 +15,7 @@ import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocalNoTime, parseLocalDate } from "@/lib/dateUtils";
 
 interface DailyPageProps {
-  date: string;
+  date: Date;
   dailyTab: "tasks" | "journal";
   setDailyTab: (tab: "tasks" | "journal") => void;
 }
@@ -98,12 +98,17 @@ function Tasks({ dateStr }: { dateStr: string }) {
   }
 
   return (
-    <div className="flex flex-wrap gap-4 p-4">
-      {data?.tasks.map((task) => {
-        if (taskFilter === "completed" && !task.isCompleted) return null;
-        if (taskFilter === "incomplete" && task.isCompleted) return null;
-        return <TaskCard key={task.id} task={task} />;
-      })}
+    <div className="flex h-[calc(100vh-227px)] flex-col p-4">
+      <div className="flex h-full flex-wrap gap-4">
+        {data?.tasks.map((task) => {
+          if (taskFilter === "completed" && !task.isCompleted) return null;
+          if (taskFilter === "incomplete" && task.isCompleted) return null;
+          return <TaskCard key={task.id} task={task} />;
+        })}
+      </div>
+      <button className="fixed right-8 bottom-8 z-10 rounded-full border bg-neutral-100 p-2 hover:bg-neutral-200">
+        <Plus />
+      </button>
     </div>
   );
 }
