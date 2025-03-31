@@ -13,19 +13,21 @@ import {
 } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
+
+import { usePageStore } from "@/hooks/usePageStore";
 
 /**
  * Header component for the calendar
  */
 function Header({
-  currentDate,
-  setCurrentDate,
+  calendarDate,
+  setCalendarDate,
 }: {
-  currentDate: Date;
-  setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
+  calendarDate: Date;
+  setCalendarDate: (date: Date) => void;
 }) {
-  const formattedDate = format(currentDate, "MMMM yyyy");
+  const formattedDate = format(calendarDate, "MMMM yyyy");
 
   return (
     <div className="cal-header">
@@ -33,16 +35,16 @@ function Header({
       <div className="flex items-center gap-2">
         <button
           className="cal-arrow-btn"
-          onClick={() => setCurrentDate(subMonths(currentDate, 1))}
+          onClick={() => setCalendarDate(subMonths(calendarDate, 1))}
         >
           <ChevronLeft />
         </button>
-        <button className="cal-btn" onClick={() => setCurrentDate(new Date())}>
+        <button className="cal-btn" onClick={() => setCalendarDate(new Date())}>
           Today
         </button>
         <button
           className="cal-arrow-btn"
-          onClick={() => setCurrentDate(addMonths(currentDate, 1))}
+          onClick={() => setCalendarDate(addMonths(calendarDate, 1))}
         >
           <ChevronRight />
         </button>
@@ -54,9 +56,9 @@ function Header({
 /**
  * Render the days of the week (Sun, Mon, …)
  */
-function Days({ currentDate }: { currentDate: Date }) {
+function Days({ calendarDate }: { calendarDate: Date }) {
   const days = [];
-  const startDate = startOfWeek(currentDate, { weekStartsOn: 0 });
+  const startDate = startOfWeek(calendarDate, { weekStartsOn: 0 });
 
   for (let i = 0; i < 7; i++) {
     days.push(
@@ -71,10 +73,10 @@ function Days({ currentDate }: { currentDate: Date }) {
 /**
  * Render the cells of the calendar
  */
-function Cells({ currentDate }: { currentDate: Date }) {
+function Cells({ calendarDate }: { calendarDate: Date }) {
   const router = useRouter();
 
-  const monthStart = startOfMonth(currentDate); // first day of the month
+  const monthStart = startOfMonth(calendarDate); // first day of the month
   const startDate = startOfWeek(monthStart, { weekStartsOn: 0 }); // previous Sunday
 
   const cells = [];
@@ -87,13 +89,13 @@ function Cells({ currentDate }: { currentDate: Date }) {
     cells.push(
       <div
         key={day.toString()}
-        className="relative aspect-square cursor-pointer border border-neutral-200 hover:bg-neutral-200"
+        className="relative aspect-square cursor-pointer border border-neutral-200 hover:bg-neutral-100"
         onClick={() => router.push(`/calendar/${format(day, "yyyy-MM-dd")}`)}
       >
         <div
           className={clsx(
             "absolute top-2 right-2 flex size-8 items-center justify-center rounded-full border p-2 text-sm",
-            { "border-neutral-200 text-neutral-200": !isCurrentMonth },
+            { "border-neutral-300 text-neutral-300": !isCurrentMonth },
             { "border-neutral-800 text-neutral-800": isCurrentMonth },
             { "bg-green-300 font-bold": isToday },
           )}
@@ -108,13 +110,14 @@ function Cells({ currentDate }: { currentDate: Date }) {
 }
 
 function Calendar() {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const calendarDate = usePageStore((state) => state.calendarDate);
+  const setCalendarDate = usePageStore((state) => state.setCalendarDate);
 
   return (
     <div className="scrollable-content">
-      <Header currentDate={currentDate} setCurrentDate={setCurrentDate} />
-      <Days currentDate={currentDate} />
-      <Cells currentDate={currentDate} />
+      <Header calendarDate={calendarDate} setCalendarDate={setCalendarDate} />
+      <Days calendarDate={calendarDate} />
+      <Cells calendarDate={calendarDate} />
     </div>
   );
 }

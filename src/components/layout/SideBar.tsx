@@ -1,39 +1,31 @@
 "use client";
 
-import { Calendar, ListCheck, NotebookPen } from "lucide-react";
+import { Calendar, ListCheck } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 import { usePageStore } from "@/hooks/usePageStore";
+import { formatDateLocalNoTime } from "@/lib/dateUtils";
 
 function SideBar() {
-  const currentPage = usePageStore((state) => state.currentPage);
-  const taskDateStr = usePageStore((state) => state.taskDateStr);
+  const page = usePageStore((state) => state.page);
+  const today = formatDateLocalNoTime(new Date());
 
   return (
     <aside>
       <nav>
-        <Link href="/" className={currentPage === "calendar" ? "selected" : ""}>
+        <Link href="/" className={page === "calendar" ? "selected" : ""}>
           <Calendar />
           <span>Calendar</span>
         </Link>
       </nav>
       <nav>
         <Link
-          href={`/calendar/${taskDateStr}`}
-          className={currentPage === "daily" ? "selected" : ""}
+          href={`/calendar/${today}`}
+          className={page === "today" ? "selected" : ""}
         >
           <ListCheck />
-          <span>Task</span>
-        </Link>
-      </nav>
-      <nav>
-        <Link
-          href="/journal"
-          className={currentPage === "journal" ? "selected" : ""}
-        >
-          <NotebookPen />
-          Journal
+          <span>Today</span>
         </Link>
       </nav>
     </aside>

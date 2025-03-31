@@ -1,25 +1,27 @@
 import { create } from "zustand";
 
-import { formatDateLocalNoTime } from "@/lib/dateUtils";
-
-type PageType = "calendar" | "journal" | "daily";
+type PageType = "calendar" | "today" | "daily";
 
 type PageState = {
-  currentPage: PageType; // current page of the app
-  taskDateStr: string; // date (yyyy-mm-dd) user last visited
+  page: PageType; // current page of the app
+  calendarDate: Date; // date for the calendar
+  dailyTab: "tasks" | "journal"; // tab for daily page
   taskFilter: string; // filter for tasks (e.g., "all", "completed", "incomplete")
 
   setPage: (page: PageType) => void;
-  setTaskDate: (dateStr: string) => void;
+  setCalendarDate: (date: Date) => void;
+  setDailyTab: (tab: "tasks" | "journal") => void;
   setTaskFilter: (filter: string) => void;
 };
 
 export const usePageStore = create<PageState>((set) => ({
-  currentPage: "calendar",
-  taskDateStr: formatDateLocalNoTime(new Date()),
+  page: "calendar",
+  calendarDate: new Date(),
+  dailyTab: "tasks",
   taskFilter: "all",
 
-  setPage: (page: PageType) => set({ currentPage: page }),
-  setTaskDate: (dateStr: string) => set({ taskDateStr: dateStr }),
+  setPage: (page: PageType) => set({ page: page }),
+  setCalendarDate: (date: Date) => set({ calendarDate: date }),
+  setDailyTab: (tab: "tasks" | "journal") => set({ dailyTab: tab }),
   setTaskFilter: (filter: string) => set({ taskFilter: filter }),
 }));

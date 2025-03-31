@@ -1,19 +1,19 @@
 import { NextResponse } from "next/server";
 
 import { formatDateLocalNoTime } from "@/lib/dateUtils";
-import { tasks } from "@/lib/tasksData";
+import { journals } from "@/lib/tasksData";
 
 /**
- * API route to fetch tasks for a specific day
+ * API route to fetch journal for a specific day
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function GET(request: Request, { params }: any) {
   const awaitedParams = await Promise.resolve(params);
   const { date } = awaitedParams;
 
-  const filteredTasks = tasks.filter((task) => {
-    return formatDateLocalNoTime(task.date) === date;
+  const filteredJournals = journals.filter((journal) => {
+    return formatDateLocalNoTime(journal.date) === date;
   });
 
-  return NextResponse.json({ tasks: filteredTasks });
+  return NextResponse.json({ journal: filteredJournals[0] });
 }
