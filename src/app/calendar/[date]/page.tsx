@@ -7,21 +7,20 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
+import { fetchJournalByDate } from "@/api/journals";
 import { fetchTasksByDate } from "@/api/tasks";
 import TaskCard from "@/components/task/TaskCard";
 import TaskFilter from "@/components/task/TaskFilter";
 import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocalNoTime, parseLocalDate } from "@/lib/dateUtils";
 
-function DailyHeader({
-  date,
-  dailyTab,
-  setDailyTab,
-}: {
-  date: Date;
+interface DailyPageProps {
+  date: string;
   dailyTab: "tasks" | "journal";
   setDailyTab: (tab: "tasks" | "journal") => void;
-}) {
+}
+
+function DailyHeader({ date, dailyTab, setDailyTab }: DailyPageProps) {
   const router = useRouter();
 
   const formattedDate = formatDateLocalNoTime(date);
@@ -110,8 +109,17 @@ function Tasks({ dateStr }: { dateStr: string }) {
 }
 
 function Journal({ dateStr }: { dateStr: string }) {
-  // TODO: Fetch journal entry by date
-  console.log("Journal", dateStr);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["journals", dateStr],
+    queryFn: () => fetchJournalByDate(dateStr),
+  });
+
+  if (isLoading) return <div className="p-4">Loading journal...</div>;
+
+  if (error) {
+    console.error(error);
+    return <div className="p-4">Error loading journal.</div>;
+  }
 
   return (
     <div className="flex h-[calc(100vh-152px)] flex-col gap-4 p-4">
@@ -119,11 +127,15 @@ function Journal({ dateStr }: { dateStr: string }) {
         type="text"
         className="h-12 w-full border-b border-neutral-800 p-4 text-xl font-semibold outline-none"
         placeholder="Subject"
+        onChange={(e) => console.log(e.target.value)}
+        value={data?.journal?.subject ? data.journal.subject : ""}
       />
       <textarea
         className="flex-1 resize-none p-4 outline-none"
         placeholder="Write your entry here..."
-      ></textarea>
+        onChange={(e) => console.log(e.target.value)}
+        value={data?.journal?.entry ? data.journal.entry : ""}
+      />
     </div>
   );
 }
