@@ -3,12 +3,13 @@
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { addDays, subDays } from "date-fns";
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 import { fetchJournalByDate } from "@/api/journals";
 import { fetchTasksByDate } from "@/api/tasks";
+import CreateTaskModal from "@/components/modals/CreateTaskModal";
 import TaskCard from "@/components/task/TaskCard";
 import TaskFilter from "@/components/task/TaskFilter";
 import { usePageStore } from "@/hooks/usePageStore";
@@ -106,9 +107,7 @@ function Tasks({ dateStr }: { dateStr: string }) {
           return <TaskCard key={task.id} task={task} />;
         })}
       </div>
-      <button className="fixed right-8 bottom-8 z-10 rounded-full border bg-neutral-100 p-2 hover:bg-neutral-200">
-        <Plus />
-      </button>
+      <CreateTaskModal />
     </div>
   );
 }

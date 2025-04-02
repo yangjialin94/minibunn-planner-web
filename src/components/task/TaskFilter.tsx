@@ -14,13 +14,13 @@ function TaskFilter() {
   const setTaskFilter = usePageStore((state) => state.setTaskFilter);
 
   return (
-    <div className="flex gap-2">
+    <div className="flex h-10 gap-2">
       {options.map((option) => (
         <button
           key={option.id}
           className={clsx("rounded-full border px-3 py-2", {
             "pointer-events-none bg-neutral-200": taskFilter === option.id,
-            "hover:cursor-pointer hover:bg-neutral-200":
+            "border-transparent hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200":
               taskFilter !== option.id,
           })}
           onClick={() => setTaskFilter(option.id)}

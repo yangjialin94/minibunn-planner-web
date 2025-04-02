@@ -1,7 +1,8 @@
 import clsx from "clsx";
-import { Check, X } from "lucide-react";
+import { Check } from "lucide-react";
 import React, { useState } from "react";
 
+import EditTaskModal from "@/components/modals/EditTaskModal";
 import { Task } from "@/types/task";
 
 function TaskCard({ task }: { task: Task }) {
@@ -36,9 +37,7 @@ function TaskCard({ task }: { task: Task }) {
 
       {!task.isCompleted && (
         <div className="flex justify-between">
-          <button className="action-btn">
-            <X />
-          </button>
+          <EditTaskModal />
           <button className="action-btn">
             <Check />
           </button>
