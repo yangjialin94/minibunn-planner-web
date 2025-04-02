@@ -1,13 +1,13 @@
 body {
-  @apply flex min-h-screen flex-col bg-neutral-100 p-4 text-neutral-800;
+  @apply flex min-h-screen flex-col border-neutral-800 bg-neutral-100 p-4 text-neutral-800;
 }
 
 .main-container {
-  @apply flex-1 overflow-hidden rounded-xl border border-neutral-800;
+  @apply flex-1 overflow-hidden rounded-xl border;
 }
 
 header {
-  @apply flex h-[60px] items-center justify-between border-b border-neutral-800 p-4;
+  @apply flex h-[60px] items-center justify-between border-b p-4;
 }
 
 .sidebar-main {
@@ -35,7 +35,7 @@ h1 {
   */
 
 aside {
-  @apply flex min-h-[calc(100vh-94px)] w-[250px] flex-col gap-4 border-r border-neutral-800 p-4;
+  @apply flex min-h-[calc(100vh-94px)] w-[250px] flex-col gap-4 border-r p-4;
 }
 
 nav > a {

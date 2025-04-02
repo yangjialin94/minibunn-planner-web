@@ -76,7 +76,7 @@ function StatusBar({ dateStr }: { dateStr: string }) {
     <div className="flex justify-between p-4">
       <TaskFilter />
       <div>
-        <span className="text-sm font-bold text-gray-500">
+        <span className="text-sm font-medium text-neutral-800">
           [ Get daily completion status by date ({dateStr}): 1/3 ]
         </span>
       </div>

@@ -89,7 +89,7 @@ function Cells({ calendarDate }: { calendarDate: Date }) {
     cells.push(
       <div
         key={day.toString()}
-        className="relative aspect-square cursor-pointer border border-neutral-200 hover:bg-neutral-100"
+        className="relative aspect-square cursor-pointer border border-neutral-200 hover:bg-neutral-200"
         onClick={() => router.push(`/calendar/${format(day, "yyyy-MM-dd")}`)}
       >
         <div
