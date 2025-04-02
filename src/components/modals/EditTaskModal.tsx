@@ -1,11 +1,26 @@
-import { Button, Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
+import { Button, Dialog, DialogPanel } from "@headlessui/react";
 import clsx from "clsx";
 import { Save, Settings, Trash2 } from "lucide-react";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-function EditTaskModal() {
+import { Task } from "@/types/task";
+
+function EditTaskModal({ task }: { task: Task }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [note, setNote] = useState("");
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Reset the input fields when the modal is opened
+  useEffect(() => {
+    if (isOpen) {
+      setName(task.name);
+      setNote(task.note);
+    }
+  }, [isOpen, task]);
+
+  // Handle the modal open and close
   function open() {
     setIsOpen(true);
   }
@@ -13,6 +28,18 @@ function EditTaskModal() {
   function close() {
     setIsOpen(false);
   }
+
+  // Handle the note textarea change
+  const handleNoteChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // Resize the textarea based on the content
+    const el = textareaRef.current;
+    if (el) {
+      el.style.height = "auto";
+      el.style.height = el.scrollHeight + "px";
+    }
+
+    setNote(e.target.value);
+  };
 
   return (
     <>
@@ -36,13 +63,19 @@ function EditTaskModal() {
               transition
               className="w-full max-w-md rounded-xl border bg-neutral-100 p-4"
             >
-              <DialogTitle as="h2" className="text-xl font-semibold">
-                Edit task
-              </DialogTitle>
-              <p className="mt-2">
-                Your payment has been successfully submitted. We&apos;ve sent
-                you an email with all of the details of your order.
-              </p>
+              <input
+                className="w-full truncate overflow-hidden border-b pb-2 text-lg font-semibold whitespace-nowrap outline-none"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+              />
+              <textarea
+                ref={textareaRef}
+                className="mt-2 w-full resize-none outline-none"
+                placeholder="Write your entry here..."
+                onChange={handleNoteChange}
+                value={note}
+              />
+              <p className="font-medium">Repeated</p>
               <div className="mt-4 flex justify-between">
                 <Button className="action-btn" onClick={close}>
                   <Trash2 />

@@ -37,7 +37,7 @@ function TaskCard({ task }: { task: Task }) {
 
       {!task.isCompleted && (
         <div className="flex justify-between">
-          <EditTaskModal />
+          <EditTaskModal task={task} />
           <button className="action-btn">
             <Check />
           </button>
