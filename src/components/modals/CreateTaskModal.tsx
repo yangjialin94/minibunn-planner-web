@@ -1,20 +1,26 @@
 import { Button, Dialog, DialogPanel } from "@headlessui/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
-import { Plus, Save } from "lucide-react";
+import { CalendarPlus, LoaderCircle, Save } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
-function CreateTaskModal() {
+import { createTask } from "@/api/tasks";
+import IconButton from "@/components/elements/IconButton";
+
+function CreateTaskModal({ dateStr }: { dateStr: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [repeatDays, setRepeatDays] = useState(1);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const queryClient = useQueryClient();
+
   // Reset the input fields when the modal is opened
   useEffect(() => {
     if (isOpen) {
-      setName("");
+      setTitle("");
       setNote("");
     }
   }, [isOpen]);
@@ -40,33 +46,61 @@ function CreateTaskModal() {
     setNote(e.target.value);
   };
 
+  // Handle the task creation
+  const { mutate: mutateCreate, isPending: isCreating } = useMutation({
+    mutationFn: (taskId: number) => createTask(taskId),
+    onSuccess: () => {
+      // Invalidate the tasks query to refresh the data
+      close();
+      queryClient.invalidateQueries({ queryKey: ["tasks", dateStr] });
+    },
+    onError: (error) => {
+      console.error("Error updating task:", error);
+    },
+  });
+
+  // Handle the task creation button click
+  const handleCreateTask = async () => {
+    mutateCreate({
+      date: dateStr,
+      title: title,
+      note: note,
+      repeatable_days: repeatDays,
+    });
+  };
+
   return (
     <>
-      <Button
-        onClick={open}
-        className={clsx(
-          "fixed right-8 bottom-8 z-10 rounded-full border p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200",
-          {
-            "border-neutral-800 bg-neutral-200": isOpen,
-            "border-transparent": !isOpen,
-          },
-        )}
-      >
-        <Plus />
-      </Button>
+      <div className="relative inline-block">
+        <Button
+          onClick={open}
+          className={clsx(
+            "peer fixed right-8 bottom-8 z-10 rounded-full border p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200",
+            {
+              "border-neutral-800 bg-neutral-200": isOpen,
+              "border-transparent": !isOpen,
+            },
+          )}
+        >
+          <CalendarPlus />
+        </Button>
+        <div className="pointer-events-none absolute -top-18 -right-2 z-10 rounded bg-neutral-400 px-2 py-1 text-sm whitespace-nowrap opacity-0 transition-opacity delay-300 duration-150 peer-hover:opacity-100">
+          Create
+        </div>
+      </div>
 
       <Dialog open={isOpen} as="div" className="relative z-10" onClose={close}>
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto backdrop-blur-xs">
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className="w-full max-w-md rounded-xl border bg-neutral-100 p-4"
+              className="w-full max-w-md rounded-xl border-2 bg-neutral-100 p-4"
             >
               <input
                 className="w-full truncate overflow-hidden border-b pb-2 text-lg font-semibold whitespace-nowrap outline-none"
                 placeholder="Task name"
-                onChange={(e) => setName(e.target.value)}
-                value={name}
+                onChange={(e) => setTitle(e.target.value)}
+                value={title}
               />
               <textarea
                 ref={textareaRef}
@@ -96,11 +130,23 @@ function CreateTaskModal() {
                   }}
                 />
               </div>
-              <div className="mt-4 flex justify-end">
-                <Button className="action-btn" onClick={close}>
-                  <Save />
-                </Button>
-              </div>
+              {isCreating ? (
+                <div className="flex justify-center">
+                  <div className="loading-btn">
+                    <LoaderCircle />
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-4 flex justify-end">
+                  <IconButton
+                    buttonClassName="action-btn"
+                    onClick={handleCreateTask}
+                    icon={<Save />}
+                    tooltipText="Save"
+                    tooltipPosition="top-2 right-12"
+                  />
+                </div>
+              )}
             </DialogPanel>
           </div>
         </div>

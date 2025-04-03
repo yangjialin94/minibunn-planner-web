@@ -7,8 +7,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-import { fetchJournalByDate } from "@/api/journals";
-import { fetchTasksByDate } from "@/api/tasks";
+import { fetchOrCreateJournalByDate } from "@/api/journals";
+import { fetchTasksInRange } from "@/api/tasks";
 import CreateTaskModal from "@/components/modals/CreateTaskModal";
 import TaskCard from "@/components/task/TaskCard";
 import TaskFilter from "@/components/task/TaskFilter";
@@ -88,7 +88,7 @@ function Tasks({ dateStr }: { dateStr: string }) {
   const taskFilter = usePageStore((state) => state.taskFilter);
   const { data, isLoading, error } = useQuery({
     queryKey: ["tasks", dateStr],
-    queryFn: () => fetchTasksByDate(dateStr),
+    queryFn: () => fetchTasksInRange(dateStr, dateStr),
   });
 
   if (isLoading) return <div className="p-4">Loading tasks...</div>;
@@ -100,14 +100,14 @@ function Tasks({ dateStr }: { dateStr: string }) {
 
   return (
     <div className="flex h-[calc(100vh-227px)] flex-col p-4">
-      <div className="flex h-full flex-wrap gap-4">
-        {data?.tasks.map((task) => {
-          if (taskFilter === "completed" && !task.isCompleted) return null;
-          if (taskFilter === "incomplete" && task.isCompleted) return null;
+      <div className="flex flex-wrap gap-4">
+        {data?.map((task) => {
+          if (taskFilter === "completed" && !task.is_completed) return null;
+          if (taskFilter === "incomplete" && task.is_completed) return null;
           return <TaskCard key={task.id} task={task} />;
         })}
       </div>
-      <CreateTaskModal />
+      <CreateTaskModal dateStr={dateStr} />
     </div>
   );
 }
@@ -115,7 +115,7 @@ function Tasks({ dateStr }: { dateStr: string }) {
 function Journal({ dateStr }: { dateStr: string }) {
   const { data, isLoading, error } = useQuery({
     queryKey: ["journals", dateStr],
-    queryFn: () => fetchJournalByDate(dateStr),
+    queryFn: () => fetchOrCreateJournalByDate(dateStr),
   });
 
   if (isLoading) return <div className="p-4">Loading journal...</div>;

@@ -1,35 +1,29 @@
+// Returned by the backend for GET /tasks or after POST/PATCH
 export type Task = {
   id: number;
-  userId: number;
-  name: string;
+  date: string; // ISO 8601 format, e.g. "2025-04-02"
+  title: string;
   note: string;
-  date: Date;
-  isCompleted: boolean;
-  // For recurring tasks: implement later
-  // repeat: boolean;
-  // start: Date | null;
-  // end: Date | null;
+  is_completed: boolean;
+  order: number;
+  repeatable_id: string | null;
+  repeatable_days: number | null;
 };
 
-export type TaskCompletion = {
-  id: number;
-  userId: number;
-  date: Task;
-  completed: number;
-  total: number;
+// Payload for creating a new task (POST /tasks)
+export type TaskCreate = {
+  date: string;
+  title?: string;
+  note?: string;
+  is_completed?: boolean;
+  repeatable_id?: string | null;
+  repeatable_days?: number | null;
 };
 
-export type Journal = {
-  id: number;
-  userId: number;
-  date: Date;
-  subject: string;
-  entry: string;
+// Payload for updating an existing task (PATCH /tasks/:id)
+export type TaskUpdate = {
+  title?: string;
+  note?: string;
+  is_completed?: boolean;
+  order?: number;
 };
-
-// For journal images: implement later
-// export type JournalImage = {
-//   id: number;
-//   journalId: number;
-//   url: string;
-// };

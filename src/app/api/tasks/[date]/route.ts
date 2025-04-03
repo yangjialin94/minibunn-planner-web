@@ -1,19 +1,20 @@
-import { NextResponse } from "next/server";
+// import { Request } from "@vercel/node";
+// import { NextResponse } from "next/server";
 
-import { formatDateLocalNoTime } from "@/lib/dateUtils";
-import { tasks } from "@/lib/tasksData";
+// import { formatDateLocalNoTime } from "@/lib/dateUtils";
+// import { tasks } from "@/lib/tasksData";
 
-/**
- * API route to fetch tasks for a specific day
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function GET(request: Request, { params }: any) {
-  const awaitedParams = await Promise.resolve(params);
-  const { date } = awaitedParams;
+// /**
+//  * API route to fetch tasks for a specific day
+//  */
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// export async function GET(request: Request, { params }: any) {
+//   const awaitedParams = await Promise.resolve(params);
+//   const { date } = awaitedParams;
 
-  const filteredTasks = tasks.filter((task) => {
-    return formatDateLocalNoTime(task.date) === date;
-  });
+//   const filteredTasks = tasks.filter((task) => {
+//     return formatDateLocalNoTime(task.date) === date;
+//   });
 
-  return NextResponse.json({ tasks: filteredTasks });
-}
+//   return NextResponse.json({ tasks: filteredTasks });
+// }

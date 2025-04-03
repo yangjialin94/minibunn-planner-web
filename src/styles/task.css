@@ -5,6 +5,14 @@
   @apply rounded-full border border-transparent p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
 }
 
+.reverse-action-btn {
+  @apply rounded-full border border-transparent p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-100;
+}
+
+.loading-btn {
+  @apply pointer-events-none animate-spin rounded-full p-2;
+}
+
 /**
   * Daily View
   */
