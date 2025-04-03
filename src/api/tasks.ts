@@ -1,4 +1,4 @@
-import { Task, TaskCreate, TaskUpdate } from "@/types/task";
+import { Task, TaskCompletion, TaskCreate, TaskUpdate } from "@/types/task";
 import API_BASE_URL from "@/utils/api";
 
 /**
@@ -56,5 +56,19 @@ export async function deleteTask(taskId: number): Promise<{ message: string }> {
     method: "DELETE",
   });
   if (!res.ok) throw new Error("Failed to delete task");
+  return res.json();
+}
+
+/**
+ * Fetch tasks completion for a specific date or date range.
+ */
+export async function fetchTasksCompletionInRange(
+  start: string,
+  end: string,
+): Promise<TaskCompletion[]> {
+  const res = await fetch(
+    `${API_BASE_URL}/tasks/completion/?start=${start}&end=${end}`,
+  );
+  if (!res.ok) throw new Error("Failed to fetch tasks completion");
   return res.json();
 }

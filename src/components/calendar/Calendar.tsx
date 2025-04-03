@@ -1,5 +1,6 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import {
   addDays,
@@ -15,7 +16,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
+import { fetchTasksCompletionInRange } from "@/api/tasks";
 import { usePageStore } from "@/hooks/usePageStore";
+import { TaskCompletion } from "@/types/task";
 
 /**
  * Header component for the calendar
@@ -73,7 +76,13 @@ function Days({ calendarDate }: { calendarDate: Date }) {
 /**
  * Render the cells of the calendar
  */
-function Cells({ calendarDate }: { calendarDate: Date }) {
+function Cells({
+  calendarDate,
+  completions,
+}: {
+  calendarDate: Date;
+  completions: Record<string, TaskCompletion>;
+}) {
   const router = useRouter();
 
   const monthStart = startOfMonth(calendarDate); // first day of the month
@@ -83,14 +92,16 @@ function Cells({ calendarDate }: { calendarDate: Date }) {
   for (let i = 0; i < 42; i++) {
     const day = addDays(startDate, i);
     const dayFormatted = format(day, "d");
+    const dateStr = format(day, "yyyy-MM-dd");
     const isCurrentMonth = isSameMonth(day, monthStart);
     const isToday = isSameDay(day, new Date());
+    const summary = completions[dateStr];
 
     cells.push(
       <div
-        key={day.toString()}
+        key={dateStr}
         className="relative aspect-square cursor-pointer border border-neutral-200 hover:bg-neutral-200"
-        onClick={() => router.push(`/calendar/${format(day, "yyyy-MM-dd")}`)}
+        onClick={() => router.push(`/calendar/${dateStr}`)}
       >
         <div
           className={clsx(
@@ -102,6 +113,11 @@ function Cells({ calendarDate }: { calendarDate: Date }) {
         >
           {dayFormatted}
         </div>
+        {summary && (
+          <div className="absolute bottom-2 left-2 rounded px-1">
+            {summary.completed}/{summary.total}
+          </div>
+        )}
       </div>,
     );
   }
@@ -113,11 +129,38 @@ function Calendar() {
   const calendarDate = usePageStore((state) => state.calendarDate);
   const setCalendarDate = usePageStore((state) => state.setCalendarDate);
 
+  // Fetch tasks completion data for the current month
+  const monthStart = startOfMonth(calendarDate);
+  const monthEnd = addDays(monthStart, 42);
+  const startStr = format(monthStart, "yyyy-MM-dd");
+  const endStr = format(monthEnd, "yyyy-MM-dd");
+
+  const { data, error, isLoading } = useQuery<TaskCompletion[]>({
+    queryKey: ["tasksCompletion", startStr, endStr],
+    queryFn: () => fetchTasksCompletionInRange(startStr, endStr),
+  });
+
+  // Transform the data into a dictionary for easier access
+  const completions: Record<string, TaskCompletion> = {};
+  if (data) {
+    data.forEach((item) => {
+      completions[item.date] = item;
+    });
+  }
+
+  if (error) {
+    console.error("Error fetching completions:", error);
+  }
+
   return (
     <div className="scrollable-content">
       <Header calendarDate={calendarDate} setCalendarDate={setCalendarDate} />
       <Days calendarDate={calendarDate} />
-      <Cells calendarDate={calendarDate} />
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <Cells calendarDate={calendarDate} completions={completions} />
+      )}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { createTask } from "@/api/tasks";
 import IconButton from "@/components/elements/IconButton";
+import { TaskCreate } from "@/types/task";
 
 function CreateTaskModal({ dateStr }: { dateStr: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +49,7 @@ function CreateTaskModal({ dateStr }: { dateStr: string }) {
 
   // Handle the task creation
   const { mutate: mutateCreate, isPending: isCreating } = useMutation({
-    mutationFn: (taskId: number) => createTask(taskId),
+    mutationFn: (newTask: TaskCreate) => createTask(newTask),
     onSuccess: () => {
       // Invalidate the tasks query to refresh the data
       close();
@@ -71,11 +72,11 @@ function CreateTaskModal({ dateStr }: { dateStr: string }) {
 
   return (
     <>
-      <div className="relative inline-block">
+      <div className="fixed right-8 bottom-8 z-10 inline-block">
         <Button
           onClick={open}
           className={clsx(
-            "peer fixed right-8 bottom-8 z-10 rounded-full border p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200",
+            "peer rounded-full border p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200",
             {
               "border-neutral-800 bg-neutral-200": isOpen,
               "border-transparent": !isOpen,
@@ -84,7 +85,7 @@ function CreateTaskModal({ dateStr }: { dateStr: string }) {
         >
           <CalendarPlus />
         </Button>
-        <div className="pointer-events-none absolute -top-18 -right-2 z-10 rounded bg-neutral-400 px-2 py-1 text-sm whitespace-nowrap opacity-0 transition-opacity delay-300 duration-150 peer-hover:opacity-100">
+        <div className="pointer-events-none absolute -top-8 -right-2 z-10 rounded bg-neutral-400 px-2 py-1 text-sm whitespace-nowrap opacity-0 transition-opacity delay-300 duration-150 peer-hover:opacity-100">
           Create
         </div>
       </div>
@@ -143,7 +144,7 @@ function CreateTaskModal({ dateStr }: { dateStr: string }) {
                     onClick={handleCreateTask}
                     icon={<Save />}
                     tooltipText="Save"
-                    tooltipPosition="top-2 right-12"
+                    tooltipPosition="-top-8 right-0"
                   />
                 </div>
               )}

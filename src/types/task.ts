@@ -27,3 +27,10 @@ export type TaskUpdate = {
   is_completed?: boolean;
   order?: number;
 };
+
+// Returned by the backend for GET /tasks/completion
+export type TaskCompletion = {
+  date: string; // ISO 8601 format, e.g. "2025-04-02"
+  total: number;
+  completed: number;
+};

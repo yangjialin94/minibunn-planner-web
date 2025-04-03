@@ -71,19 +71,6 @@ function DailyHeader({ date, dailyTab, setDailyTab }: DailyPageProps) {
   );
 }
 
-function StatusBar({ dateStr }: { dateStr: string }) {
-  return (
-    <div className="flex justify-between p-4">
-      <TaskFilter />
-      <div>
-        <span className="text-sm font-medium text-neutral-800">
-          [ Get daily completion status by date ({dateStr}): 1/3 ]
-        </span>
-      </div>
-    </div>
-  );
-}
-
 function Tasks({ dateStr }: { dateStr: string }) {
   const taskFilter = usePageStore((state) => state.taskFilter);
   const { data, isLoading, error } = useQuery({
@@ -99,16 +86,27 @@ function Tasks({ dateStr }: { dateStr: string }) {
   }
 
   return (
-    <div className="flex h-[calc(100vh-227px)] flex-col p-4">
-      <div className="flex flex-wrap gap-4">
-        {data?.map((task) => {
-          if (taskFilter === "completed" && !task.is_completed) return null;
-          if (taskFilter === "incomplete" && task.is_completed) return null;
-          return <TaskCard key={task.id} task={task} />;
-        })}
+    <>
+      <div className="flex flex-wrap-reverse items-center justify-between gap-4 p-4">
+        <TaskFilter />
+        {data && (
+          <p className="font-medium">
+            Progress: {data.filter((task) => task.is_completed).length} /{" "}
+            {data.length}
+          </p>
+        )}
       </div>
-      <CreateTaskModal dateStr={dateStr} />
-    </div>
+      <div className="flex h-[calc(100vh-227px)] flex-col p-4">
+        <div className="flex flex-wrap gap-4">
+          {data?.map((task) => {
+            if (taskFilter === "completed" && !task.is_completed) return null;
+            if (taskFilter === "incomplete" && task.is_completed) return null;
+            return <TaskCard key={task.id} task={task} />;
+          })}
+        </div>
+        <CreateTaskModal dateStr={dateStr} />
+      </div>
+    </>
   );
 }
 
@@ -132,13 +130,13 @@ function Journal({ dateStr }: { dateStr: string }) {
         className="h-12 w-full border-b border-neutral-800 p-4 text-xl font-semibold outline-none"
         placeholder="Subject"
         onChange={(e) => console.log(e.target.value)}
-        value={data?.journal?.subject ? data.journal.subject : ""}
+        value={data?.subject ? data.subject : ""}
       />
       <textarea
         className="flex-1 resize-none p-4 outline-none"
         placeholder="Write your entry here..."
         onChange={(e) => console.log(e.target.value)}
-        value={data?.journal?.entry ? data.journal.entry : ""}
+        value={data?.entry ? data.entry : ""}
       />
     </div>
   );
@@ -181,10 +179,7 @@ function DailyPage() {
       />
 
       {dailyTab === "tasks" ? (
-        <>
-          <StatusBar dateStr={dateStr} />
-          <Tasks dateStr={dateStr} />
-        </>
+        <Tasks dateStr={dateStr} />
       ) : (
         <Journal dateStr={dateStr} />
       )}

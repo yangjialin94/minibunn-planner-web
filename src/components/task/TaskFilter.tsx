@@ -5,8 +5,8 @@ import { usePageStore } from "@/hooks/usePageStore";
 
 const options = [
   { id: "all", label: "All" },
+  { id: "incomplete", label: "Active" },
   { id: "completed", label: "Completed" },
-  { id: "incomplete", label: "Incomplete" },
 ];
 
 function TaskFilter() {
