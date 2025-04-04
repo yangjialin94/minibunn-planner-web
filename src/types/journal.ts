@@ -7,15 +7,14 @@ export type Journal = {
 };
 
 // Payload for creating a new journal (POST /journals)
-export type JournalCreate = {
-  date: string;
-  subject?: string;
-  entry?: string;
-};
+// export type JournalCreate = {
+//   date: string;
+//   subject?: string;
+//   entry?: string;
+// };
 
 // Payload for updating an existing journal (PATCH /journals/:id)
 export type JournalUpdate = {
-  date?: string;
   subject?: string;
   entry?: string;
 };

@@ -109,7 +109,7 @@ function EditTaskModal({ task }: { task: Task }) {
             "peer rounded-full border p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200",
             {
               "border-neutral-800 bg-neutral-200": isOpen,
-              "border-transparent": !isOpen,
+              "border-transparent bg-neutral-100": !isOpen,
             },
           )}
         >

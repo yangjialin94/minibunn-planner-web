@@ -32,7 +32,7 @@ const UserProfile = memo(() => {
     >
       <Image
         className="block h-8 shrink-0 rounded-full"
-        src="/settings_icon.png"
+        src="/profile_image.jpg"
         alt=""
         height="32"
         width="32"

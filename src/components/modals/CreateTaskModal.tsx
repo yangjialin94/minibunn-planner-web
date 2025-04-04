@@ -80,7 +80,7 @@ function CreateTaskModal({ dateStr }: { dateStr: string }) {
         <Button
           onClick={open}
           className={clsx(
-            "peer rounded-full border p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200",
+            "peer rounded-full border bg-neutral-100 p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200",
             {
               "border-neutral-800 bg-neutral-200": isOpen,
               "border-transparent": !isOpen,

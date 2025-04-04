@@ -1,28 +1,34 @@
-import { Journal, JournalCreate, JournalUpdate } from "@/types/journal";
+import { Journal, JournalUpdate } from "@/types/journal";
 import API_BASE_URL from "@/utils/api";
 
-// 🧠 Get or create journal for a given date
+/**
+ * Fetch a journal or create a new one if it doesn't exist.
+ */
 export async function fetchOrCreateJournalByDate(
   dateStr: string,
 ): Promise<Journal> {
-  const res = await fetch(`${API_BASE_URL}/journals?date=${dateStr}`);
+  const res = await fetch(`${API_BASE_URL}/journals/?date=${dateStr}`);
   if (!res.ok)
     throw new Error(`Failed to fetch or create journal for ${dateStr}`);
   return res.json();
 }
 
-// ✍️ Create a new journal (only if not exists already)
-export async function createJournal(journal: JournalCreate): Promise<Journal> {
-  const res = await fetch(`${API_BASE_URL}/journals`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(journal),
-  });
-  if (!res.ok) throw new Error("Failed to create journal");
-  return res.json();
-}
+/**
+ * Create a empty new journal.
+ */
+// export async function createJournal(journal: JournalCreate): Promise<Journal> {
+//   const res = await fetch(`${API_BASE_URL}/journals`, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(journal),
+//   });
+//   if (!res.ok) throw new Error("Failed to create journal");
+//   return res.json();
+// }
 
-// 🔧 Update an existing journal
+/**
+ * Update an existing journal.
+ */
 export async function updateJournal(
   journalId: number,
   updates: JournalUpdate,
