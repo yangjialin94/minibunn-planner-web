@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogPanel } from "@headlessui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
-import { CalendarPlus, LoaderCircle, Save } from "lucide-react";
+import { CalendarPlus, LoaderCircle, Save, X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 import { createTask } from "@/api/tasks";
@@ -101,12 +101,17 @@ function CreateTaskModal({ dateStr }: { dateStr: string }) {
               transition
               className="w-full max-w-md rounded-xl border-2 bg-neutral-100 p-4"
             >
-              <input
-                className="w-full truncate overflow-hidden border-b pb-2 text-lg font-semibold whitespace-nowrap outline-none"
-                placeholder="Task name"
-                onChange={(e) => setTitle(e.target.value)}
-                value={title}
-              />
+              <div className="flex items-center justify-between border-b pb-2">
+                <input
+                  className="flex-1 text-lg font-semibold outline-none"
+                  placeholder="Task name"
+                  onChange={(e) => setTitle(e.target.value)}
+                  value={title}
+                />
+                <button className="action-btn ml-2" onClick={close}>
+                  <X />
+                </button>
+              </div>
               <textarea
                 ref={textareaRef}
                 className="mt-2 w-full resize-none outline-none"
