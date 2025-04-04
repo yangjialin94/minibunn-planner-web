@@ -83,20 +83,22 @@ function DailyHeader({ date, dailyTab, setDailyTab }: DailyPageProps) {
 }
 
 function SortableItem({ id, task }: { id: number; task: Task }) {
+  const isModalOpen = usePageStore((state) => state.isModalOpen);
+
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
-  const style = {
+  const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
+    pointerEvents: isModalOpen ? "none" : "auto",
   };
 
   return (
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
+      {...(!isModalOpen ? { ...attributes, ...listeners } : {})}
       className="cursor-grab"
     >
       <TaskCard task={task} />

@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { deleteTask, updateTask } from "@/api/tasks";
 import IconButton from "@/components/elements/IconButton";
+import { usePageStore } from "@/hooks/usePageStore";
 import { Task } from "@/types/task";
 
 function EditTaskModal({ task }: { task: Task }) {
@@ -13,6 +14,7 @@ function EditTaskModal({ task }: { task: Task }) {
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
 
+  const setIsModalOpen = usePageStore((state) => state.setIsModalOpen);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const queryClient = useQueryClient();
@@ -74,10 +76,12 @@ function EditTaskModal({ task }: { task: Task }) {
   // Handle the modal open and close
   function open() {
     setIsOpen(true);
+    setIsModalOpen(true);
   }
 
   function close() {
     setIsOpen(false);
+    setIsModalOpen(false);
   }
 
   // Handle the task update

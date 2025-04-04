@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { createTask } from "@/api/tasks";
 import IconButton from "@/components/elements/IconButton";
+import { usePageStore } from "@/hooks/usePageStore";
 import { TaskCreate } from "@/types/task";
 
 function CreateTaskModal({ dateStr }: { dateStr: string }) {
@@ -14,6 +15,7 @@ function CreateTaskModal({ dateStr }: { dateStr: string }) {
   const [note, setNote] = useState("");
   const [repeatDays, setRepeatDays] = useState(1);
 
+  const setIsModalOpen = usePageStore((state) => state.setIsModalOpen);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const queryClient = useQueryClient();
@@ -29,10 +31,12 @@ function CreateTaskModal({ dateStr }: { dateStr: string }) {
   // Handle the modal open and close
   function open() {
     setIsOpen(true);
+    setIsModalOpen(true);
   }
 
   function close() {
     setIsOpen(false);
+    setIsModalOpen(false);
   }
 
   // Handle the note textarea change
