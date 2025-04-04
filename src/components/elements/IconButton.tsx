@@ -18,7 +18,16 @@ function IconButton({
 }: IconButtonProps) {
   return (
     <div className="relative inline-block">
-      <button className={clsx(buttonClassName, "peer")} onClick={onClick}>
+      <button
+        className={clsx(buttonClassName, "peer")}
+        onPointerDown={(e: React.PointerEvent<HTMLButtonElement>) =>
+          e.stopPropagation()
+        }
+        onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
+          e.stopPropagation();
+          onClick();
+        }}
+      >
         {icon}
       </button>
       <div

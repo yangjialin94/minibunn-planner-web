@@ -94,7 +94,13 @@ function EditTaskModal({ task }: { task: Task }) {
     <>
       <div className="relative inline-block">
         <Button
-          onClick={open}
+          onPointerDown={(e: React.PointerEvent<HTMLButtonElement>) =>
+            e.stopPropagation()
+          }
+          onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
+            e.stopPropagation();
+            open();
+          }}
           className={clsx(
             "peer rounded-full border p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200",
             {
@@ -115,7 +121,8 @@ function EditTaskModal({ task }: { task: Task }) {
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className="w-full max-w-md rounded-xl border bg-neutral-100 p-4"
+              className="w-full max-w-md rounded-xl border-2 bg-neutral-100 p-4"
+              onPointerDown={(e) => e.stopPropagation()}
             >
               <input
                 className="w-full truncate overflow-hidden border-b pb-2 text-lg font-semibold whitespace-nowrap outline-none"

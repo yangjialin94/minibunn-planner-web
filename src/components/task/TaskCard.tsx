@@ -20,7 +20,7 @@ function TaskCard({ task }: { task: Task }) {
       queryClient.invalidateQueries({ queryKey: ["tasks", task.date] });
     },
     onError: (error) => {
-      console.error("Error updating task:", error);
+      console.error("Error updating task status:", error);
     },
   });
 
@@ -51,6 +51,7 @@ function TaskCard({ task }: { task: Task }) {
       className={clsx(
         "relative flex h-60 w-60 flex-col rounded-xl border border-neutral-800 p-4",
         {
+          "bg-neutral-100": !task.is_completed,
           "bg-neutral-200": task.is_completed,
         },
       )}
