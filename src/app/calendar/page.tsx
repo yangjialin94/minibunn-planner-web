@@ -2,16 +2,15 @@
 
 import { useEffect } from "react";
 
+import Calendar from "@/components/calendar/Calendar";
 import { usePageStore } from "@/hooks/usePageStore";
 
-function LoginPage() {
+export default function CalendarPage() {
   const setPage = usePageStore((state) => state.setPage);
 
   useEffect(() => {
-    setPage("auth");
+    setPage("calendar");
   }, [setPage]);
 
-  return <h1>Login Page</h1>;
+  return <Calendar />;
 }
-
-export default LoginPage;

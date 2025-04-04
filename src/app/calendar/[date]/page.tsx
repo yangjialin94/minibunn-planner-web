@@ -26,16 +26,16 @@ import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocalNoTime, parseLocalDate } from "@/lib/dateUtils";
 import { Task } from "@/types/task";
 
-interface DailyPageProps {
-  date: Date;
+interface DailyHeaderProps {
+  dateStr: string;
   dailyTab: "tasks" | "journal";
   setDailyTab: (tab: "tasks" | "journal") => void;
 }
 
-function DailyHeader({ date, dailyTab, setDailyTab }: DailyPageProps) {
+function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
   const router = useRouter();
 
-  const formattedDate = formatDateLocalNoTime(date);
+  const date = parseLocalDate(dateStr);
 
   const handleTabChange = (tab: "tasks" | "journal") => {
     setDailyTab(tab);
@@ -51,7 +51,7 @@ function DailyHeader({ date, dailyTab, setDailyTab }: DailyPageProps) {
 
   return (
     <div className="daily-header">
-      <p className="text-lg font-bold">{formattedDate}</p>
+      <p className="text-lg font-bold">{dateStr}</p>
       <div className="flex items-center gap-2">
         <button
           className={clsx("daily-tab-btn", {
@@ -229,12 +229,7 @@ function DailyPage() {
   const setDailyTab = usePageStore((state) => state.setDailyTab);
 
   const today = formatDateLocalNoTime(new Date());
-
-  const dateStr = date
-    ? Array.isArray(date)
-      ? date[0]
-      : date
-    : formatDateLocalNoTime(new Date());
+  const dateStr = date ? (Array.isArray(date) ? date[0] : date) : today;
 
   useEffect(() => {
     if (dateStr === today) {
@@ -248,12 +243,10 @@ function DailyPage() {
     return <div>Error: Date parameter is missing.</div>;
   }
 
-  const localDate = parseLocalDate(dateStr);
-
   return (
     <div className="scrollable-content">
       <DailyHeader
-        date={localDate}
+        dateStr={dateStr}
         dailyTab={dailyTab}
         setDailyTab={setDailyTab}
       />

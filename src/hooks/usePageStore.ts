@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type PageType = "calendar" | "today" | "daily";
+type PageType = "auth" | "calendar" | "today" | "daily";
 
 type PageState = {
   page: PageType; // current page of the app
