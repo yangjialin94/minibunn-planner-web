@@ -1,19 +1,38 @@
 "use client";
 
-import { Calendar, ListCheck } from "lucide-react";
+import { signOut } from "firebase/auth";
+import Cookies from "js-cookie";
+import { Calendar, ListCheck, LogOut } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
+import { auth } from "@/auth/firebaseClient";
 import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocalNoTime } from "@/lib/dateUtils";
 
 function SideBar() {
+  const router = useRouter();
   const page = usePageStore((state) => state.page);
+
   const today = formatDateLocalNoTime(new Date());
 
   if (page === "auth") {
     return null;
   }
+
+  // Handle sign out
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+
+      // Remove the token from cookies
+      Cookies.remove("token");
+      router.push("/");
+    } catch (error) {
+      console.error("Error signing out", error);
+    }
+  };
 
   return (
     <aside>
@@ -34,6 +53,12 @@ function SideBar() {
           <ListCheck />
           <span>Today</span>
         </Link>
+      </nav>
+      <nav>
+        <button onClick={handleSignOut} className="sidebar-item">
+          <LogOut />
+          <span>Sign out</span>
+        </button>
       </nav>
     </aside>
   );

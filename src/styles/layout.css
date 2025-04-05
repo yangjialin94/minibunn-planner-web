@@ -45,3 +45,7 @@ nav > a {
 nav > a.selected {
   @apply pointer-events-none flex gap-2 rounded-xl border border-neutral-800 bg-neutral-200 px-3 py-2;
 }
+
+.sidebar-item {
+  @apply flex w-full gap-2 rounded-xl border border-transparent px-3 py-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
+}
