@@ -136,7 +136,7 @@ function RegisterPage() {
             </p>
           )}
         </form>
-        <p className="font-semibold text-neutral-500">-</p>
+        <p className="font-semibold text-neutral-500">•</p>
         <Link
           className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
           href="/"

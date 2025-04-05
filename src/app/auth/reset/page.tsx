@@ -3,8 +3,8 @@
 import clsx from "clsx";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 import { auth } from "@/auth/firebaseClient"; // Handle sign in with email and password
 import { usePageStore } from "@/hooks/usePageStore";
@@ -13,7 +13,6 @@ import { usePageStore } from "@/hooks/usePageStore";
  * Reset Page
  */
 function ResetPage() {
-  const router = useRouter();
   const setPage = usePageStore((state) => state.setPage);
 
   const [email, setEmail] = useState("");
@@ -52,7 +51,13 @@ function ResetPage() {
 
     try {
       await sendPasswordResetEmail(auth, email);
-      router.push("/");
+      setEmail("");
+      toast.success("Reset email sent!", {
+        className: "bg-neutral-300 border-2 border-neutral-800 rounded-xl",
+        progressClassName: "bg-green-500",
+        autoClose: 2000,
+        position: "bottom-left",
+      });
     } catch (error) {
       console.error("Error sending reset email", error);
     } finally {
@@ -93,7 +98,7 @@ function ResetPage() {
             disabled={loading}
             className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
           >
-            {loading ? "Resetting..." : "Reset"}
+            {loading ? "Sending reset..." : "Reset"}
           </button>
 
           {errors.firebaseError && (
@@ -102,7 +107,7 @@ function ResetPage() {
             </p>
           )}
         </form>
-        <p className="font-semibold text-neutral-500">-</p>
+        <p className="font-semibold text-neutral-500">•</p>
         <Link
           className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
           href="/"
@@ -111,6 +116,7 @@ function ResetPage() {
           Sign In
         </Link>
       </div>
+      <ToastContainer />
     </div>
   );
 }
