@@ -52,9 +52,9 @@ function SignInForm() {
         form.password,
       );
 
-      // Add the token to cookies for 30 days
+      // Add the token to cookies for 1 day
       const token = await userCredential.user.getIdToken();
-      Cookies.set("token", token, { expires: 30 });
+      Cookies.set("token", token, { expires: 1 });
       router.push("/calendar");
     } catch (error) {
       console.error("Error with Google sign in", error);

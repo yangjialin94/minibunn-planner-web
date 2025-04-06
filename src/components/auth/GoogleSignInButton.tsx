@@ -21,12 +21,11 @@ function GoogleSignInButton() {
     try {
       const userCredential = await signInWithPopup(auth, provider);
 
-      // Add the token to cookies for 30 days
+      // Add the token to cookies for 1 day
       const token = await userCredential.user.getIdToken();
-      Cookies.set("token", token, { expires: 30 });
+      Cookies.set("token", token, { expires: 1 });
       router.push("/calendar");
     } catch (error) {
-      // TODO: Handle error with message toast
       console.error("Error with Google sign in", error);
     }
   };

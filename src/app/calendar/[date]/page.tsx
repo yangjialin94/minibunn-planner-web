@@ -9,7 +9,7 @@ import React, { useEffect } from "react";
 import Journal from "@/components/task/Journal";
 import Tasks from "@/components/task/Tasks";
 import { usePageStore } from "@/hooks/usePageStore";
-import { formatDateLocalNoTime, parseLocalDate } from "@/lib/dateUtils";
+import { formatDateLocalNoTime, parseLocalDate } from "@/utils/date";
 
 interface DailyHeaderProps {
   dateStr: string;

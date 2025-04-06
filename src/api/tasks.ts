@@ -1,5 +1,6 @@
 import { Task, TaskCompletion, TaskCreate, TaskUpdate } from "@/types/task";
 import API_BASE_URL from "@/utils/api";
+import { apiFetch } from "@/utils/apiFetch";
 
 /**
  * Fetch tasks for a specific date or date range.
@@ -10,7 +11,9 @@ export async function fetchTasksInRange(
   start: string,
   end: string,
 ): Promise<Task[]> {
-  const res = await fetch(`${API_BASE_URL}/tasks/?start=${start}&end=${end}`);
+  const res = await apiFetch(
+    `${API_BASE_URL}/tasks/?start=${start}&end=${end}`,
+  );
   if (!res.ok) throw new Error("Failed to fetch tasks");
   return res.json();
 }
@@ -19,7 +22,7 @@ export async function fetchTasksInRange(
  * Create a new task or repeatable tasks.
  */
 export async function createTask(data: TaskCreate): Promise<Task> {
-  const res = await fetch(`${API_BASE_URL}/tasks/`, {
+  const res = await apiFetch(`${API_BASE_URL}/tasks/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -39,7 +42,7 @@ export async function updateTask(
   taskId: number,
   updates: TaskUpdate,
 ): Promise<Task> {
-  const res = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+  const res = await apiFetch(`${API_BASE_URL}/tasks/${taskId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updates),
@@ -52,7 +55,7 @@ export async function updateTask(
  * Delete a task or repeatable tasks.
  */
 export async function deleteTask(taskId: number): Promise<{ message: string }> {
-  const res = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+  const res = await apiFetch(`${API_BASE_URL}/tasks/${taskId}`, {
     method: "DELETE",
   });
   if (!res.ok) throw new Error("Failed to delete task");
@@ -66,7 +69,7 @@ export async function fetchTasksCompletionInRange(
   start: string,
   end: string,
 ): Promise<TaskCompletion[]> {
-  const res = await fetch(
+  const res = await apiFetch(
     `${API_BASE_URL}/tasks/completion/?start=${start}&end=${end}`,
   );
   if (!res.ok) throw new Error("Failed to fetch tasks completion");

@@ -2,7 +2,7 @@
 
 import React, { memo, useEffect, useState } from "react";
 
-import { formatDateLocal } from "@/lib/dateUtils";
+import { formatDateLocal } from "@/utils/date";
 
 const TimeDisplay = memo(() => {
   const [currentLocalTime, setCurrentLocalTime] = useState(() =>

@@ -9,7 +9,7 @@ import React from "react";
 
 import { auth } from "@/auth/firebaseClient";
 import { usePageStore } from "@/hooks/usePageStore";
-import { formatDateLocalNoTime } from "@/lib/dateUtils";
+import { formatDateLocalNoTime } from "@/utils/date";
 
 function SideBar() {
   const router = useRouter();
