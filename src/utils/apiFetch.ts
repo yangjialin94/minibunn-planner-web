@@ -8,8 +8,6 @@ export async function apiFetch(
   options: RequestInit = {},
 ): Promise<Response> {
   const token = Cookies.get("token");
-  console.log("Token:", token);
-
   const defaultHeaders = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,

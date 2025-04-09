@@ -49,31 +49,29 @@ function TaskCard({ task }: { task: Task }) {
   return (
     <div
       className={clsx(
-        "relative flex h-60 w-60 flex-col rounded-xl border border-neutral-800 p-4",
+        "relative flex h-68 w-68 flex-col rounded-xl border border-neutral-800 p-4",
         {
           "bg-neutral-100": !task.is_completed,
           "bg-neutral-200": task.is_completed,
         },
       )}
     >
-      <div className="pb-2">
-        <p className="truncate overflow-hidden text-lg font-semibold">
-          {task.title}
-        </p>
+      <div className="max-w-full overflow-x-auto pb-3">
+        <p className="text-lg font-semibold whitespace-nowrap">{task.title}</p>
       </div>
 
-      <div className="flex-1 overflow-auto border-t py-2">
-        <p className="h-full w-full flex-1 whitespace-pre-wrap">{task.note}</p>
+      <div className="flex-1 overflow-auto border-t py-3">
+        <p className="w-full break-all whitespace-pre-wrap">{task.note}</p>
       </div>
 
       {isUpdating || isDeleting ? (
-        <div className="flex justify-center">
+        <div className="flex justify-center pt-2">
           <div className="loading-btn">
             <LoaderCircle />
           </div>
         </div>
       ) : (
-        <div className="flex justify-between">
+        <div className="flex justify-between pt-2">
           {!task.is_completed ? (
             <>
               <EditTaskModal task={task} />

@@ -2,7 +2,7 @@
 
 import { signOut } from "firebase/auth";
 import Cookies from "js-cookie";
-import { Calendar, ListCheck, LogOut } from "lucide-react";
+import { Calendar, ListCheck, LogOut, Notebook } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -52,6 +52,12 @@ function SideBar() {
         >
           <ListCheck />
           <span>Today</span>
+        </Link>
+      </nav>
+      <nav>
+        <Link href="/notes" className={page === "notes" ? "selected" : ""}>
+          <Notebook />
+          <span>Notes</span>
         </Link>
       </nav>
       <nav>

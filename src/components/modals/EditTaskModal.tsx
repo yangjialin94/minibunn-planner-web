@@ -28,7 +28,7 @@ function EditTaskModal({ task }: { task: Task }) {
       queryClient.invalidateQueries({ queryKey: ["tasks", task.date] });
     },
     onError: (error) => {
-      console.error("Error updating task:", error);
+      console.error("Error deleting task:", error);
     },
   });
 
