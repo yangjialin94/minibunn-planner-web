@@ -153,17 +153,24 @@ function EditTaskModal({ task }: { task: Task }) {
                   </div>
                 </div>
               ) : (
-                <div className="mt-4 flex items-center justify-between">
-                  <IconButton
-                    buttonClassName="action-btn"
-                    onClick={handleDeleteTask}
-                    icon={<Trash2 />}
-                    tooltipText="Delete"
-                    tooltipPosition="-top-8 -right-2"
-                  />
+                <div
+                  className={clsx("mt-4 flex items-center", {
+                    "justify-center": title.trim() === "",
+                    "justify-between": title.trim() !== "",
+                  })}
+                >
+                  {title.trim() !== "" && (
+                    <IconButton
+                      buttonClassName="action-btn"
+                      onClick={handleDeleteTask}
+                      icon={<Trash2 />}
+                      tooltipText="Delete"
+                      tooltipPosition="-top-8 -right-2"
+                    />
+                  )}
                   {task.repeatable_days && (
                     <div className="relative inline-block">
-                      <p className="peer font-medium">Repeated</p>
+                      <p className="peer py-2 font-medium">Repeated</p>
                       <div className="pointer-events-none absolute -top-8 -right-35 z-10 rounded bg-neutral-400 px-2 py-1 text-sm whitespace-nowrap opacity-0 transition-opacity delay-300 duration-150 peer-hover:opacity-100">
                         <p>
                           Changes will affect all repeated tasks starting today
@@ -171,13 +178,15 @@ function EditTaskModal({ task }: { task: Task }) {
                       </div>
                     </div>
                   )}
-                  <IconButton
-                    buttonClassName="action-btn"
-                    onClick={handleUpdateTask}
-                    icon={<Save />}
-                    tooltipText="Save"
-                    tooltipPosition="-top-8 -right-1"
-                  />
+                  {title.trim() !== "" && (
+                    <IconButton
+                      buttonClassName="action-btn"
+                      onClick={handleUpdateTask}
+                      icon={<Save />}
+                      tooltipText="Save"
+                      tooltipPosition="-top-8 -right-1"
+                    />
+                  )}
                 </div>
               )}
             </DialogPanel>

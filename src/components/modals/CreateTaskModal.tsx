@@ -104,7 +104,7 @@ function CreateTaskModal({ dateStr }: { dateStr: string }) {
               <div className="flex items-center justify-between border-b pb-2">
                 <input
                   className="flex-1 text-lg font-semibold outline-none"
-                  placeholder="Task name"
+                  placeholder="Task name (required)"
                   onChange={(e) => setTitle(e.target.value)}
                   value={title}
                 />
@@ -149,7 +149,9 @@ function CreateTaskModal({ dateStr }: { dateStr: string }) {
               ) : (
                 <div className="mt-4 flex justify-end">
                   <IconButton
-                    buttonClassName="action-btn"
+                    buttonClassName={clsx("action-btn", {
+                      hidden: title.trim() === "",
+                    })}
                     onClick={handleCreateTask}
                     icon={<Save />}
                     tooltipText="Save"
