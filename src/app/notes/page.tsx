@@ -27,12 +27,19 @@ import { usePageStore } from "@/hooks/usePageStore";
 import { NoteCreate } from "@/types/note";
 import { Note } from "@/types/note";
 
+interface ItemListProps {
+  bottomRef: React.RefObject<HTMLDivElement | null>;
+  editingId: number | null;
+  setEditingId: React.Dispatch<React.SetStateAction<number | null>>;
+}
+
 interface SortableItemProps {
   id: number;
   note: Note;
   isEditing: boolean;
   startEditing: () => void;
   cancelEditing: () => void;
+  editingId: number | null;
 }
 
 /**
@@ -44,6 +51,7 @@ function SortableItem({
   isEditing,
   startEditing,
   cancelEditing,
+  editingId,
 }: SortableItemProps) {
   const [noteDetail, setNoteDetail] = useState(note.detail);
   const [originalNoteDetail, setOriginalNoteDetail] = useState(note.detail);
@@ -85,7 +93,11 @@ function SortableItem({
 
   // Handle the note cancel
   const handleCancel = () => {
-    setNoteDetail(originalNoteDetail);
+    if (originalNoteDetail === "") {
+      mutateDelete(note.id);
+    } else {
+      setNoteDetail(originalNoteDetail);
+    }
     cancelEditing();
   };
 
@@ -160,47 +172,49 @@ function SortableItem({
       )}
 
       {/* Action Buttons */}
-      <div className="flex w-24 justify-end">
-        {isDeleting || isUpdating ? (
+      {isDeleting || isUpdating ? (
+        <div className="flex w-24 justify-end">
           <div className="loading-btn">
             <LoaderCircle />
           </div>
-        ) : isEditing ? (
-          <>
-            <IconButton
-              buttonClassName="action-btn"
-              onClick={handleCancel}
-              icon={<X />}
-              tooltipText="Cancel"
-              tooltipPosition="-top-8 -right-2"
-            />
-            <IconButton
-              buttonClassName="action-btn"
-              onClick={handleUpdateNote}
-              icon={<Save />}
-              tooltipText="Save"
-              tooltipPosition="-top-8 -right-0"
-            />
-          </>
-        ) : (
-          <>
-            <IconButton
-              buttonClassName="action-btn"
-              onClick={handleStartEditing}
-              icon={<SquarePen />}
-              tooltipText="Edit"
-              tooltipPosition="-top-8 -right-0"
-            />
-            <IconButton
-              buttonClassName="action-btn"
-              onClick={handleDeleteNote}
-              icon={<Trash2 />}
-              tooltipText="Delete"
-              tooltipPosition="-top-8 -right-2"
-            />
-          </>
-        )}
-      </div>
+        </div>
+      ) : isEditing ? (
+        <div className="flex w-24 justify-end">
+          <IconButton
+            buttonClassName="action-btn"
+            onClick={handleCancel}
+            icon={<X />}
+            tooltipText="Cancel"
+            tooltipPosition="-top-8 -right-2"
+          />
+          <IconButton
+            buttonClassName={clsx("action-btn", {
+              hidden: noteDetail.trim() === "",
+            })}
+            onClick={handleUpdateNote}
+            icon={<Save />}
+            tooltipText="Save"
+            tooltipPosition="-top-8 -right-0"
+          />
+        </div>
+      ) : editingId === null ? (
+        <div className="flex w-24 justify-end">
+          <IconButton
+            buttonClassName="action-btn"
+            onClick={handleStartEditing}
+            icon={<SquarePen />}
+            tooltipText="Edit"
+            tooltipPosition="-top-8 -right-0"
+          />
+          <IconButton
+            buttonClassName="action-btn"
+            onClick={handleDeleteNote}
+            icon={<Trash2 />}
+            tooltipText="Delete"
+            tooltipPosition="-top-8 -right-2"
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -208,13 +222,8 @@ function SortableItem({
 /**
  * Sortable Item List for Notes
  */
-function ItemList({
-  bottomRef,
-}: {
-  bottomRef: React.RefObject<HTMLDivElement | null>;
-}) {
+function ItemList({ bottomRef, editingId, setEditingId }: ItemListProps) {
   const [orderedNotes, setOrderedNotes] = useState<Note[]>([]);
-  const [editingId, setEditingId] = useState<number | null>(null);
 
   const queryClient = useQueryClient();
   const { data, isLoading, error } = useQuery({
@@ -282,6 +291,7 @@ function ItemList({
                   isEditing={editingId === note.id}
                   startEditing={() => setEditingId(note.id)}
                   cancelEditing={() => setEditingId(null)}
+                  editingId={editingId}
                 />
               );
             })}
@@ -297,8 +307,10 @@ function ItemList({
  * Notes Page
  */
 function NotesPage() {
-  const setPage = usePageStore((state) => state.setPage);
+  const [editingId, setEditingId] = useState<number | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  const setPage = usePageStore((state) => state.setPage);
 
   const queryClient = useQueryClient();
 
@@ -317,9 +329,12 @@ function NotesPage() {
   // Handle the note creation
   const { mutate: mutateCreate, isPending: isCreating } = useMutation({
     mutationFn: (newNote: NoteCreate) => createNote(newNote),
-    onSuccess: () => {
-      close();
+    onSuccess: (createdNote) => {
+      // Invalidate the notes query to refresh the data
       queryClient.invalidateQueries({ queryKey: ["notes"] });
+
+      // Set the editing ID to the newly created note
+      setEditingId(createdNote.id);
 
       // Scroll to the bottom after a short delay
       setTimeout(() => {
@@ -339,7 +354,11 @@ function NotesPage() {
   return (
     <div className="scrollable-content p-4">
       {/* <Note List /> */}
-      <ItemList bottomRef={bottomRef} />
+      <ItemList
+        bottomRef={bottomRef}
+        editingId={editingId}
+        setEditingId={setEditingId}
+      />
 
       {/* Create Button */}
       <div className="fixed right-8 bottom-8 z-10 inline-block">
@@ -349,7 +368,7 @@ function NotesPage() {
               <LoaderCircle />
             </div>
           </div>
-        ) : (
+        ) : editingId !== null ? null : (
           <div className="flex justify-end">
             <IconButton
               buttonClassName="action-btn"
