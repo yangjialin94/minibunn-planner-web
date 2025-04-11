@@ -95,7 +95,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
   // Redirect to home if no token and on a protected route
   useEffect(() => {
     const token = Cookies.get("token");
-    console.log("Token:", token);
     const isProtectedRoute = pathname === "/" || pathname.startsWith("/auth");
 
     if (

@@ -102,7 +102,6 @@ function Cells({
         key={dateStr}
         className="relative aspect-square cursor-pointer border border-neutral-200 hover:bg-neutral-200"
         onClick={() => {
-          console.log("Navigating to:", `/calendar/${dateStr}`);
           router.push(`/calendar/${dateStr}`);
         }}
       >
