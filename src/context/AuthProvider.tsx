@@ -82,7 +82,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
 
         // Redirect to home
-        router.push("/");
+        router.replace("/");
 
         console.warn("Session expired.");
       }
@@ -104,7 +104,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
       pathname !== "/"
     ) {
       console.warn("No token — redirecting to home");
-      router.push("/");
+      router.replace("/");
     }
   }, [pathname, router, user]);
 
