@@ -77,7 +77,7 @@ function Tasks({ dateStr }: { dateStr: string }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <div className="mb-14 flex flex-col gap-4 p-4">
       {/* filters and Progress */}
       <div className="flex flex-wrap-reverse items-center justify-between gap-4">
         <TaskFilter />

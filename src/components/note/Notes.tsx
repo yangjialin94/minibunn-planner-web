@@ -81,7 +81,7 @@ function Notes({ bottomRef, editingId, setEditingId }: NotesProps) {
   }
 
   return (
-    <>
+    <div className="mb-10">
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext
           items={orderedNotes}
@@ -105,7 +105,7 @@ function Notes({ bottomRef, editingId, setEditingId }: NotesProps) {
           </div>
         </SortableContext>
       </DndContext>
-    </>
+    </div>
   );
 }
 
