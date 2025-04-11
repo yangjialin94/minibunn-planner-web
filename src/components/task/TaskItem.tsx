@@ -93,7 +93,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
             </div>
           </div>
         ) : (
-          <div className="flex justify-center gap-8 pt-2">
+          <div className="flex justify-between pt-2">
             {!task.is_completed ? (
               <>
                 <EditTaskModal task={task} />
