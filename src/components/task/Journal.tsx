@@ -7,12 +7,17 @@ import React, { useEffect, useState } from "react";
 
 import { fetchOrCreateJournalByDate, updateJournal } from "@/api/journals";
 import IconButton from "@/components/elements/IconButton";
+import { useAuth } from "@/hooks/useAuth";
 
 function Journal({ dateStr }: { dateStr: string }) {
+  const { user } = useAuth();
+  const tokenReady = !!user;
+
   const queryClient = useQueryClient();
   const { data, isLoading, error } = useQuery({
     queryKey: ["journal", dateStr],
     queryFn: () => fetchOrCreateJournalByDate(dateStr),
+    enabled: tokenReady,
   });
 
   const [isEditing, setIsEditing] = useState(false);

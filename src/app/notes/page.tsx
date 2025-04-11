@@ -23,6 +23,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { createNote, deleteNote, fetchNotes, updateNote } from "@/api/notes";
 import IconButton from "@/components/elements/IconButton";
+import { useAuth } from "@/hooks/useAuth";
 import { usePageStore } from "@/hooks/usePageStore";
 import { NoteCreate } from "@/types/note";
 import { Note } from "@/types/note";
@@ -225,10 +226,14 @@ function SortableItem({
 function ItemList({ bottomRef, editingId, setEditingId }: ItemListProps) {
   const [orderedNotes, setOrderedNotes] = useState<Note[]>([]);
 
+  const { user } = useAuth();
+  const tokenReady = !!user;
+
   const queryClient = useQueryClient();
   const { data, isLoading, error } = useQuery({
     queryKey: ["notes"],
     queryFn: () => fetchNotes(),
+    enabled: tokenReady,
   });
 
   // Handle the note order update

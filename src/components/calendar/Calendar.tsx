@@ -101,7 +101,10 @@ function Cells({
       <div
         key={dateStr}
         className="relative aspect-square cursor-pointer border border-neutral-200 hover:bg-neutral-200"
-        onClick={() => router.push(`/calendar/${dateStr}`)}
+        onClick={() => {
+          console.log("Navigating to:", `/calendar/${dateStr}`);
+          router.push(`/calendar/${dateStr}`);
+        }}
       >
         <div
           className={clsx(

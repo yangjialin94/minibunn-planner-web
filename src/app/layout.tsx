@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 
 import Header from "@/components/layout/Header";
 import SideBar from "@/components/layout/SideBar";
-import AuthProvider from "@/providers/AuthProvider";
-import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import AuthProvider from "@/context/AuthProvider";
+import ReactQueryProvider from "@/context/ReactQueryProvider";
 
 export const metadata: Metadata = {
   title: "Minimal Planner",
@@ -20,8 +20,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          <ReactQueryProvider>
+        <ReactQueryProvider>
+          <AuthProvider>
             <div className="main-container">
               <Header />
 
@@ -32,8 +32,8 @@ export default function RootLayout({
                 </main>
               </div>
             </div>
-          </ReactQueryProvider>
-        </AuthProvider>
+          </AuthProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

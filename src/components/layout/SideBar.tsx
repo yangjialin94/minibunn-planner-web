@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { signOut } from "firebase/auth";
 import Cookies from "js-cookie";
 import { Calendar, ListCheck, LogOut, Notebook } from "lucide-react";
@@ -15,6 +16,8 @@ function SideBar() {
   const router = useRouter();
   const page = usePageStore((state) => state.page);
 
+  const queryClient = useQueryClient();
+
   const today = formatDateLocalNoTime(new Date());
 
   if (page === "auth") {
@@ -25,6 +28,9 @@ function SideBar() {
   const handleSignOut = async () => {
     try {
       await signOut(auth);
+
+      // Invalidate queries to refresh data
+      queryClient.invalidateQueries();
 
       // Remove the token from cookies
       Cookies.remove("token");

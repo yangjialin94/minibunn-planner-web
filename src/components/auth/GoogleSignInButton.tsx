@@ -1,7 +1,6 @@
 "use client";
 
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import Cookies from "js-cookie";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -19,11 +18,7 @@ function GoogleSignInButton() {
     const provider = new GoogleAuthProvider();
 
     try {
-      const userCredential = await signInWithPopup(auth, provider);
-
-      // Add the token to cookies for 1 day
-      const token = await userCredential.user.getIdToken();
-      Cookies.set("token", token, { expires: 1 });
+      await signInWithPopup(auth, provider);
       router.push("/calendar");
     } catch (error) {
       console.error("Error with Google sign in", error);

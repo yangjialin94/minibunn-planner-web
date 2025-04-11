@@ -2,7 +2,6 @@
 
 import clsx from "clsx";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -46,15 +45,7 @@ function SignInForm() {
     setLoading(true);
 
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        form.email,
-        form.password,
-      );
-
-      // Add the token to cookies for 1 day
-      const token = await userCredential.user.getIdToken();
-      Cookies.set("token", token, { expires: 1 });
+      await signInWithEmailAndPassword(auth, form.email, form.password);
       router.push("/calendar");
     } catch (error) {
       console.error("Error with Google sign in", error);

@@ -2,7 +2,6 @@
 
 import clsx from "clsx";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -54,16 +53,8 @@ function RegisterPage() {
     setLoading(true);
 
     try {
-      // Create user with email and password
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        form.email,
-        form.password,
-      );
-
-      // Add the token to cookies for 1 day
-      const token = await userCredential.user.getIdToken();
-      Cookies.set("token", token, { expires: 1 });
+      // Create user with email and password and sign in
+      await createUserWithEmailAndPassword(auth, form.email, form.password);
       router.push("/calendar");
     } catch (error) {
       console.error("Error with Google register", error);

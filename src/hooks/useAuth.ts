@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { AuthContext } from "@/providers/AuthProvider";
+import { AuthContext } from "@/context/AuthProvider";
 
 // This hook provides access to the authentication context
 export const useAuth = () => {

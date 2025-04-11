@@ -17,6 +17,7 @@ import { updateTask } from "@/api/tasks";
 import CreateTaskModal from "@/components/modals/CreateTaskModal";
 import TaskCard from "@/components/task/TaskCard";
 import TaskFilter from "@/components/task/TaskFilter";
+import { useAuth } from "@/hooks/useAuth";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Task } from "@/types/task";
 
@@ -46,9 +47,14 @@ function SortableItem({ id, task }: { id: number; task: Task }) {
 
 function Tasks({ dateStr }: { dateStr: string }) {
   const taskFilter = usePageStore((state) => state.taskFilter);
+
+  const { user } = useAuth();
+  const tokenReady = !!user;
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["tasks", dateStr],
     queryFn: () => fetchTasksInRange(dateStr, dateStr),
+    enabled: tokenReady,
   });
   const [orderedTasks, setOrderedTasks] = useState<Task[]>([]);
   const queryClient = useQueryClient();
