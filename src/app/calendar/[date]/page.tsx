@@ -11,6 +11,9 @@ import Tasks from "@/components/task/Tasks";
 import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocalNoTime, parseLocalDate } from "@/utils/date";
 
+/**
+ * Daily Header
+ */
 interface DailyHeaderProps {
   dateStr: string;
   dailyTab: "tasks" | "journal";
@@ -67,6 +70,9 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
   );
 }
 
+/**
+ * Daily Page
+ */
 function DailyPage() {
   const { date } = useParams();
   const setPage = usePageStore((state) => state.setPage);

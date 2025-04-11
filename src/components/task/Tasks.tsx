@@ -3,11 +3,9 @@
 import { closestCenter, DndContext, DragEndEvent } from "@dnd-kit/core";
 import {
   arrayMove,
-  rectSortingStrategy,
   SortableContext,
-  useSortable,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
@@ -15,35 +13,11 @@ import React, { useEffect, useState } from "react";
 import { fetchTasksInRange } from "@/api/tasks";
 import { updateTask } from "@/api/tasks";
 import CreateTaskModal from "@/components/modals/CreateTaskModal";
-import TaskCard from "@/components/task/TaskCard";
 import TaskFilter from "@/components/task/TaskFilter";
+import TaskItem from "@/components/task/TaskItem";
 import { useAuth } from "@/hooks/useAuth";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Task } from "@/types/task";
-
-function SortableItem({ id, task }: { id: number; task: Task }) {
-  const isModalOpen = usePageStore((state) => state.isModalOpen);
-
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
-
-  const style: React.CSSProperties = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    pointerEvents: isModalOpen ? "none" : "auto",
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...(!isModalOpen ? { ...attributes, ...listeners } : {})}
-      className="cursor-grab"
-    >
-      <TaskCard task={task} />
-    </div>
-  );
-}
 
 function Tasks({ dateStr }: { dateStr: string }) {
   const taskFilter = usePageStore((state) => state.taskFilter);
@@ -103,9 +77,9 @@ function Tasks({ dateStr }: { dateStr: string }) {
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-4 p-4">
       {/* filters and Progress */}
-      <div className="flex flex-wrap-reverse items-center justify-between gap-4 p-4">
+      <div className="flex flex-wrap-reverse items-center justify-between gap-4">
         <TaskFilter />
         {orderedTasks && (
           <p className="font-medium">
@@ -117,12 +91,15 @@ function Tasks({ dateStr }: { dateStr: string }) {
 
       {/* Task List */}
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={orderedTasks} strategy={rectSortingStrategy}>
-          <div className="flex flex-wrap gap-4 p-4">
+        <SortableContext
+          items={orderedTasks}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="flex flex-col flex-wrap gap-4">
             {orderedTasks.map((task) => {
               if (taskFilter === "completed" && !task.is_completed) return null;
               if (taskFilter === "incomplete" && task.is_completed) return null;
-              return <SortableItem key={task.id} id={task.id} task={task} />;
+              return <TaskItem key={task.id} id={task.id} task={task} />;
             })}
           </div>
         </SortableContext>
@@ -130,7 +107,7 @@ function Tasks({ dateStr }: { dateStr: string }) {
 
       {/* Add Task Button */}
       <CreateTaskModal dateStr={dateStr} />
-    </>
+    </div>
   );
 }
 
