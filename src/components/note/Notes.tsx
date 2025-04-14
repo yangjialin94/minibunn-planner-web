@@ -15,16 +15,14 @@ import NoteItem from "@/components/note/NoteItem";
 import { useAuth } from "@/hooks/useAuth";
 import { Note } from "@/types/note";
 
-interface NotesProps {
-  bottomRef: React.RefObject<HTMLDivElement | null>;
-  editingId: number | null;
-  setEditingId: React.Dispatch<React.SetStateAction<number | null>>;
-}
-
 /**
  * Sortable Item List for Notes
  */
-function Notes({ bottomRef, editingId, setEditingId }: NotesProps) {
+function Notes({
+  bottomRef,
+}: {
+  bottomRef: React.RefObject<HTMLDivElement | null>;
+}) {
   const [orderedNotes, setOrderedNotes] = useState<Note[]>([]);
 
   const { user } = useAuth();
@@ -81,28 +79,18 @@ function Notes({ bottomRef, editingId, setEditingId }: NotesProps) {
   }
 
   return (
-    <div className="mb-10">
+    <div className="overflow-y-auto p-6">
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext
           items={orderedNotes}
           strategy={verticalListSortingStrategy}
         >
-          <div className="flex flex-col flex-wrap gap-4">
+          <div className="flex flex-col flex-wrap gap-6">
             {orderedNotes.map((note) => {
-              return (
-                <NoteItem
-                  key={note.id}
-                  id={note.id}
-                  note={note}
-                  isEditing={editingId === note.id}
-                  startEditing={() => setEditingId(note.id)}
-                  cancelEditing={() => setEditingId(null)}
-                  editingId={editingId}
-                />
-              );
+              return <NoteItem key={note.id} id={note.id} note={note} />;
             })}
-            <div ref={bottomRef} />
           </div>
+          <div ref={bottomRef} />
         </SortableContext>
       </DndContext>
     </div>

@@ -6,7 +6,7 @@ interface IconButtonProps {
   onClick: () => void;
   icon: React.ReactNode;
   tooltipText: string;
-  tooltipPosition?: string;
+  placement?: "top" | "right" | "bottom" | "left";
 }
 
 function IconButton({
@@ -14,7 +14,7 @@ function IconButton({
   onClick,
   icon,
   tooltipText,
-  tooltipPosition,
+  placement = "top",
 }: IconButtonProps) {
   return (
     <div className="relative inline-block">
@@ -30,14 +30,7 @@ function IconButton({
       >
         {icon}
       </button>
-      <div
-        className={clsx(
-          "pointer-events-none absolute z-10 rounded bg-neutral-400 px-2 py-1 text-sm whitespace-nowrap opacity-0 transition-opacity delay-300 duration-150 peer-hover:opacity-100",
-          tooltipPosition,
-        )}
-      >
-        {tooltipText}
-      </div>
+      <div className={clsx("tool-tip", placement)}>{tooltipText}</div>
     </div>
   );
 }

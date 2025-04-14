@@ -116,7 +116,7 @@ function Cells({
           {dayFormatted}
         </div>
         {summary && (
-          <div className="absolute bottom-2 left-2 rounded px-1">
+          <div className="absolute bottom-2 left-2 rounded px-1 text-5xl font-thin">
             {summary.completed}/{summary.total}
           </div>
         )}

@@ -12,25 +12,32 @@ import React, { useEffect, useState } from "react";
 
 import { fetchTasksInRange } from "@/api/tasks";
 import { updateTask } from "@/api/tasks";
-import CreateTaskModal from "@/components/modals/CreateTaskModal";
-import TaskFilter from "@/components/task/TaskFilter";
+import TaskHeader from "@/components/task/TaskHeader";
 import TaskItem from "@/components/task/TaskItem";
 import { useAuth } from "@/hooks/useAuth";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Task } from "@/types/task";
 
+/**
+ * Sortable Item List for Tasks
+ */
 function Tasks({ dateStr }: { dateStr: string }) {
+  // Page store
   const taskFilter = usePageStore((state) => state.taskFilter);
 
+  // Check user authentication
   const { user } = useAuth();
   const tokenReady = !!user;
 
+  // Fetch tasks
   const { data, isLoading, error } = useQuery({
     queryKey: ["tasks", dateStr],
     queryFn: () => fetchTasksInRange(dateStr, dateStr),
     enabled: tokenReady,
   });
   const [orderedTasks, setOrderedTasks] = useState<Task[]>([]);
+
+  // Query client
   const queryClient = useQueryClient();
 
   // Handle the task order update
@@ -77,37 +84,33 @@ function Tasks({ dateStr }: { dateStr: string }) {
   }
 
   return (
-    <div className="mb-14 flex flex-col gap-4 p-4">
-      {/* filters and Progress */}
-      <div className="flex flex-wrap-reverse items-center justify-between gap-4">
-        <TaskFilter />
-        {orderedTasks && (
-          <p className="font-medium">
-            Progress: {orderedTasks.filter((task) => task.is_completed).length}{" "}
-            / {orderedTasks.length}
-          </p>
-        )}
-      </div>
+    <>
+      {/* Header */}
+      <TaskHeader tasks={orderedTasks} dateStr={dateStr} />
 
       {/* Task List */}
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext
-          items={orderedTasks}
-          strategy={verticalListSortingStrategy}
+      <div className="overflow-y-auto p-6">
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
         >
-          <div className="flex flex-col flex-wrap gap-4">
-            {orderedTasks.map((task) => {
-              if (taskFilter === "completed" && !task.is_completed) return null;
-              if (taskFilter === "incomplete" && task.is_completed) return null;
-              return <TaskItem key={task.id} id={task.id} task={task} />;
-            })}
-          </div>
-        </SortableContext>
-      </DndContext>
-
-      {/* Add Task Button */}
-      <CreateTaskModal dateStr={dateStr} />
-    </div>
+          <SortableContext
+            items={orderedTasks}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="flex flex-col flex-wrap gap-6">
+              {orderedTasks.map((task) => {
+                if (taskFilter === "completed" && !task.is_completed)
+                  return null;
+                if (taskFilter === "incomplete" && task.is_completed)
+                  return null;
+                return <TaskItem key={task.id} id={task.id} task={task} />;
+              })}
+            </div>
+          </SortableContext>
+        </DndContext>
+      </div>
+    </>
   );
 }
 

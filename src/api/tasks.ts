@@ -22,6 +22,7 @@ export async function fetchTasksInRange(
  * Create a new task or repeatable tasks.
  */
 export async function createTask(data: TaskCreate): Promise<Task> {
+  console.log("Creating task with data:", data);
   const res = await apiFetch(`${apiUrl}/tasks/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

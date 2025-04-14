@@ -1,0 +1,44 @@
+/**
+ * Buttons
+ */
+.action-btn {
+  @apply rounded-full border border-transparent p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
+}
+
+.reverse-action-btn {
+  @apply rounded-full border border-transparent bg-neutral-200 p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-100;
+}
+
+.loading-btn {
+  @apply pointer-events-none animate-spin rounded-full p-2;
+}
+
+/**
+ * Tool tips
+ */
+.tool-tip {
+  @apply pointer-events-none absolute z-10 gap-2 rounded-xl bg-neutral-400 px-2 py-1 text-center text-sm whitespace-nowrap opacity-0 transition-opacity delay-300 duration-150 peer-hover:opacity-100;
+
+  &.top {
+    @apply bottom-full left-1/2 mb-1 -translate-x-1/2 transform;
+  }
+
+  &.bottom {
+    @apply top-full left-1/2 mt-1 -translate-x-1/2 transform;
+  }
+
+  &.left {
+    @apply top-1/2 right-full mr-1 -translate-y-1/2 transform;
+  }
+
+  &.right {
+    @apply top-1/2 left-full ml-1 -translate-y-1/2 transform;
+  }
+}
+
+/**
+ * Slider
+ */
+.slider {
+  @apply w-full appearance-none rounded-full [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-neutral-700 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-neutral-700;
+}

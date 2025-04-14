@@ -2,28 +2,87 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
-import { Check, LoaderCircle, Trash2, Undo2 } from "lucide-react";
-import React from "react";
+import { Check, GripVertical, LoaderCircle, Trash2, Undo2 } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { deleteTask, updateTask } from "@/api/tasks";
 import IconButton from "@/components/elements/IconButton";
-import EditTaskModal from "@/components/modals/EditTaskModal";
+import { useDebounce } from "@/hooks/useDebounce";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Task } from "@/types/task";
 
+/**
+ * Sortable Item for Tasks
+ */
 function TaskItem({ id, task }: { id: number; task: Task }) {
-  const queryClient = useQueryClient();
+  // Title
+  const [title, setTitle] = useState(task.title);
+  const debouncedTitle = useDebounce(title, 300);
 
+  // Note
+  const [note, setNote] = useState(task.note);
+  const debouncedNote = useDebounce(note, 300);
+
+  // Refs
+  const titleTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const noteTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Page store
   const isModalOpen = usePageStore((state) => state.isModalOpen);
 
+  // Handle the task note update
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
+  // Query client
+  const queryClient = useQueryClient();
+
+  // Style for the sortable item
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
     pointerEvents: isModalOpen ? "none" : "auto",
   };
+
+  // Resize the title textarea based on the content
+  const resizeTitleTextarea = () => {
+    const el = titleTextareaRef.current;
+    if (el) {
+      el.style.height = "auto";
+      el.style.height = el.scrollHeight + "px";
+    }
+  };
+
+  // Resize the note textarea based on the content
+  const resizeNoteTextarea = () => {
+    const el = noteTextareaRef.current;
+    if (el) {
+      el.style.height = "auto";
+      el.style.height = el.scrollHeight + "px";
+    }
+  };
+
+  // Reset the textarea height
+  useEffect(() => {
+    setTimeout(() => {
+      resizeTitleTextarea();
+      resizeNoteTextarea();
+    }, 0);
+  }, [task]);
+
+  // Handle the task update
+  const { mutate: mutateUpdate } = useMutation({
+    mutationFn: (taskId: number) =>
+      updateTask(taskId, { title: title, note: note }),
+    onSuccess: () => {
+      // Invalidate the tasks query to refresh the data
+      close();
+      queryClient.invalidateQueries({ queryKey: ["tasks", task.date] });
+    },
+    onError: (error) => {
+      console.error("Error updating task:", error);
+    },
+  });
 
   // Handle the task completion
   const { mutate: mutateUpdateComplete, isPending: isUpdating } = useMutation({
@@ -50,6 +109,36 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     },
   });
 
+  // Handle the task update - API call
+  useEffect(() => {
+    if (debouncedTitle !== task.title || debouncedNote !== task.note) {
+      mutateUpdate(task.id);
+    }
+  }, [
+    debouncedTitle,
+    task.id,
+    task.title,
+    task.note,
+    mutateUpdate,
+    debouncedNote,
+  ]);
+
+  // Handle the task title update - local state
+  const handleUpdateTitle = async (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    setTitle(e.target.value);
+    resizeTitleTextarea();
+  };
+
+  // Handle the task note update
+  const handleUpdateNote = async (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    setNote(e.target.value);
+    resizeNoteTextarea();
+  };
+
   // Handle the task completion toggle
   const handleCompleteTask = async () => {
     mutateUpdateComplete(task.id);
@@ -64,28 +153,56 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     <div
       ref={setNodeRef}
       style={style}
-      {...(!isModalOpen ? { ...attributes, ...listeners } : {})}
-      className="cursor-grab"
+      className="group relative cursor-default"
     >
+      {/* Drag handle */}
+      <div
+        {...attributes}
+        {...listeners}
+        className="peer absolute top-1/2 -left-4 z-10 hidden -translate-y-1/2 transform group-hover:block"
+      >
+        <div className="relative">
+          <button className="peer cursor-grab rounded-full border bg-neutral-100 p-2 hover:border-2 hover:bg-neutral-300">
+            <GripVertical size={16} />
+          </button>
+          <div className="tool-tip top">Drag</div>
+        </div>
+      </div>
+
+      {/* Task item */}
       <div
         className={clsx(
-          "relative flex flex-col rounded-xl border border-neutral-800 p-4",
+          "relative flex flex-col rounded-xl border border-neutral-800 p-4 peer-hover:border-2 hover:border-2",
           {
             "bg-neutral-100": !task.is_completed,
             "bg-neutral-200": task.is_completed,
           },
         )}
       >
-        <div className="max-w-full overflow-x-auto pb-3">
-          <p className="overflow= text-lg font-semibold break-all">
-            {task.title}
-          </p>
+        {/* Task inputs */}
+        <div className="flex flex-col gap-4 px-4">
+          <textarea
+            ref={titleTextareaRef}
+            className="w-full resize-none border-b pb-4 text-lg font-semibold break-all outline-none"
+            placeholder="Title"
+            onChange={handleUpdateTitle}
+            value={title}
+            rows={1}
+            disabled={isDeleting || task.is_completed}
+          />
+
+          <textarea
+            ref={noteTextareaRef}
+            className="w-full resize-none break-all outline-none"
+            placeholder="Note"
+            onChange={handleUpdateNote}
+            value={note}
+            rows={1}
+            disabled={isDeleting || task.is_completed}
+          />
         </div>
 
-        <div className="flex-1 overflow-auto border-t py-3">
-          <p className="w-full break-all whitespace-pre-wrap">{task.note}</p>
-        </div>
-
+        {/* Task actions */}
         {isUpdating || isDeleting ? (
           <div className="flex justify-center pt-2">
             <div className="loading-btn">
@@ -93,35 +210,43 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
             </div>
           </div>
         ) : (
-          <div className="flex justify-between pt-2">
+          <div className="flex items-center justify-between pt-2">
+            <IconButton
+              buttonClassName={clsx({
+                "action-btn": !task.is_completed,
+                "reverse-action-btn": task.is_completed,
+              })}
+              onClick={handleDeleteTask}
+              icon={<Trash2 />}
+              tooltipText="Delete"
+            />
+            {task.repeatable_days && (
+              <div className="relative inline-block">
+                <p className="peer font-medium">
+                  Repeated ID:{" "}
+                  <span className="font-normal">
+                    {task?.repeatable_id?.toString().slice(-4)}
+                  </span>
+                </p>
+                <p className="tool-tip top">
+                  Changes will affect all future repeated tasks
+                </p>
+              </div>
+            )}
             {!task.is_completed ? (
-              <>
-                <EditTaskModal task={task} />
-                <IconButton
-                  buttonClassName="action-btn"
-                  onClick={handleCompleteTask}
-                  icon={<Check />}
-                  tooltipText="Complete"
-                  tooltipPosition="-top-8 -right-4"
-                />
-              </>
+              <IconButton
+                buttonClassName="action-btn"
+                onClick={handleCompleteTask}
+                icon={<Check />}
+                tooltipText="Complete"
+              />
             ) : (
-              <>
-                <IconButton
-                  buttonClassName="reverse-action-btn"
-                  onClick={handleDeleteTask}
-                  icon={<Trash2 />}
-                  tooltipText="Delete"
-                  tooltipPosition="-top-8 -right-2"
-                />
-                <IconButton
-                  buttonClassName="reverse-action-btn"
-                  onClick={handleCompleteTask}
-                  icon={<Undo2 />}
-                  tooltipText="Incomplete"
-                  tooltipPosition="-top-8 -right-5"
-                />
-              </>
+              <IconButton
+                buttonClassName="reverse-action-btn"
+                onClick={handleCompleteTask}
+                icon={<Undo2 />}
+                tooltipText="Incomplete"
+              />
             )}
           </div>
         )}

@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-import Journal from "@/components/task/Journal";
+import Journal from "@/components/journal/Journal";
 import Tasks from "@/components/task/Tasks";
 import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocalNoTime, parseLocalDate } from "@/utils/date";
@@ -74,11 +74,15 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
  * Daily Page
  */
 function DailyPage() {
+  // Get the date from the URL
   const { date } = useParams();
+
+  // Page state
   const setPage = usePageStore((state) => state.setPage);
   const dailyTab = usePageStore((state) => state.dailyTab);
   const setDailyTab = usePageStore((state) => state.setDailyTab);
 
+  // Set the page
   const today = formatDateLocalNoTime(new Date());
   const dateStr = date ? (Array.isArray(date) ? date[0] : date) : today;
 
@@ -90,19 +94,22 @@ function DailyPage() {
     }
   }, [dateStr, setPage, today]);
 
+  // Error handling
   if (!date) {
     return <div>Error: Date parameter is missing.</div>;
   }
 
   return (
     <div className="scrollable-content">
+      {/* Header */}
       <DailyHeader
         dateStr={dateStr}
         dailyTab={dailyTab}
         setDailyTab={setDailyTab}
       />
 
-      <div className="flex-1 overflow-y-auto">
+      {/* Content */}
+      <div className="flex-1">
         {dailyTab === "tasks" ? (
           <Tasks dateStr={dateStr} />
         ) : (

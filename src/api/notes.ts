@@ -8,7 +8,7 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
  * Fetch notes.
  */
 export async function fetchNotes(): Promise<Note[]> {
-  const res = await apiFetch(`${apiUrl}/notes`);
+  const res = await apiFetch(`${apiUrl}/notes/`);
   if (!res.ok) throw new Error("Failed to fetch notes");
   return res.json();
 }
