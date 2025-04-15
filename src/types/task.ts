@@ -22,6 +22,7 @@ export type TaskCreate = {
 
 // Payload for updating an existing task (PATCH /tasks/:id)
 export type TaskUpdate = {
+  date?: string;
   title?: string;
   note?: string;
   is_completed?: boolean;

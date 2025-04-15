@@ -2,7 +2,15 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
-import { Check, GripVertical, LoaderCircle, Trash2, Undo2 } from "lucide-react";
+import { addDays } from "date-fns";
+import {
+  Check,
+  GripVertical,
+  LoaderCircle,
+  SquareArrowRight,
+  Trash2,
+  Undo2,
+} from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 import { deleteTask, updateTask } from "@/api/tasks";
@@ -10,6 +18,7 @@ import IconButton from "@/components/elements/IconButton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Task } from "@/types/task";
+import { formatDateLocalNoTime, parseLocalDate } from "@/utils/date";
 
 /**
  * Sortable Item for Tasks
@@ -76,7 +85,6 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
       updateTask(taskId, { title: title, note: note }),
     onSuccess: () => {
       // Invalidate the tasks query to refresh the data
-      close();
       queryClient.invalidateQueries({ queryKey: ["tasks", task.date] });
     },
     onError: (error) => {
@@ -94,6 +102,19 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     },
     onError: (error) => {
       console.error("Error updating task status:", error);
+    },
+  });
+
+  // Handle the task date update
+  const { mutate: mutateMove, isPending: isMoving } = useMutation({
+    mutationFn: ({ taskId, date }: { taskId: number; date: string }) =>
+      updateTask(taskId, { date: date }),
+    onSuccess: () => {
+      // Invalidate the tasks query to refresh the data
+      queryClient.invalidateQueries({ queryKey: ["tasks", task.date] });
+    },
+    onError: (error) => {
+      console.error("Error updating task:", error);
     },
   });
 
@@ -144,6 +165,15 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     mutateUpdateComplete(task.id);
   };
 
+  // Handle the task move to next day
+  const handleMoveTask = async () => {
+    const oldDate = parseLocalDate(task.date); // Date
+    const newDateStr = formatDateLocalNoTime(addDays(oldDate, 1)); // String
+    console.log("Moving task to date:", newDateStr);
+
+    mutateMove({ taskId: task.id, date: newDateStr });
+  };
+
   // Handle the task deletion
   const handleDeleteTask = async () => {
     mutateDelete(task.id);
@@ -188,7 +218,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
             onChange={handleUpdateTitle}
             value={title}
             rows={1}
-            disabled={isDeleting || task.is_completed}
+            disabled={task.is_completed}
           />
 
           <textarea
@@ -198,12 +228,12 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
             onChange={handleUpdateNote}
             value={note}
             rows={1}
-            disabled={isDeleting || task.is_completed}
+            disabled={task.is_completed}
           />
         </div>
 
         {/* Task actions */}
-        {isUpdating || isDeleting ? (
+        {isUpdating || isDeleting || isMoving ? (
           <div className="flex justify-center pt-2">
             <div className="loading-btn">
               <LoaderCircle />
@@ -233,21 +263,33 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
                 </p>
               </div>
             )}
-            {!task.is_completed ? (
-              <IconButton
-                buttonClassName="action-btn"
-                onClick={handleCompleteTask}
-                icon={<Check />}
-                tooltipText="Complete"
-              />
-            ) : (
-              <IconButton
-                buttonClassName="reverse-action-btn"
-                onClick={handleCompleteTask}
-                icon={<Undo2 />}
-                tooltipText="Incomplete"
-              />
-            )}
+            <div className="flex items-center">
+              {!task.repeatable_id &&
+                !task.repeatable_days &&
+                !task.is_completed && (
+                  <IconButton
+                    buttonClassName="action-btn"
+                    onClick={handleMoveTask}
+                    icon={<SquareArrowRight />}
+                    tooltipText="Move to next day"
+                  />
+                )}
+              {!task.is_completed ? (
+                <IconButton
+                  buttonClassName="action-btn"
+                  onClick={handleCompleteTask}
+                  icon={<Check />}
+                  tooltipText="Complete"
+                />
+              ) : (
+                <IconButton
+                  buttonClassName="reverse-action-btn"
+                  onClick={handleCompleteTask}
+                  icon={<Undo2 />}
+                  tooltipText="Incomplete"
+                />
+              )}
+            </div>
           </div>
         )}
       </div>
