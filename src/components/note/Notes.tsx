@@ -18,11 +18,7 @@ import { Note } from "@/types/note";
 /**
  * Sortable Item List for Notes
  */
-function Notes({
-  bottomRef,
-}: {
-  bottomRef: React.RefObject<HTMLDivElement | null>;
-}) {
+function Notes() {
   const [orderedNotes, setOrderedNotes] = useState<Note[]>([]);
 
   const { user } = useAuth();
@@ -90,7 +86,6 @@ function Notes({
               return <NoteItem key={note.id} id={note.id} note={note} />;
             })}
           </div>
-          <div ref={bottomRef} />
         </SortableContext>
       </DndContext>
     </div>

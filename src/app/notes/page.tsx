@@ -1,7 +1,8 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ClipboardPlus, LoaderCircle, Search } from "lucide-react";
+import { ClipboardPlus, LoaderCircle } from "lucide-react";
+// import { ClipboardPlus, LoaderCircle, Search } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 
 import { createNote } from "@/api/notes";
@@ -13,26 +14,28 @@ import { NoteCreate } from "@/types/note";
 /**
  * Notes Header
  */
-function NotesHeader({
-  bottomRef,
-}: {
-  bottomRef: React.RefObject<HTMLDivElement | null>;
-}) {
+function NotesHeader() {
+  // Refs
+  const topRef = useRef<HTMLDivElement>(null);
+
   // Search query
-  const [query, setQuery] = React.useState("");
+  // const [query, setQuery] = React.useState("");
 
   // Query client
   const queryClient = useQueryClient();
 
   // Handle filter notes
-  const handleFilterNotes = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
-  };
+  // const handleFilterNotes = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setQuery(e.target.value);
+  // };
 
-  // Handle scroll to bottom
-  const scrollToBottom = () => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+  // Handle scroll to top
+  const scrollToTop = () => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
     }
   };
 
@@ -43,9 +46,9 @@ function NotesHeader({
       // Invalidate the notes query to refresh the data
       queryClient.invalidateQueries({ queryKey: ["notes"] });
 
-      // Scroll to the bottom after a short delay
+      // Scroll to the top after a short delay
       setTimeout(() => {
-        scrollToBottom();
+        scrollToTop();
       }, 100);
     },
     onError: (error) => {
@@ -59,10 +62,11 @@ function NotesHeader({
   };
 
   return (
-    <div className="daily-header">
-      {/* Search bar */}
-      <div className="flex w-full items-center gap-2">
-        <Search className="mr-2" />
+    <>
+      <div className="daily-header">
+        {/* Search bar */}
+        <div className="flex w-full items-center gap-2">
+          {/* <Search className="mr-2" />
         <input
           type="text"
           value={query}
@@ -70,25 +74,29 @@ function NotesHeader({
           placeholder="Search coming soon..."
           className="text-lg outline-none"
           disabled
-        />
+        /> */}
+        </div>
+
+        {isCreating ? (
+          <div className="loading-btn">
+            <LoaderCircle />
+          </div>
+        ) : (
+          <IconButton
+            buttonClassName="action-btn"
+            onClick={handleCreateNote}
+            icon={<ClipboardPlus />}
+            tooltipText="Create"
+            placement="bottom"
+          />
+
+          // TODO: Multi-select button
+        )}
       </div>
 
-      {isCreating ? (
-        <div className="loading-btn">
-          <LoaderCircle />
-        </div>
-      ) : (
-        <IconButton
-          buttonClassName="action-btn"
-          onClick={handleCreateNote}
-          icon={<ClipboardPlus />}
-          tooltipText="Create"
-          placement="bottom"
-        />
-
-        // TODO: Multi-select button
-      )}
-    </div>
+      {/* Ref for the top */}
+      <div ref={topRef} className="invisible h-0" />
+    </>
   );
 }
 
@@ -96,9 +104,6 @@ function NotesHeader({
  * Notes Page
  */
 function NotesPage() {
-  // Refs
-  const bottomRef = useRef<HTMLDivElement>(null);
-
   // Page state
   const setPage = usePageStore((state) => state.setPage);
 
@@ -109,10 +114,10 @@ function NotesPage() {
 
   return (
     <div className="scrollable-content">
-      <NotesHeader bottomRef={bottomRef} />
+      <NotesHeader />
 
       <div className="flex-1">
-        <Notes bottomRef={bottomRef} />
+        <Notes />
       </div>
     </div>
   );
