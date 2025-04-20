@@ -53,7 +53,7 @@ function NoteItem({ id, note }: { id: number; note: Note }) {
   }, [note]);
 
   // Handle the note update
-  const { mutate: mutateUpdate, isPending: isUpdating } = useMutation({
+  const { mutate: mutateUpdate } = useMutation({
     mutationFn: (noteId: number) => updateNote(noteId, { detail: detail }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
@@ -129,7 +129,7 @@ function NoteItem({ id, note }: { id: number; note: Note }) {
         </div>
 
         {/* Action Buttons */}
-        {isUpdating || isDeleting ? (
+        {isDeleting ? (
           <div className="flex justify-center pt-2">
             <div className="loading-btn">
               <LoaderCircle />
