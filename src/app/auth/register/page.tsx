@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { fetchUser } from "@/api/user";
 import { auth } from "@/auth/firebaseClient"; // Handle sign in with email and password
 import { usePageStore } from "@/hooks/usePageStore";
 
@@ -53,9 +54,14 @@ function RegisterPage() {
     setLoading(true);
 
     try {
-      // Create user with email and password and sign in
       await createUserWithEmailAndPassword(auth, form.email, form.password);
-      router.push("/calendar");
+      const user = await fetchUser();
+
+      if (user.is_subscribed) {
+        router.push("/calendar");
+      } else {
+        router.push("/auth/subscribe");
+      }
     } catch (error) {
       console.error("Error with Google register", error);
       setErrors({ ...errors, firebaseError: (error as Error).message });

@@ -1,8 +1,6 @@
+import { NEXT_PUBLIC_API_URL } from "@/env";
 import { Task, TaskCompletion, TaskCreate, TaskUpdate } from "@/types/task";
 import { apiFetch } from "@/utils/apiFetch";
-
-// Get the API URL from environment variables
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 /**
  * Fetch tasks for a specific date or date range.
@@ -13,7 +11,9 @@ export async function fetchTasksInRange(
   start: string,
   end: string,
 ): Promise<Task[]> {
-  const res = await apiFetch(`${apiUrl}/tasks/?start=${start}&end=${end}`);
+  const res = await apiFetch(
+    `${NEXT_PUBLIC_API_URL}/tasks/?start=${start}&end=${end}`,
+  );
   if (!res.ok) throw new Error("Failed to fetch tasks");
   return res.json();
 }
@@ -22,8 +22,7 @@ export async function fetchTasksInRange(
  * Create a new task or repeatable tasks.
  */
 export async function createTask(data: TaskCreate): Promise<Task> {
-  console.log("Creating task with data:", data);
-  const res = await apiFetch(`${apiUrl}/tasks/`, {
+  const res = await apiFetch(`${NEXT_PUBLIC_API_URL}/tasks/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -43,7 +42,7 @@ export async function updateTask(
   taskId: number,
   updates: TaskUpdate,
 ): Promise<Task> {
-  const res = await apiFetch(`${apiUrl}/tasks/${taskId}`, {
+  const res = await apiFetch(`${NEXT_PUBLIC_API_URL}/tasks/${taskId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updates),
@@ -56,7 +55,7 @@ export async function updateTask(
  * Delete a task or repeatable tasks.
  */
 export async function deleteTask(taskId: number): Promise<{ message: string }> {
-  const res = await apiFetch(`${apiUrl}/tasks/${taskId}`, {
+  const res = await apiFetch(`${NEXT_PUBLIC_API_URL}/tasks/${taskId}`, {
     method: "DELETE",
   });
   if (!res.ok) throw new Error("Failed to delete task");
@@ -71,7 +70,7 @@ export async function fetchTasksCompletionInRange(
   end: string,
 ): Promise<TaskCompletion[]> {
   const res = await apiFetch(
-    `${apiUrl}/tasks/completion/?start=${start}&end=${end}`,
+    `${NEXT_PUBLIC_API_URL}/tasks/completion/?start=${start}&end=${end}`,
   );
   if (!res.ok) throw new Error("Failed to fetch tasks completion");
   return res.json();

@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { fetchUser } from "@/api/user";
 import { auth } from "@/auth/firebaseClient";
 
 /**
@@ -46,9 +47,15 @@ function SignInForm() {
 
     try {
       await signInWithEmailAndPassword(auth, form.email, form.password);
-      router.push("/calendar");
+      const user = await fetchUser();
+
+      if (user.is_subscribed) {
+        router.push("/calendar");
+      } else {
+        router.push("/auth/subscribe");
+      }
     } catch (error) {
-      console.error("Error with Google sign in", error);
+      console.error("Error with Email and Password sign in", error);
       setErrors({ ...errors, firebaseError: (error as Error).message });
     } finally {
       setLoading(false);

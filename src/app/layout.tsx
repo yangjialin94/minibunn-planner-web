@@ -1,6 +1,7 @@
 import "@/styles/globals.scss";
 
 import type { Metadata } from "next";
+import { ToastContainer } from "react-toastify";
 
 import Header from "@/components/layout/Header";
 import SideBar from "@/components/layout/SideBar";
@@ -29,6 +30,7 @@ export default function RootLayout({
                 <SideBar />
                 <main>
                   <div className="page-content">{children}</div>
+                  <ToastContainer />
                 </main>
               </div>
             </div>

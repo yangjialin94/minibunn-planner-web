@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { sendPasswordResetEmail } from "firebase/auth";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { auth } from "@/auth/firebaseClient"; // Handle sign in with email and password
 import { usePageStore } from "@/hooks/usePageStore";
@@ -116,7 +116,6 @@ function ResetPage() {
           Sign In
         </Link>
       </div>
-      <ToastContainer />
     </div>
   );
 }

@@ -28,63 +28,43 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const [user, setUser] = useState<FirebaseUser | null>(null);
 
-  // Effect to handle user authentication state
+  // Handle firebase token changes
   useEffect(() => {
-    // Set the session start time
-    let sessionStart = localStorage.getItem("sessionStart");
-    if (!sessionStart) {
-      sessionStart = Date.now().toString();
-      localStorage.setItem("sessionStart", Date.now().toString());
-    }
-
-    // Listen for changes in the ID token
     const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        // User is authenticated
+        const lastSignIn = firebaseUser.metadata?.lastSignInTime;
 
-        // Calculate the session duration
-        const now = Date.now();
-        const sessionStartTimestamp = parseInt(sessionStart, 10);
-        const sessionDurationMs = now - sessionStartTimestamp;
-        const maxDurationMs = SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000;
+        if (lastSignIn) {
+          const lastSignInDate = new Date(lastSignIn).getTime();
+          const now = Date.now();
+          const maxDurationMs = SESSION_DURATION_DAYS * 24 * 60 * 60 * 1000;
 
-        if (sessionDurationMs > maxDurationMs) {
-          // Session expired
+          if (now - lastSignInDate > maxDurationMs) {
+            // Session expired
+            await signOut(auth);
+            Cookies.remove("token");
+            setUser(null);
+            router.push("/");
 
-          // Sign out the user
-          await signOut(auth);
-
-          // Remove the token and session start time
-          Cookies.remove("token");
-          localStorage.removeItem("sessionStart");
-          setUser(null);
-
-          // Redirect to home
-          router.push("/");
-
-          console.warn("Session expired.");
-          return;
+            console.warn("Session expired.");
+            return;
+          }
         }
 
-        // Update the token
+        // Update the token and cookie
         const token = await firebaseUser.getIdToken();
         Cookies.set("token", token, { expires: SESSION_DURATION_DAYS });
         setUser(firebaseUser);
 
-        // Invalidate queries to refresh data
+        // Invalidate React Query cache
         queryClient.invalidateQueries();
       } else {
-        // User is not authenticated
-
-        // Remove the token and session start time
+        // User is signed out
         Cookies.remove("token");
-        localStorage.removeItem("sessionStart");
         setUser(null);
-
-        // Redirect to home
         router.replace("/");
 
-        console.warn("Session expired.");
+        console.warn("No user — signed out.");
       }
     });
 
@@ -97,12 +77,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     const token = Cookies.get("token");
     const isProtectedRoute = pathname === "/" || pathname.startsWith("/auth");
 
-    if (
-      typeof window !== "undefined" &&
-      !token &&
-      !isProtectedRoute &&
-      pathname !== "/"
-    ) {
+    if (typeof window !== "undefined" && !token && !isProtectedRoute) {
       console.warn("No token — redirecting to home");
       router.replace("/");
     }

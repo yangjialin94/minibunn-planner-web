@@ -1,8 +1,6 @@
+import { NEXT_PUBLIC_API_URL } from "@/env";
 import { Journal, JournalUpdate } from "@/types/journal";
 import { apiFetch } from "@/utils/apiFetch";
-
-// Get the API URL from environment variables
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 /**
  * Fetch a journal or create a new one if it doesn't exist.
@@ -10,7 +8,9 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export async function fetchOrCreateJournalByDate(
   dateStr: string,
 ): Promise<Journal> {
-  const res = await apiFetch(`${apiUrl}/journals/?date=${dateStr}`);
+  const res = await apiFetch(
+    `${NEXT_PUBLIC_API_URL}/journals/?date=${dateStr}`,
+  );
   if (!res.ok)
     throw new Error(`Failed to fetch or create journal for ${dateStr}`);
   return res.json();
@@ -20,7 +20,7 @@ export async function fetchOrCreateJournalByDate(
  * Create a empty new journal.
  */
 // export async function createJournal(journal: JournalCreate): Promise<Journal> {
-//   const res = await fetch(`${apiUrl}/journals`, {
+//   const res = await fetch(`${NEXT_PUBLIC_API_URL}/journals`, {
 //     method: "POST",
 //     headers: { "Content-Type": "application/json" },
 //     body: JSON.stringify(journal),
@@ -36,7 +36,7 @@ export async function updateJournal(
   journalId: number,
   updates: JournalUpdate,
 ): Promise<Journal> {
-  const res = await apiFetch(`${apiUrl}/journals/${journalId}`, {
+  const res = await apiFetch(`${NEXT_PUBLIC_API_URL}/journals/${journalId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updates),

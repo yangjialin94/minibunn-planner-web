@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 
+import { fetchUser } from "@/api/user";
 import { auth } from "@/auth/firebaseClient";
 
 /**
@@ -19,7 +20,13 @@ function GoogleSignInButton() {
 
     try {
       await signInWithPopup(auth, provider);
-      router.push("/calendar");
+      const user = await fetchUser();
+
+      if (user.is_subscribed) {
+        router.push("/calendar");
+      } else {
+        router.push("/auth/subscribe");
+      }
     } catch (error) {
       console.error("Error with Google sign in", error);
     }

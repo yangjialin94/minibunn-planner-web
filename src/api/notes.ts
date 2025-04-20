@@ -1,14 +1,12 @@
+import { NEXT_PUBLIC_API_URL } from "@/env";
 import { Note, NoteCreate, NoteUpdate } from "@/types/note";
 import { apiFetch } from "@/utils/apiFetch";
-
-// Get the API URL from environment variables
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 /**
  * Fetch notes.
  */
 export async function fetchNotes(): Promise<Note[]> {
-  const res = await apiFetch(`${apiUrl}/notes/`);
+  const res = await apiFetch(`${NEXT_PUBLIC_API_URL}/notes/`);
   if (!res.ok) throw new Error("Failed to fetch notes");
   return res.json();
 }
@@ -17,7 +15,7 @@ export async function fetchNotes(): Promise<Note[]> {
  * Create a new note.
  */
 export async function createNote(data: NoteCreate): Promise<Note> {
-  const res = await apiFetch(`${apiUrl}/notes/`, {
+  const res = await apiFetch(`${NEXT_PUBLIC_API_URL}/notes/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -36,7 +34,7 @@ export async function updateNote(
   noteId: number,
   updates: NoteUpdate,
 ): Promise<Note> {
-  const res = await apiFetch(`${apiUrl}/notes/${noteId}`, {
+  const res = await apiFetch(`${NEXT_PUBLIC_API_URL}/notes/${noteId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updates),
@@ -49,7 +47,7 @@ export async function updateNote(
  * Delete a note.
  */
 export async function deleteNote(noteId: number): Promise<{ message: string }> {
-  const res = await apiFetch(`${apiUrl}/notes/${noteId}`, {
+  const res = await apiFetch(`${NEXT_PUBLIC_API_URL}/notes/${noteId}`, {
     method: "DELETE",
   });
   if (!res.ok) throw new Error("Failed to delete note");
