@@ -3,8 +3,8 @@ import "@/styles/globals.scss";
 import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
 
+import Content from "@/components/layout/Content";
 import Header from "@/components/layout/Header";
-import SideBar from "@/components/layout/SideBar";
 import AuthProvider from "@/context/AuthProvider";
 import ReactQueryProvider from "@/context/ReactQueryProvider";
 
@@ -26,13 +26,12 @@ export default function RootLayout({
             <div className="main-container">
               <Header />
 
-              <div className="sidebar-main">
-                <SideBar />
+              <Content>
                 <main>
                   <div className="page-content">{children}</div>
                   <ToastContainer />
                 </main>
-              </div>
+              </Content>
             </div>
           </AuthProvider>
         </ReactQueryProvider>

@@ -12,6 +12,9 @@ import { auth } from "@/auth/firebaseClient";
 import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocalNoTime } from "@/utils/date";
 
+/**
+ * Sidebar component
+ */
 function SideBar() {
   const router = useRouter();
   const page = usePageStore((state) => state.page);
@@ -19,10 +22,6 @@ function SideBar() {
   const queryClient = useQueryClient();
 
   const today = formatDateLocalNoTime(new Date());
-
-  if (page === "auth") {
-    return null;
-  }
 
   // Handle sign out
   const handleSignOut = async () => {
