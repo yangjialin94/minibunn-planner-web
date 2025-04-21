@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { memo, useEffect, useState } from "react";
 
 import { formatDateLocal } from "@/utils/date";
@@ -25,7 +26,12 @@ TimeDisplay.displayName = "TimeDisplay";
 function Header() {
   return (
     <header>
-      <h1>Minimal Planner</h1>
+      <Image
+        src="/minibunn-planner-logo.png"
+        alt="logo"
+        width={120}
+        height={120}
+      />
       <TimeDisplay />
     </header>
   );

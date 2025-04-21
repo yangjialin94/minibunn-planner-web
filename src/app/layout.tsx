@@ -9,8 +9,9 @@ import AuthProvider from "@/context/AuthProvider";
 import ReactQueryProvider from "@/context/ReactQueryProvider";
 
 export const metadata: Metadata = {
-  title: "Minimal Planner",
-  description: "Created by Jialin Yang",
+  title: "Minibunn Planner",
+  description:
+    "A minimalist digital planner that feels like paper, thoughtfully designed by Jialin Yang.",
 };
 
 export default function RootLayout({
