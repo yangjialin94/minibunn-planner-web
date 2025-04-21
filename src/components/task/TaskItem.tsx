@@ -6,6 +6,7 @@ import { addDays } from "date-fns";
 import {
   Check,
   GripVertical,
+  Layers2,
   LoaderCircle,
   SquareArrowRight,
   Trash2,
@@ -13,11 +14,11 @@ import {
 } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
-import { deleteTask, updateTask } from "@/api/tasks";
+import { createTask, deleteTask, updateTask } from "@/api/tasks";
 import IconButton from "@/components/elements/IconButton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { usePageStore } from "@/hooks/usePageStore";
-import { Task } from "@/types/task";
+import { Task, TaskCreate } from "@/types/task";
 import { formatDateLocalNoTime, parseLocalDate } from "@/utils/date";
 
 /**
@@ -52,6 +53,11 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     transition,
     pointerEvents: isModalOpen ? "none" : "auto",
   };
+
+  // Dates
+  const dateStr = task.date;
+  const nextDate = parseLocalDate(task.date); // Date
+  const nextDateStr = formatDateLocalNoTime(addDays(nextDate, 1)); // String
 
   // Resize the title textarea based on the content
   const resizeTitleTextarea = () => {
@@ -102,6 +108,18 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     },
     onError: (error) => {
       console.error("Error updating task status:", error);
+    },
+  });
+
+  // Handle the task creation
+  const { mutate: mutateCreate, isPending: isCreating } = useMutation({
+    mutationFn: (newTask: TaskCreate) => createTask(newTask),
+    onSuccess: () => {
+      // Invalidate the tasks query to refresh the data
+      queryClient.invalidateQueries({ queryKey: ["tasks", dateStr] });
+    },
+    onError: (error) => {
+      console.error("Error duplicating task:", error);
     },
   });
 
@@ -165,13 +183,18 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     mutateUpdateComplete(task.id);
   };
 
+  // Handle the task duplication button click
+  const handleDuplicateTask = async () => {
+    mutateCreate({
+      date: nextDateStr,
+      title: title,
+      note: note,
+    });
+  };
+
   // Handle the task move to next day
   const handleMoveTask = async () => {
-    const oldDate = parseLocalDate(task.date); // Date
-    const newDateStr = formatDateLocalNoTime(addDays(oldDate, 1)); // String
-    console.log("Moving task to date:", newDateStr);
-
-    mutateMove({ taskId: task.id, date: newDateStr });
+    mutateMove({ taskId: task.id, date: nextDateStr });
   };
 
   // Handle the task deletion
@@ -251,21 +274,33 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
               tooltipText="Delete"
             />
             <div className="flex items-center">
-              {!task.is_completed && (
+              {isCreating ? (
+                <div className="loading-btn">
+                  <LoaderCircle />
+                </div>
+              ) : (
                 <IconButton
                   buttonClassName="action-btn"
-                  onClick={handleMoveTask}
-                  icon={<SquareArrowRight />}
-                  tooltipText="Move to next day"
+                  onClick={handleDuplicateTask}
+                  icon={<Layers2 />}
+                  tooltipText="Duplicate to Next Day"
                 />
               )}
               {!task.is_completed ? (
-                <IconButton
-                  buttonClassName="action-btn"
-                  onClick={handleCompleteTask}
-                  icon={<Check />}
-                  tooltipText="Complete"
-                />
+                <>
+                  <IconButton
+                    buttonClassName="action-btn"
+                    onClick={handleMoveTask}
+                    icon={<SquareArrowRight />}
+                    tooltipText="Move to Next Day"
+                  />
+                  <IconButton
+                    buttonClassName="action-btn"
+                    onClick={handleCompleteTask}
+                    icon={<Check />}
+                    tooltipText="Complete"
+                  />
+                </>
               ) : (
                 <IconButton
                   buttonClassName="reverse-action-btn"
