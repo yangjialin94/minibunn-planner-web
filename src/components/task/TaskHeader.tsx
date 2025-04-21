@@ -5,7 +5,6 @@ import React from "react";
 
 import { createTask } from "@/api/tasks";
 import IconButton from "@/components/elements/IconButton";
-import CreateRepeatableTaskModal from "@/components/modals/CreateRepeatableTaskModal";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Task, TaskCreate } from "@/types/task";
 
@@ -100,7 +99,6 @@ function TaskHeader({ tasks, dateStr }: TaskHeaderProps) {
 
         {/* Create task buttons */}
         <div className="flex gap-2">
-          <CreateRepeatableTaskModal dateStr={dateStr} />
           {isCreating ? (
             <div className="loading-btn">
               <LoaderCircle />

@@ -250,30 +250,15 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
               icon={<Trash2 />}
               tooltipText="Delete"
             />
-            {task.repeatable_days && (
-              <div className="relative inline-block">
-                <p className="peer font-medium">
-                  Repeated ID:{" "}
-                  <span className="font-normal">
-                    {task?.repeatable_id?.toString().slice(-4)}
-                  </span>
-                </p>
-                <p className="tool-tip top">
-                  Changes will affect all future repeated tasks
-                </p>
-              </div>
-            )}
             <div className="flex items-center">
-              {!task.repeatable_id &&
-                !task.repeatable_days &&
-                !task.is_completed && (
-                  <IconButton
-                    buttonClassName="action-btn"
-                    onClick={handleMoveTask}
-                    icon={<SquareArrowRight />}
-                    tooltipText="Move to next day"
-                  />
-                )}
+              {!task.is_completed && (
+                <IconButton
+                  buttonClassName="action-btn"
+                  onClick={handleMoveTask}
+                  icon={<SquareArrowRight />}
+                  tooltipText="Move to next day"
+                />
+              )}
               {!task.is_completed ? (
                 <IconButton
                   buttonClassName="action-btn"

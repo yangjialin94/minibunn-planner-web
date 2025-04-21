@@ -6,8 +6,6 @@ export type Task = {
   note: string;
   is_completed: boolean;
   order: number;
-  repeatable_id: string | null;
-  repeatable_days: number | null;
 };
 
 // Payload for creating a new task (POST /tasks)
@@ -16,8 +14,6 @@ export type TaskCreate = {
   title?: string;
   note?: string;
   is_completed?: boolean;
-  repeatable_id?: string | null;
-  repeatable_days?: number | null;
 };
 
 // Payload for updating an existing task (PATCH /tasks/:id)
