@@ -4,7 +4,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GripVertical, LoaderCircle, Trash2 } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { deleteNote, updateNote } from "@/api/notes";
 import IconButton from "@/components/elements/IconButton";
@@ -20,11 +20,21 @@ function NoteItem({ id, note }: { id: number; note: Note }) {
   const debouncedDetail = useDebounce(detail, 300);
 
   // Refs
+  const itemRef = useRef<HTMLDivElement>(null);
   const DetailTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Handle the note detail change
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
+
+  // Combine the refs
+  const setCombinedRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      setNodeRef(node);
+      itemRef.current = node;
+    },
+    [setNodeRef],
+  );
 
   // Query client
   const queryClient = useQueryClient();
@@ -51,6 +61,16 @@ function NoteItem({ id, note }: { id: number; note: Note }) {
       resizeDetailTextarea();
     }, 0);
   }, [note]);
+
+  // Scroll to the item when editing
+  const handleCenterItem = () => {
+    if (itemRef.current) {
+      itemRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
 
   // Handle the note update
   const { mutate: mutateUpdate } = useMutation({
@@ -96,7 +116,7 @@ function NoteItem({ id, note }: { id: number; note: Note }) {
 
   return (
     <div
-      ref={setNodeRef}
+      ref={setCombinedRef}
       style={style}
       className="group relative cursor-default"
     >
@@ -123,6 +143,7 @@ function NoteItem({ id, note }: { id: number; note: Note }) {
             className="w-full resize-none outline-none"
             placeholder="Detail"
             onChange={handleUpdateDetail}
+            onFocus={handleCenterItem}
             value={detail}
             rows={1}
           />
