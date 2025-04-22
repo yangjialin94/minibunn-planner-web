@@ -109,14 +109,14 @@ function Journal({ dateStr }: { dateStr: string }) {
       <div className="flex h-[calc(100vh-153px)] flex-col gap-4 p-6">
         <textarea
           ref={subjectTextareaRef}
-          className="w-full resize-none border-b pb-4 text-lg font-semibold break-all outline-none"
+          className="w-full resize-none border-b pb-4 text-lg font-semibold outline-none"
           placeholder="Subject"
           onChange={handleUpdateSubject}
           value={subject}
           rows={1}
         />
         <textarea
-          className="flex-1 resize-none break-all outline-none"
+          className="flex-1 resize-none outline-none"
           placeholder="Entry"
           onChange={handleUpdateEntry}
           value={entry}

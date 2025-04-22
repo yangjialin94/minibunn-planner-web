@@ -234,7 +234,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
         <div className="flex flex-col gap-4 px-4">
           <textarea
             ref={titleTextareaRef}
-            className="w-full resize-none border-b pb-4 text-lg font-semibold break-all outline-none"
+            className="w-full resize-none border-b pb-4 text-lg font-semibold outline-none"
             placeholder="Title"
             onChange={handleUpdateTitle}
             value={title}
@@ -244,7 +244,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
 
           <textarea
             ref={noteTextareaRef}
-            className="w-full resize-none break-all outline-none"
+            className="w-full resize-none outline-none"
             placeholder="Note"
             onChange={handleUpdateNote}
             value={note}

@@ -8,12 +8,12 @@
 @use "./elements.scss";
 
 /* Import Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700&family=Inter:wght@400;500;700&display=swap");
 
 /* Create a custom theme */
 @theme inline {
-  --font-caveat: "Caveat", cursive; // .font-caveat
-  --font-inter: "Inter", sans-serif; // .font-inter
+  --font-mali: "Mali", cursive;
+  --font-inter: "Inter", sans-serif;
 }
 
 /*  Base styles (optional but common) */
@@ -27,7 +27,7 @@
   /* Only input controls get Inter */
   input,
   textarea {
-    font-family: var(--font-caveat);
+    font-family: var(--font-mali);
     font-size-adjust: 0.55;
   }
 }
