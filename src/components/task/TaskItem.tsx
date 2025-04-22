@@ -79,10 +79,8 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
 
   // Reset the textarea height
   useEffect(() => {
-    setTimeout(() => {
-      resizeTitleTextarea();
-      resizeNoteTextarea();
-    }, 0);
+    resizeTitleTextarea();
+    resizeNoteTextarea();
   }, [task]);
 
   // Handle the task update

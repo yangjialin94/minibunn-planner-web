@@ -56,9 +56,7 @@ function Journal({ dateStr }: { dateStr: string }) {
       setEntry(data.entry);
     }
 
-    setTimeout(() => {
-      resizeSubjectTextarea();
-    }, 0);
+    resizeSubjectTextarea();
   }, [data]);
 
   // Handle the journal update

@@ -54,9 +54,7 @@ function NoteItem({ id, note }: { id: number; note: Note }) {
 
   // Reset the note height
   useEffect(() => {
-    setTimeout(() => {
-      resizeNote();
-    }, 0);
+    resizeNote();
   }, [note, isEditing, resizeNote]);
 
   // Handle the note update
