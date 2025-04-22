@@ -12,7 +12,7 @@ import {
   Trash2,
   Undo2,
 } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { createTask, deleteTask, updateTask } from "@/api/tasks";
 import IconButton from "@/components/elements/IconButton";
@@ -34,6 +34,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
   const debouncedNote = useDebounce(note, 300);
 
   // Refs
+  const itemRef = useRef<HTMLDivElement>(null);
   const titleTextareaRef = useRef<HTMLTextAreaElement>(null);
   const noteTextareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -43,6 +44,15 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
   // Handle the task note update
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
+
+  // Combine the refs
+  const setCombinedRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      setNodeRef(node);
+      itemRef.current = node;
+    },
+    [setNodeRef],
+  );
 
   // Query client
   const queryClient = useQueryClient();
@@ -82,6 +92,16 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     resizeTitleTextarea();
     resizeNoteTextarea();
   }, [task]);
+
+  // Scroll to the item when editing
+  const handleCenterItem = () => {
+    if (itemRef.current) {
+      itemRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
 
   // Handle the task update
   const { mutate: mutateUpdate } = useMutation({
@@ -202,7 +222,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
 
   return (
     <div
-      ref={setNodeRef}
+      ref={setCombinedRef}
       style={style}
       className="group relative cursor-default"
     >
@@ -237,6 +257,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
             className="w-full resize-none border-b pb-4 text-lg font-semibold outline-none"
             placeholder="Title"
             onChange={handleUpdateTitle}
+            onFocus={handleCenterItem}
             value={title}
             rows={1}
             disabled={task.is_completed}
@@ -247,6 +268,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
             className="w-full resize-none outline-none"
             placeholder="Note"
             onChange={handleUpdateNote}
+            onFocus={handleCenterItem}
             value={note}
             rows={1}
             disabled={task.is_completed}
