@@ -1,5 +1,6 @@
 import "@/styles/globals.scss";
 
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
 
@@ -36,6 +37,7 @@ export default function RootLayout({
             </div>
           </AuthProvider>
         </ReactQueryProvider>
+        <Analytics />
       </body>
     </html>
   );
