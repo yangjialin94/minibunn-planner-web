@@ -127,7 +127,7 @@ function NoteItem({ id, note }: { id: number; note: Note }) {
         className="peer absolute top-1/2 -left-4 z-10 hidden -translate-y-1/2 transform group-hover:block"
       >
         <div className="relative">
-          <button className="peer cursor-grab rounded-full border bg-neutral-100 p-2 hover:border-2 hover:bg-neutral-300">
+          <button className="peer cursor-grab rounded-full border border-neutral-800 bg-neutral-100 p-2 hover:border-2 hover:bg-neutral-300">
             <GripVertical size={16} />
           </button>
           <div className="tool-tip top">Drag</div>

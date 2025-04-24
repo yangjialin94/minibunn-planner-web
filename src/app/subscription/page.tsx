@@ -79,7 +79,7 @@ function SubscriptionPage() {
 
   return (
     <div className="flex flex-1 items-center justify-center overflow-scroll">
-      <div className="flex w-full max-w-md flex-col items-center justify-center gap-4 rounded-xl border p-4">
+      <div className="flex w-full max-w-md flex-col items-center justify-center gap-4 rounded-xl border border-neutral-800 p-4">
         <div className="flex w-full justify-between border-b border-neutral-400">
           <p className="font-semibold">Plan</p>
           <p>{data?.plan_name}</p>

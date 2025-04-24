@@ -233,7 +233,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
         className="peer absolute top-1/2 -left-4 z-10 hidden -translate-y-1/2 transform group-hover:block"
       >
         <div className="relative">
-          <button className="peer cursor-grab rounded-full border bg-neutral-100 p-2 hover:border-2 hover:bg-neutral-300">
+          <button className="peer cursor-grab rounded-full border border-neutral-800 bg-neutral-100 p-2 hover:border-2 hover:bg-neutral-300">
             <GripVertical size={16} />
           </button>
           <div className="tool-tip top">Drag</div>
@@ -254,7 +254,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
         <div className="flex flex-col gap-4 px-4">
           <textarea
             ref={titleTextareaRef}
-            className="w-full resize-none border-b pb-4 text-lg font-semibold outline-none"
+            className="w-full resize-none border-b border-neutral-800 pb-4 text-lg font-semibold outline-none"
             placeholder="Title"
             onChange={handleUpdateTitle}
             onFocus={handleCenterItem}
