@@ -12,6 +12,8 @@ import React, { useEffect, useState } from "react";
 
 import { fetchTasksInRange } from "@/api/tasks";
 import { updateTask } from "@/api/tasks";
+import Error from "@/components/elements/Error";
+import Loading from "@/components/elements/Loading";
 import TaskHeader from "@/components/task/TaskHeader";
 import TaskItem from "@/components/task/TaskItem";
 import { useAuth } from "@/hooks/useAuth";
@@ -77,10 +79,20 @@ function Tasks({ dateStr }: { dateStr: string }) {
   };
 
   // Handle loading and error states
-  if (isLoading) return <div className="p-4">Loading tasks...</div>;
+  if (isLoading) {
+    return (
+      <div className="mt-40">
+        <Loading />
+      </div>
+    );
+  }
   if (error) {
     console.error(error);
-    return <div className="p-4">Error loading tasks.</div>;
+    return (
+      <div className="mt-28">
+        <Error />
+      </div>
+    );
   }
 
   return (

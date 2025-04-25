@@ -6,7 +6,9 @@ import { Eraser } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 import { fetchOrCreateJournalByDate, updateJournal } from "@/api/journals";
+import Error from "@/components/elements/Error";
 import IconButton from "@/components/elements/IconButton";
+import Loading from "@/components/elements/Loading";
 import { useAuth } from "@/hooks/useAuth";
 import { useDebounce } from "@/hooks/useDebounce";
 
@@ -97,10 +99,20 @@ function Journal({ dateStr }: { dateStr: string }) {
   };
 
   // Handle loading and error states
-  if (isLoading) return <div className="p-4">Loading journal...</div>;
+  if (isLoading) {
+    return (
+      <div className="mt-40">
+        <Loading />
+      </div>
+    );
+  }
   if (error) {
     console.error(error);
-    return <div className="p-4">Error loading journal.</div>;
+    return (
+      <div className="mt-24">
+        <Error />
+      </div>
+    );
   }
 
   return (

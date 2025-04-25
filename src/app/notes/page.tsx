@@ -111,6 +111,7 @@ function NotesPage() {
     return <Loading />;
   }
   if (error) {
+    console.error(error);
     return <Error />;
   }
 

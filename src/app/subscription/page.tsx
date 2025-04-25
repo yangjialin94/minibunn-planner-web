@@ -10,6 +10,8 @@ import {
   cancelSubscription,
   fetchSubscriptionStatus,
 } from "@/api/subscription";
+import Error from "@/components/elements/Error";
+import Loading from "@/components/elements/Loading";
 import { useAuth } from "@/hooks/useAuth";
 import { usePageStore } from "@/hooks/usePageStore";
 
@@ -70,11 +72,12 @@ function SubscriptionPage() {
   };
 
   // Handle loading and error states
-  if (isLoading)
-    return <div className="p-4">Loading subscription status...</div>;
+  if (isLoading) {
+    return <Loading />;
+  }
   if (fetchError) {
-    console.error(fetchError);
-    return <div className="p-4">Error loading subscription status.</div>;
+    console.error(fetchError || "Error fetching subscription status");
+    return <Error />;
   }
 
   return (
