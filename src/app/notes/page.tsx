@@ -1,33 +1,28 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { ClipboardPlus, LoaderCircle } from "lucide-react";
-// import { ClipboardPlus, LoaderCircle, Search } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 
-import { createNote } from "@/api/notes";
+import { createNote, fetchNotes } from "@/api/notes";
+import Error from "@/components/elements/Error";
 import IconButton from "@/components/elements/IconButton";
+import Loading from "@/components/elements/Loading";
 import Notes from "@/components/note/Notes";
+import { useAuth } from "@/hooks/useAuth";
 import { usePageStore } from "@/hooks/usePageStore";
-import { NoteCreate } from "@/types/note";
+import { Note, NoteCreate } from "@/types/note";
 
 /**
  * Notes Header
  */
-function NotesHeader() {
+function NotesHeader({ data }: { data: Note[] }) {
   // Refs
   const topRef = useRef<HTMLDivElement>(null);
 
-  // Search query
-  // const [query, setQuery] = React.useState("");
-
   // Query client
   const queryClient = useQueryClient();
-
-  // Handle filter notes
-  // const handleFilterNotes = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setQuery(e.target.value);
-  // };
 
   // Handle scroll to top
   const scrollToTop = () => {
@@ -64,21 +59,11 @@ function NotesHeader() {
   return (
     <>
       <div className="daily-header">
-        {/* Search bar */}
-        <div className="flex w-full items-center gap-2">
-          {/* <Search className="mr-2" />
-        <input
-          type="text"
-          value={query}
-          onChange={handleFilterNotes}
-          placeholder="Search coming soon..."
-          className="text-lg outline-none"
-          disabled
-        /> */}
-        </div>
+        {/* Total */}
+        <p className="font-medium">Total: {data.length}</p>
 
         {isCreating ? (
-          <div className="loading-btn">
+          <div className="spinning-btn">
             <LoaderCircle />
           </div>
         ) : (
@@ -89,8 +74,6 @@ function NotesHeader() {
             tooltipText="Create"
             placement="bottom"
           />
-
-          // TODO: Multi-select button
         )}
       </div>
 
@@ -112,12 +95,31 @@ function NotesPage() {
     setPage("notes");
   }, [setPage]);
 
+  // Query client and token check
+  const { user } = useAuth();
+  const tokenReady = !!user;
+
+  // Query all notes
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["notes"],
+    queryFn: () => fetchNotes(),
+    enabled: tokenReady,
+  });
+
+  // Handle loading and error states
+  if (data === undefined || isLoading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <Error />;
+  }
+
   return (
     <div className="scrollable-content">
-      <NotesHeader />
+      <NotesHeader data={data} />
 
       <div className="flex-1">
-        <Notes />
+        <Notes data={data} />
       </div>
     </div>
   );

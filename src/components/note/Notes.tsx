@@ -6,30 +6,21 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useQuery } from "@tanstack/react-query";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 
-import { fetchNotes, updateNote } from "@/api/notes";
+import { updateNote } from "@/api/notes";
 import NoteItem from "@/components/note/NoteItem";
-import { useAuth } from "@/hooks/useAuth";
 import { Note } from "@/types/note";
 
 /**
  * Sortable Item List for Notes
  */
-function Notes() {
+function Notes({ data }: { data: Note[] }) {
   const [orderedNotes, setOrderedNotes] = useState<Note[]>([]);
 
-  const { user } = useAuth();
-  const tokenReady = !!user;
-
+  // Query client
   const queryClient = useQueryClient();
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["notes"],
-    queryFn: () => fetchNotes(),
-    enabled: tokenReady,
-  });
 
   // Handle the note order update
   const { mutate: mutateUpdateOrder, isPending: isUpdating } = useMutation({
@@ -66,13 +57,6 @@ function Notes() {
     // Update the order in the backend
     mutateUpdateOrder({ noteId: Number(active.id), order: newIndex + 1 });
   };
-
-  // Handle loading and error states
-  if (isLoading) return <div className="p-4">Loading notes...</div>;
-  if (error) {
-    console.error(error);
-    return <div className="p-4">Error loading notes.</div>;
-  }
 
   return (
     <div className="overflow-y-auto p-6">

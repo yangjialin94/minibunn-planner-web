@@ -278,7 +278,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
         {/* Task actions */}
         {isUpdating || isDeleting || isMoving ? (
           <div className="flex justify-center pt-2">
-            <div className="loading-btn">
+            <div className="spinning-btn">
               <LoaderCircle />
             </div>
           </div>
@@ -295,7 +295,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
             />
             <div className="flex items-center">
               {isCreating ? (
-                <div className="loading-btn">
+                <div className="spinning-btn">
                   <LoaderCircle />
                 </div>
               ) : (

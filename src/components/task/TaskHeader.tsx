@@ -100,7 +100,7 @@ function TaskHeader({ tasks, dateStr }: TaskHeaderProps) {
         {/* Create task buttons */}
         <div className="flex gap-2">
           {isCreating ? (
-            <div className="loading-btn">
+            <div className="spinning-btn">
               <LoaderCircle />
             </div>
           ) : (

@@ -152,7 +152,7 @@ function NoteItem({ id, note }: { id: number; note: Note }) {
         {/* Action Buttons */}
         {isDeleting ? (
           <div className="flex justify-center">
-            <div className="loading-btn">
+            <div className="spinning-btn">
               <LoaderCircle />
             </div>
           </div>
