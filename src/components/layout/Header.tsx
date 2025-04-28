@@ -7,7 +7,7 @@ import React, { memo, useEffect, useState } from "react";
 
 import { formatDateLocal } from "@/utils/date";
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 const TimeDisplay = memo(() => {
   const [currentLocalTime, setCurrentLocalTime] = useState(() =>

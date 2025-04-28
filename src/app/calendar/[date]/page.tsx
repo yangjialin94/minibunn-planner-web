@@ -11,15 +11,15 @@ import Tasks from "@/components/task/Tasks";
 import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocalNoTime, parseLocalDate } from "@/utils/date";
 
-/**
- * Daily Header
- */
 interface DailyHeaderProps {
   dateStr: string;
   dailyTab: "tasks" | "journal";
   setDailyTab: (tab: "tasks" | "journal") => void;
 }
 
+/**
+ * Daily Header
+ */
 function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
   const router = useRouter();
 

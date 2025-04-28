@@ -35,7 +35,15 @@ h1 {
   */
 
 aside {
-  @apply flex min-h-[calc(100vh-94px)] w-[250px] flex-col gap-4 border-r border-neutral-800 p-4;
+  @apply flex min-h-[calc(100vh-94px)] w-[250px] flex-col justify-between border-r border-neutral-800 p-4;
+}
+
+.sidebar-top {
+  @apply flex flex-col gap-4;
+}
+
+.sidebar-bottom {
+  @apply flex-col gap-4;
 }
 
 nav > a {

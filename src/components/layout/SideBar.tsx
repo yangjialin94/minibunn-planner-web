@@ -41,45 +41,47 @@ function SideBar() {
 
   return (
     <aside>
-      <nav>
-        <Link
-          href="/calendar"
-          className={page === "calendar" ? "selected" : ""}
-        >
-          <Calendar />
-          <span>Calendar</span>
-        </Link>
-      </nav>
-      <nav>
-        <Link
-          href={`/calendar/${today}`}
-          className={page === "today" ? "selected" : ""}
-        >
-          <ListCheck />
-          <span>Today</span>
-        </Link>
-      </nav>
-      <nav>
-        <Link href="/notes" className={page === "notes" ? "selected" : ""}>
-          <Notebook />
-          <span>Notes</span>
-        </Link>
-      </nav>
-      <nav>
-        <Link
-          href="/subscription"
-          className={page === "subscription" ? "selected" : ""}
-        >
-          <User />
-          <span>Subscription</span>
-        </Link>
-      </nav>
-      <nav>
-        <button onClick={handleSignOut} className="sidebar-item">
-          <LogOut />
-          <span>Sign out</span>
-        </button>
-      </nav>
+      <div className="sidebar-top">
+        <nav>
+          <Link
+            href="/calendar"
+            className={page === "calendar" ? "selected" : ""}
+          >
+            <Calendar />
+            <span>Calendar</span>
+          </Link>
+        </nav>
+        <nav>
+          <Link
+            href={`/calendar/${today}`}
+            className={page === "today" ? "selected" : ""}
+          >
+            <ListCheck />
+            <span>Today</span>
+          </Link>
+        </nav>
+        <nav>
+          <Link href="/notes" className={page === "notes" ? "selected" : ""}>
+            <Notebook />
+            <span>Notes</span>
+          </Link>
+        </nav>
+        <nav>
+          <Link href="/user" className={page === "user" ? "selected" : ""}>
+            <User />
+            <span>User</span>
+          </Link>
+        </nav>
+      </div>
+
+      <div className="sidebar-bottom">
+        <nav>
+          <button onClick={handleSignOut} className="sidebar-item">
+            <LogOut />
+            <span>Sign out</span>
+          </button>
+        </nav>
+      </div>
     </aside>
   );
 }

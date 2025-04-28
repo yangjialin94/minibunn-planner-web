@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { toast } from "react-toastify";
 
 import {
@@ -13,17 +13,13 @@ import {
 import Error from "@/components/elements/Error";
 import Loading from "@/components/elements/Loading";
 import { useAuth } from "@/hooks/useAuth";
-import { usePageStore } from "@/hooks/usePageStore";
 
 /**
- * Subscription Page
+ * Subscription Component
  */
-function SubscriptionPage() {
+function Subscription() {
   const [error, setError] = React.useState("");
   const [canceling, setCanceling] = React.useState(false);
-
-  // Page state
-  const setPage = usePageStore((state) => state.setPage);
 
   // Check if the user is authenticated
   const { user } = useAuth();
@@ -31,11 +27,6 @@ function SubscriptionPage() {
 
   // Query client
   const queryClient = useQueryClient();
-
-  // Set the page
-  useEffect(() => {
-    setPage("subscription");
-  }, [setPage]);
 
   // Fetch subscription status
   const {
@@ -81,8 +72,8 @@ function SubscriptionPage() {
   }
 
   return (
-    <div className="flex flex-1 items-center justify-center overflow-scroll">
-      <div className="flex w-full max-w-md flex-col items-center justify-center gap-4 rounded-xl border border-neutral-800 p-4">
+    <div className="overflow-y-auto p-6">
+      <div className="flex w-full flex-col items-center justify-center gap-4 rounded-xl border border-neutral-800 p-4">
         <div className="flex w-full justify-between border-b border-neutral-400">
           <p className="font-semibold">Plan</p>
           <p>{data?.plan_name}</p>
@@ -96,14 +87,18 @@ function SubscriptionPage() {
         </div>
 
         <div className="flex w-full justify-between border-b border-neutral-400">
-          <p className="font-semibold">Period End Date</p>
+          <p className="font-semibold">
+            {data?.cancel_at_period_end
+              ? "Cancellation Date"
+              : "Next Billing Date"}
+          </p>
           <p>{data?.period_end_date}</p>
         </div>
-
+        {/* 
         <div className="flex w-full justify-between border-b border-neutral-400">
           <p className="font-semibold">Cancel at Period End</p>
           <p>{data?.cancel_at_period_end ? "Yes" : "No"}</p>
-        </div>
+        </div> */}
 
         {data?.cancel_at_period_end ? (
           <Link
@@ -128,4 +123,4 @@ function SubscriptionPage() {
   );
 }
 
-export default SubscriptionPage;
+export default Subscription;
