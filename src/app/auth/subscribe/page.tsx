@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -52,46 +53,82 @@ function SubscribePage() {
   };
 
   return (
-    <div className="flex flex-1 items-center justify-center overflow-scroll">
-      <div className="flex w-full max-w-xs flex-col items-center justify-center gap-4">
-        <button
-          className="flex w-full cursor-pointer items-center justify-between rounded-full border bg-neutral-100 px-4 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
-          onClick={() =>
-            handleSubscribe(NEXT_PUBLIC_MONTHLY_SUBSCRIPTION_PRICE_ID)
-          }
-          disabled={loading}
-        >
-          <span className="text-lg font-semibold">Month Plan</span> $3.49
-        </button>
+    <div className="scrollable-content">
+      <div className="flex-1">
+        <div className="flex flex-col items-center justify-center p-4">
+          {/* Header */}
+          <div className="mt-4 mb-6 text-center">
+            <h1 className="mb-4 text-3xl font-bold">Plans & Pricing</h1>
+            <p className="mb-4 text-neutral-500">
+              Try all features free for 7 days — cancel anytime.
+            </p>
+            <ul className="mx-auto max-w-xs list-inside list-disc text-left text-neutral-500">
+              <li>Unlimited Tasks & Journals</li>
+              <li>Progress Tracking</li>
+              <li>Notes Management</li>
+            </ul>
+          </div>
 
-        <p className="font-semibold text-neutral-500">•</p>
+          {/* Pricing Options */}
+          <div className="flex w-full max-w-md flex-col items-center gap-4">
+            {/* Monthly */}
+            <motion.button
+              onClick={() =>
+                handleSubscribe(NEXT_PUBLIC_MONTHLY_SUBSCRIPTION_PRICE_ID)
+              }
+              disabled={loading}
+              className="flex w-full flex-col items-center rounded-xl border p-6 text-center hover:cursor-pointer hover:bg-neutral-200 hover:ring"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <span className="mb-2 text-lg font-semibold">Monthly Plan</span>
+              <span className="mb-3 text-3xl font-bold">$3.99</span>
+              <span className="mb-1 text-sm text-neutral-500">
+                Billed monthly after 7-day free trial
+              </span>
+              <span className="mt-2 text-xs text-neutral-400">
+                *Free trial available for new users only
+              </span>
+            </motion.button>
 
-        <button
-          className="flex w-full cursor-pointer items-center justify-between rounded-full border bg-neutral-100 px-4 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
-          onClick={() =>
-            handleSubscribe(NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PRICE_ID)
-          }
-          disabled={loading}
-        >
-          <span className="text-lg font-semibold">Yearly Plan</span>
-          <span>
-            <span className="font-light text-neutral-500 line-through">
-              $41.88
-            </span>{" "}
-            $34.99
-          </span>
-        </button>
+            {/* Yearly */}
+            <motion.button
+              onClick={() =>
+                handleSubscribe(NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PRICE_ID)
+              }
+              disabled={loading}
+              className="flex w-full flex-col items-center rounded-xl border p-6 text-center hover:cursor-pointer hover:bg-neutral-200 hover:ring"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="mb-2 rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
+                Save 37%
+              </div>
+              <span className="mb-2 text-lg font-semibold">Yearly Plan</span>
+              <span className="mb-3 text-3xl font-bold">$29.99</span>
+              <span className="mb-1 text-sm text-neutral-500">
+                ($2.49 / month)
+              </span>
+              <span className="text-sm text-neutral-500">
+                Billed yearly after 7-day free trial
+              </span>
+              <span className="mt-2 text-xs text-neutral-400">
+                *Free trial available for new users only
+              </span>
+            </motion.button>
 
-        <p className="font-semibold text-neutral-500">•</p>
+            {/* Home button */}
+            <Link
+              className="flex w-full cursor-pointer items-center justify-center rounded-full border border-transparent bg-neutral-100 px-4 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
+              href="/"
+            >
+              Home
+            </Link>
 
-        <Link
-          className="flex w-full cursor-pointer items-center justify-center rounded-full border bg-neutral-100 px-4 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
-          href="/"
-        >
-          Home
-        </Link>
-
-        {error && <p className="py-2 pl-4 text-red-500">{error}</p>}
+            {/* Error */}
+            {error && <p className="py-2 pl-4 text-red-500">{error}</p>}
+          </div>
+        </div>
       </div>
     </div>
   );
