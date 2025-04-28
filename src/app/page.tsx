@@ -24,7 +24,7 @@ function LoginPage() {
         {/* Logo */}
         <div className="relative mb-4 h-12 w-12">
           <Image
-            src="minibunn-logo.svg"
+            src="/minibunn-logo.svg"
             alt="Minibunn icon"
             fill
             sizes="40px"

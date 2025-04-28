@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -73,6 +74,18 @@ function RegisterPage() {
   return (
     <div className="centered-container">
       <div className="mx-auto flex w-full max-w-xs flex-col items-center text-center">
+        {/* Logo */}
+        <div className="relative mb-4 h-12 w-12">
+          <Image
+            src="/minibunn-logo.svg"
+            alt="Minibunn icon"
+            fill
+            sizes="40px"
+            className="object-contain"
+            priority
+          />
+        </div>
+
         {/* Title & Description */}
         <h1 className="mb-4 text-2xl font-bold">Create new account</h1>
         <p className="mb-2 text-neutral-500">
