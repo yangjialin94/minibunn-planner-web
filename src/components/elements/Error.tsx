@@ -6,7 +6,7 @@ function Error() {
   return (
     <div className="font-mali flex h-full w-full flex-col items-center justify-center space-y-8 text-center">
       <div className="animate-spin">
-        <Image src="/minibunn-logo.png" alt="logo" width={120} height={120} />
+        <Image src="/minibunn-logo.svg" alt="logo" width={120} height={120} />
       </div>
       <p className="text-lg font-semibold text-red-500">
         Something went wrong.
