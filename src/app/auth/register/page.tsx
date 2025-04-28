@@ -71,8 +71,25 @@ function RegisterPage() {
   };
 
   return (
-    <div className="flex flex-1 items-center justify-center overflow-scroll">
-      <div className="flex w-full max-w-xs flex-col items-center justify-center gap-4">
+    <div className="centered-container">
+      <div className="mx-auto flex w-full max-w-xs flex-col items-center text-center">
+        {/* Title & Description */}
+        <h1 className="mb-4 text-2xl font-bold">Create new account</h1>
+        <p className="mb-2 text-neutral-500">
+          Enter your email and password to register new account.
+        </p>
+        <p className="mb-8 text-neutral-500">
+          Already have an account?{" "}
+          <Link
+            href="/"
+            passHref
+            className="font-semibold text-neutral-500 underline-offset-8 hover:text-neutral-800 hover:underline"
+          >
+            Sign in
+          </Link>
+        </p>
+
+        {/* Register Form */}
         <form
           onSubmit={handleRegister}
           className="flex w-full flex-col items-center space-y-4 rounded-xl border border-neutral-800 p-4"
@@ -133,14 +150,6 @@ function RegisterPage() {
             </p>
           )}
         </form>
-        <p className="font-semibold text-neutral-500">•</p>
-        <Link
-          className="flex w-full items-center justify-center rounded-full border bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
-          href="/"
-          passHref
-        >
-          Sign In
-        </Link>
       </div>
     </div>
   );

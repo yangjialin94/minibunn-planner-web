@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 
@@ -18,30 +19,52 @@ function LoginPage() {
   }, [setPage]);
 
   return (
-    <div className="flex flex-1 items-center justify-center overflow-scroll">
-      <div className="flex w-full max-w-xs flex-col items-center justify-center gap-4">
-        <>
-          <GoogleSignInButton />
-          <p className="font-semibold text-neutral-500">•</p>
-        </>
-        <SignInForm />
-        <>
-          <p className="font-semibold text-neutral-500">•</p>
+    <div className="centered-container">
+      <div className="mx-auto flex w-full max-w-xs flex-col items-center text-center">
+        {/* Logo */}
+        <div className="relative mb-4 h-12 w-12">
+          <Image
+            src="minibunn-logo.svg"
+            alt="Minibunn icon"
+            fill
+            sizes="40px"
+            className="object-contain"
+            priority
+          />
+        </div>
+
+        {/* Title & Description */}
+        <h1 className="mb-4 text-2xl font-bold">Welcome</h1>
+        <p className="mb-2 text-neutral-500">
+          Enter your email and password to log into your account.
+        </p>
+        <p className="mb-8 text-neutral-500">
+          Don&apos;t have an account?{" "}
           <Link
-            className="flex w-full items-center justify-center rounded-full border bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
             href="/auth/register"
             passHref
+            className="font-semibold text-neutral-500 underline-offset-8 hover:text-neutral-800 hover:underline"
           >
             Register
           </Link>
-        </>
-        <p className="font-semibold text-neutral-500">•</p>
+        </p>
+
+        {/* Sign In Form */}
+        <SignInForm />
+
+        {/* Divider */}
+        <hr className="my-8 w-full border-t-2 border-neutral-200" />
+
+        {/* Google Sign In */}
+        <GoogleSignInButton />
+
+        {/* Forgot Password */}
         <Link
-          className="flex w-full items-center justify-center rounded-full border bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
           href="/auth/reset"
           passHref
+          className="mt-4 font-semibold text-neutral-500 underline-offset-8 hover:text-neutral-800 hover:underline"
         >
-          Reset Password
+          Forgot password?
         </Link>
       </div>
     </div>

@@ -108,7 +108,7 @@ function SignInForm() {
         disabled={loading}
         className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
       >
-        {loading ? "Signing in..." : "Sign In"}
+        {loading ? "Signing in..." : "Sign in"}
       </button>
 
       {errors.firebaseError && (

@@ -44,7 +44,7 @@ function GoogleSignInButton() {
         width={20}
         height={20}
       />
-      Sign In with Google
+      Sign in with Google
     </button>
   );
 }

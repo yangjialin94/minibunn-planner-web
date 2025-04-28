@@ -57,3 +57,10 @@ nav > a.selected {
 .sidebar-item {
   @apply flex w-full gap-2 rounded-xl border border-transparent px-3 py-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
 }
+
+/**
+ * Used in auth and pricing
+ */
+.centered-container {
+  @apply flex min-h-[calc(100vh-94px)] flex-col justify-center overflow-scroll p-4;
+}
