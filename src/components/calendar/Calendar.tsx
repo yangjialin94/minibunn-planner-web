@@ -107,7 +107,7 @@ function Cells({
       >
         <div
           className={clsx(
-            "absolute top-2 right-2 flex size-8 items-center justify-center rounded-full border p-2 text-sm",
+            "absolute top-0 right-0 flex size-8 items-center justify-center rounded-full text-sm md:top-2 md:right-2 md:border lg:p-4",
             { "border-neutral-300 text-neutral-300": !isCurrentMonth },
             { "border-neutral-800 text-neutral-800": isCurrentMonth },
             { "bg-green-300 font-bold": isToday },
@@ -116,7 +116,7 @@ function Cells({
           {dayFormatted}
         </div>
         {summary && (
-          <div className="absolute bottom-2 left-2 rounded px-1 text-5xl font-thin">
+          <div className="absolute bottom-0 left-0 rounded px-1 text-sm font-thin sm:text-xl md:text-2xl lg:bottom-2 lg:left-2 lg:text-4xl xl:text-5xl">
             {summary.completed}/{summary.total}
           </div>
         )}

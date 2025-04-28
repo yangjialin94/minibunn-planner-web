@@ -1,6 +1,7 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
 import { signOut } from "firebase/auth";
 import Cookies from "js-cookie";
 import { Calendar, ListCheck, LogOut, Notebook, User } from "lucide-react";
@@ -11,6 +12,59 @@ import React from "react";
 import { auth } from "@/auth/firebaseClient";
 import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocalNoTime } from "@/utils/date";
+
+interface SidebarLinkProps {
+  selected: boolean;
+  href: string;
+  icon: React.ReactNode;
+  text: string;
+}
+
+interface SidebarButtonProps {
+  onClick: () => void;
+  icon: React.ReactNode;
+  text: string;
+}
+
+/**
+ * SidebarLink component
+ */
+const SidebarLink = ({ selected, href, icon, text }: SidebarLinkProps) => {
+  return (
+    <div className="relative">
+      <nav>
+        <Link href={href} className={clsx("peer", selected && "selected")}>
+          {icon}
+          <span className="hidden md:block">{text}</span>
+        </Link>
+        <div className="tool-tip right block md:hidden">{text}</div>
+      </nav>
+    </div>
+  );
+};
+
+/**
+ * SidebarButton component
+ */
+const SidebarButton = ({ onClick, icon, text }: SidebarButtonProps) => {
+  return (
+    <div className="relative">
+      <nav>
+        <button
+          onClick={(e: React.PointerEvent<HTMLButtonElement>) => {
+            e.stopPropagation();
+            onClick();
+          }}
+          className="sidebar-item peer"
+        >
+          {icon}
+          <span className="hidden md:block">{text}</span>
+        </button>
+        <div className="tool-tip right block md:hidden">{text}</div>
+      </nav>
+    </div>
+  );
+};
 
 /**
  * Sidebar component
@@ -42,45 +96,38 @@ function SideBar() {
   return (
     <aside>
       <div className="sidebar-top">
-        <nav>
-          <Link
-            href="/calendar"
-            className={page === "calendar" ? "selected" : ""}
-          >
-            <Calendar />
-            <span>Calendar</span>
-          </Link>
-        </nav>
-        <nav>
-          <Link
-            href={`/calendar/${today}`}
-            className={page === "today" ? "selected" : ""}
-          >
-            <ListCheck />
-            <span>Today</span>
-          </Link>
-        </nav>
-        <nav>
-          <Link href="/notes" className={page === "notes" ? "selected" : ""}>
-            <Notebook />
-            <span>Notes</span>
-          </Link>
-        </nav>
-        <nav>
-          <Link href="/user" className={page === "user" ? "selected" : ""}>
-            <User />
-            <span>User</span>
-          </Link>
-        </nav>
+        <SidebarLink
+          selected={page === "calendar"}
+          href="/calendar"
+          icon={<Calendar />}
+          text="Home"
+        />
+        <SidebarLink
+          selected={page === "today"}
+          href={`/calendar/${today}`}
+          icon={<ListCheck />}
+          text="Today"
+        />
+        <SidebarLink
+          selected={page === "notes"}
+          href="/notes"
+          icon={<Notebook />}
+          text="Notes"
+        />
+        <SidebarLink
+          selected={page === "user"}
+          href="/user"
+          icon={<User />}
+          text="User"
+        />
       </div>
 
       <div className="sidebar-bottom">
-        <nav>
-          <button onClick={handleSignOut} className="sidebar-item">
-            <LogOut />
-            <span>Sign out</span>
-          </button>
-        </nav>
+        <SidebarButton
+          onClick={handleSignOut}
+          icon={<LogOut />}
+          text="Sign out"
+        />
       </div>
     </aside>
   );
