@@ -57,29 +57,32 @@ function NotesHeader({ data }: { data: Note[] }) {
   };
 
   return (
-    <div className="sticky top-0 z-20">
-      <div className="daily-header">
-        {/* Total */}
-        <p className="font-medium">Total: {data.length}</p>
+    <>
+      {/* Header */}
+      <div className="sticky top-0 z-20">
+        <div className="daily-header">
+          {/* Total */}
+          <p className="font-medium">Total: {data.length}</p>
 
-        {isCreating ? (
-          <div className="spinning-btn">
-            <LoaderCircle />
-          </div>
-        ) : (
-          <IconButton
-            buttonClassName="action-btn"
-            onClick={handleCreateNote}
-            icon={<ClipboardPlus />}
-            tooltipText="Create"
-            placement="bottom"
-          />
-        )}
+          {isCreating ? (
+            <div className="spinning-btn">
+              <LoaderCircle />
+            </div>
+          ) : (
+            <IconButton
+              buttonClassName="action-btn"
+              onClick={handleCreateNote}
+              icon={<ClipboardPlus />}
+              tooltipText="Create"
+              placement="bottom"
+            />
+          )}
+        </div>
       </div>
 
       {/* Ref for the top */}
       <div ref={topRef} className="invisible h-0" />
-    </div>
+    </>
   );
 }
 
