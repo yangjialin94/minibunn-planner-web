@@ -10,6 +10,7 @@ import {
   Menu,
   Notebook,
   User,
+  X,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -99,7 +100,15 @@ function HeaderMenu() {
               transition
               className="w-full max-w-md rounded-xl border-2 bg-neutral-100 p-4"
             >
-              <div className="flex w-full flex-col justify-between gap-4 p-4">
+              <div className="flex w-full flex-col justify-between gap-4 p-2">
+                <div className="flex w-full justify-end">
+                  <button
+                    onClick={close}
+                    className="rounded-full border border-transparent p-1 hover:border-neutral-800 hover:bg-neutral-200"
+                  >
+                    <X />
+                  </button>
+                </div>
                 <button
                   onClick={() => handleNavigation("/calendar")}
                   className={clsx("navBtn", page === "calendar" && "selected")}
