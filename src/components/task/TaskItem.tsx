@@ -251,10 +251,10 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
         )}
       >
         {/* Task inputs */}
-        <div className="flex flex-col gap-4 px-4">
+        <div className="flex flex-col gap-2 px-2 md:gap-4 md:px-4">
           <textarea
             ref={titleTextareaRef}
-            className="w-full resize-none border-b border-neutral-800 pb-4 text-lg font-semibold outline-none"
+            className="w-full resize-none border-b border-neutral-800 pb-2 text-base font-semibold outline-none sm:text-lg lg:pb-4"
             placeholder="Title"
             onChange={handleUpdateTitle}
             onFocus={handleCenterItem}

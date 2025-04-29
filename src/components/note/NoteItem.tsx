@@ -135,7 +135,7 @@ function NoteItem({ id, note }: { id: number; note: Note }) {
       </div>
 
       {/* Note item */}
-      <div className="relative flex flex-col gap-2 rounded-xl border border-neutral-800 p-4 peer-hover:border-2 hover:border-2">
+      <div className="relative flex flex-col gap-2 rounded-xl border border-neutral-800 p-2 peer-hover:border-2 hover:border-2 lg:p-4">
         {/* Note Detail */}
         <div className="flex px-4">
           <textarea
