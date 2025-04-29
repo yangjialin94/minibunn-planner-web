@@ -303,7 +303,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
                   buttonClassName="action-btn"
                   onClick={handleDuplicateTask}
                   icon={<Layers2 />}
-                  tooltipText="Duplicate to Next Day"
+                  tooltipText="Duplicate to next day"
                 />
               )}
               {!task.is_completed ? (
@@ -312,7 +312,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
                     buttonClassName="action-btn"
                     onClick={handleMoveTask}
                     icon={<SquareArrowRight />}
-                    tooltipText="Move to Next Day"
+                    tooltipText="Move to next day"
                   />
                   <IconButton
                     buttonClassName="action-btn"
