@@ -78,7 +78,7 @@ function HeaderMenu() {
         <Button
           onClick={open}
           className={clsx(
-            "peer rounded-full border bg-neutral-100 p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200",
+            "peer rounded-full border bg-neutral-100 p-1 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200 lg:p-2",
             {
               "border-neutral-800 bg-neutral-200": isOpen,
               "border-transparent": !isOpen,
