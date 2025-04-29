@@ -107,10 +107,15 @@ function Cells({
       >
         <div
           className={clsx(
-            "absolute top-0 right-0 flex size-8 items-center justify-center rounded-full text-sm md:top-2 md:right-2 md:border lg:p-4",
+            "absolute top-1 right-1 flex size-4 items-center justify-center rounded-full text-sm md:size-8 md:border lg:top-2 lg:right-2 lg:p-4",
             { "border-neutral-300 text-neutral-300": !isCurrentMonth },
-            { "border-neutral-800 text-neutral-800": isCurrentMonth },
-            { "bg-green-300 font-bold": isToday },
+            {
+              "border-neutral-800 text-neutral-800": isCurrentMonth && !isToday,
+            },
+            {
+              "border-neutral-800 font-bold text-green-500 md:bg-green-300 md:text-neutral-800":
+                isCurrentMonth && isToday,
+            },
           )}
         >
           {dayFormatted}

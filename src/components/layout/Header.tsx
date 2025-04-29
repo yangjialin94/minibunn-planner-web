@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { memo, useEffect, useState } from "react";
 
+import HeaderMenu from "@/components/modals/HeaderMenu";
 import { formatDateLocal } from "@/utils/date";
 
 const MotionLink = motion.create(Link);
@@ -48,7 +49,14 @@ function Header() {
       </MotionLink>
 
       {/* Time Display */}
-      <TimeDisplay />
+      <div className="hidden sm:flex">
+        <TimeDisplay />
+      </div>
+
+      {/* Header Menu */}
+      <div className="flex sm:hidden">
+        <HeaderMenu />
+      </div>
     </header>
   );
 }
