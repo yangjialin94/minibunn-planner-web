@@ -2,11 +2,11 @@
  * Buttons
  */
 .action-btn {
-  @apply rounded-full border border-transparent p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
+  @apply rounded-full border border-transparent p-1 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200 lg:p-2;
 }
 
 .reverse-action-btn {
-  @apply rounded-full border border-transparent bg-neutral-200 p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-100;
+  @apply rounded-full border border-transparent bg-neutral-200 p-1 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-100 lg:p-2;
 }
 
 .spinning-btn {

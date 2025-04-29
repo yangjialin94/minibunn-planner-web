@@ -1,5 +1,5 @@
 body {
-  @apply flex min-h-screen flex-col bg-neutral-100 p-4 text-neutral-800;
+  @apply flex min-h-screen flex-col bg-neutral-100 p-4 text-sm text-neutral-800 lg:text-base;
 }
 
 .main-container {
@@ -19,7 +19,11 @@ main {
 }
 
 h1 {
-  @apply text-2xl font-semibold;
+  @apply text-xl font-semibold lg:text-2xl;
+}
+
+h2 {
+  @apply text-lg font-semibold lg:text-xl;
 }
 
 .page-content {
@@ -47,23 +51,23 @@ aside {
 }
 
 nav > a {
-  @apply flex gap-2 rounded-xl border border-transparent px-3 py-2 hover:border-neutral-800 hover:bg-neutral-200;
+  @apply flex gap-2 rounded-xl border border-transparent px-2 py-1 hover:border-neutral-800 hover:bg-neutral-200 lg:px-3 lg:py-2;
 }
 
 nav > a.selected {
-  @apply pointer-events-none flex gap-2 rounded-xl border border-neutral-800 bg-neutral-200 px-3 py-2;
+  @apply pointer-events-none flex gap-2 rounded-xl border border-neutral-800 bg-neutral-200 px-2 py-1 lg:px-3 lg:py-2;
 }
 
 .navBtn {
-  @apply flex gap-2 rounded-xl border border-transparent px-3 py-2 hover:border-neutral-800 hover:bg-neutral-200;
+  @apply flex gap-2 rounded-xl border border-transparent px-2 py-1 hover:border-neutral-800 hover:bg-neutral-200 lg:px-3 lg:py-2;
 }
 
 .navBtn.selected {
-  @apply pointer-events-none flex gap-2 rounded-xl border border-neutral-800 bg-neutral-200 px-3 py-2;
+  @apply pointer-events-none flex gap-2 rounded-xl border border-neutral-800 bg-neutral-200 px-2 py-1 lg:px-3 lg:py-2;
 }
 
 .sidebar-item {
-  @apply flex w-full gap-2 rounded-xl border border-transparent px-3 py-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
+  @apply flex w-full gap-2 rounded-xl border border-transparent px-2 py-1 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200 lg:px-3 lg:py-2;
 }
 
 /**

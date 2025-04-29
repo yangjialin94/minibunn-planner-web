@@ -243,7 +243,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
       {/* Task item */}
       <div
         className={clsx(
-          "relative flex flex-col rounded-xl border border-neutral-800 p-4 peer-hover:border-2 hover:border-2",
+          "relative flex flex-col rounded-xl border border-neutral-800 p-2 peer-hover:border-2 hover:border-2 lg:p-4",
           {
             "bg-neutral-100": !task.is_completed,
             "bg-neutral-200": task.is_completed,

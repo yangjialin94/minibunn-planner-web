@@ -72,11 +72,11 @@ function TaskHeader({ tasks, dateStr }: TaskHeaderProps) {
       {/* Header */}
       <div className="task-header">
         {/* Filter buttons */}
-        <div className="flex gap-2">
+        <div className="flex gap-1 lg:gap-2">
           {options.map((option) => (
             <button
               key={option.id}
-              className={clsx("rounded-full border px-3 py-2", {
+              className={clsx("rounded-full border px-2 py-1 lg:px-3 lg:py-2", {
                 "pointer-events-none bg-neutral-200": taskFilter === option.id,
                 "border-transparent hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200":
                   taskFilter !== option.id,
@@ -89,10 +89,10 @@ function TaskHeader({ tasks, dateStr }: TaskHeaderProps) {
         </div>
 
         {/* Progress */}
-        <div className="absolute left-1/2 -translate-x-1/2 transform">
+        <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:transform">
           {tasks && (
             <p className="font-medium">
-              Progress: {completedTasks.length}/{tasks.length}
+              {completedTasks.length}/{tasks.length}
             </p>
           )}
         </div>

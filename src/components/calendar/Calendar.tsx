@@ -34,7 +34,7 @@ function Header({
 
   return (
     <div className="cal-header">
-      <div className="pl-2 text-lg font-bold">{formattedDate}</div>
+      <h2 className="pl-2">{formattedDate}</h2>
       <div className="flex items-center gap-2">
         <button
           className="cal-arrow-btn"

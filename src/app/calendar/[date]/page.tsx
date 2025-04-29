@@ -38,35 +38,77 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
   };
 
   return (
-    <div className="daily-header">
-      <p className="text-lg font-bold">{dateStr}</p>
-      <div className="flex items-center gap-2">
-        <button
-          className={clsx("daily-tab-btn", {
-            selected: dailyTab === "tasks",
-          })}
-          onClick={() => handleTabChange("tasks")}
-        >
-          Tasks
-        </button>
-        <button
-          className={clsx("daily-tab-btn", {
-            selected: dailyTab === "journal",
-          })}
-          onClick={() => handleTabChange("journal")}
-        >
-          Journal
-        </button>
+    <>
+      {/* Header for larger screens */}
+      <div className="sticky top-0 z-20 hidden sm:block">
+        <div className="daily-header">
+          <h2>{dateStr}</h2>
+          <div className="flex items-center gap-1 lg:gap-2">
+            <button
+              className={clsx("daily-tab-btn", {
+                selected: dailyTab === "tasks",
+              })}
+              onClick={() => handleTabChange("tasks")}
+            >
+              Tasks
+            </button>
+            <button
+              className={clsx("daily-tab-btn", {
+                selected: dailyTab === "journal",
+              })}
+              onClick={() => handleTabChange("journal")}
+            >
+              Journal
+            </button>
+          </div>
+          <div className="flex items-center gap-1 lg:gap-2">
+            <button className="daily-arrow-btn" onClick={handleClickPrev}>
+              <ChevronLeft />
+            </button>
+            <button className="daily-arrow-btn" onClick={handleClickNext}>
+              <ChevronRight />
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="flex items-center gap-2">
-        <button className="daily-arrow-btn" onClick={handleClickPrev}>
-          <ChevronLeft />
-        </button>
-        <button className="daily-arrow-btn" onClick={handleClickNext}>
-          <ChevronRight />
-        </button>
+
+      {/* Header for smaller screens */}
+      <div className="sticky top-0 z-20 block sm:hidden">
+        <div className="flex flex-col">
+          <div className="daily-header">
+            <h2>{dateStr}</h2>
+            <div className="flex items-center gap-1 lg:gap-2">
+              <button className="daily-arrow-btn" onClick={handleClickPrev}>
+                <ChevronLeft />
+              </button>
+              <button className="daily-arrow-btn" onClick={handleClickNext}>
+                <ChevronRight />
+              </button>
+            </div>
+          </div>
+          <div className="daily-header-single">
+            <div className="flex items-center gap-1 lg:gap-2">
+              <button
+                className={clsx("daily-tab-btn", {
+                  selected: dailyTab === "tasks",
+                })}
+                onClick={() => handleTabChange("tasks")}
+              >
+                Tasks
+              </button>
+              <button
+                className={clsx("daily-tab-btn", {
+                  selected: dailyTab === "journal",
+                })}
+                onClick={() => handleTabChange("journal")}
+              >
+                Journal
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

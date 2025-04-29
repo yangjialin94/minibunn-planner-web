@@ -33,7 +33,10 @@ const SidebarLink = ({ selected, href, icon, text }: SidebarLinkProps) => {
   return (
     <div className="relative">
       <nav>
-        <Link href={href} className={clsx("peer", selected && "selected")}>
+        <Link
+          href={href}
+          className={clsx("peer flex items-center", selected && "selected")}
+        >
           {icon}
           <span className="hidden md:block">{text}</span>
         </Link>

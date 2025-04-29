@@ -2,21 +2,25 @@
  * Daily View
  */
 .daily-header {
-  @apply sticky top-0 z-20 flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur;
+  @apply flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur;
+}
+
+.daily-header-single {
+  @apply flex items-center justify-center border-b border-neutral-800 px-4 py-2 backdrop-blur;
 }
 
 .daily-tab-btn {
-  @apply rounded-full border border-transparent px-3 py-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
+  @apply rounded-full border border-transparent px-2 py-1 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200 lg:px-3 lg:py-2;
 }
 
 .daily-tab-btn.selected {
-  @apply pointer-events-none rounded-full border border-neutral-800 bg-neutral-200 px-3 py-2;
+  @apply pointer-events-none rounded-full border border-neutral-800 bg-neutral-200 px-2 py-1 lg:px-3 lg:py-2;
 }
 
 .daily-arrow-btn {
-  @apply rounded-full border border-transparent p-2 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200;
+  @apply rounded-full border border-transparent p-1 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200 lg:p-2;
 }
 
 .task-header {
-  @apply relative sticky top-[59px] z-20 flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur;
+  @apply relative sticky top-[98px] z-20 flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur sm:top-[51px] lg:top-[59px];
 }
