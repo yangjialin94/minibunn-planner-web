@@ -17,7 +17,6 @@ const clientEnvSchema = z.object({
   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: z.string().min(1),
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: z.string().min(1),
   NEXT_PUBLIC_FIREBASE_APP_ID: z.string().min(1),
-  NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: z.string().min(1),
 });
 
 // Validate the env vars at build time
@@ -42,8 +41,6 @@ export const env = clientEnvSchema.parse({
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID:
     process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID:
-    process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 });
 
 // Convenient named exports ↓ no need to dot‑access each time
@@ -63,7 +60,6 @@ export const {
   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   NEXT_PUBLIC_FIREBASE_APP_ID,
-  NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 } = env;
 
 export type Env = z.infer<typeof clientEnvSchema>;
