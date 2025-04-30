@@ -2,7 +2,7 @@
  * Daily View
  */
 .daily-header {
-  @apply flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur;
+  @apply flex items-center justify-between border-b border-neutral-800 px-4 py-2;
 }
 
 .daily-header-single {
@@ -22,5 +22,9 @@
 }
 
 .task-header {
-  @apply relative sticky top-[98px] z-20 flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur sm:top-[51px] lg:top-[59px];
+  @apply relative flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur;
+}
+
+.journal-footer {
+  @apply absolute relative right-0 bottom-0 left-0;
 }

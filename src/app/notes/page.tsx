@@ -59,25 +59,23 @@ function NotesHeader({ data }: { data: Note[] }) {
   return (
     <>
       {/* Header */}
-      <div className="sticky top-0 z-20">
-        <div className="daily-header">
-          {/* Total */}
-          <p className="font-medium">Total: {data.length}</p>
+      <div className="daily-header">
+        {/* Total */}
+        <p className="font-medium">Total: {data.length}</p>
 
-          {isCreating ? (
-            <div className="spinning-btn">
-              <LoaderCircle />
-            </div>
-          ) : (
-            <IconButton
-              buttonClassName="action-btn"
-              onClick={handleCreateNote}
-              icon={<ClipboardPlus />}
-              tooltipText="Create"
-              placement="bottom"
-            />
-          )}
-        </div>
+        {isCreating ? (
+          <div className="spinning-btn">
+            <LoaderCircle />
+          </div>
+        ) : (
+          <IconButton
+            buttonClassName="action-btn"
+            onClick={handleCreateNote}
+            icon={<ClipboardPlus />}
+            tooltipText="Create"
+            placement="bottom"
+          />
+        )}
       </div>
 
       {/* Ref for the top */}
@@ -119,13 +117,13 @@ function NotesPage() {
   }
 
   return (
-    <div className="scrollable-content">
+    <>
+      {/* Header */}
       <NotesHeader data={data} />
 
-      <div className="flex-1">
-        <Notes data={data} />
-      </div>
-    </div>
+      {/* Notes List */}
+      <Notes data={data} />
+    </>
   );
 }
 

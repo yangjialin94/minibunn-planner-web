@@ -80,19 +80,11 @@ function Tasks({ dateStr }: { dateStr: string }) {
 
   // Handle loading and error states
   if (isLoading) {
-    return (
-      <div className="mt-40">
-        <Loading />
-      </div>
-    );
+    return <Loading />;
   }
   if (error) {
     console.error(error);
-    return (
-      <div className="mt-28">
-        <Error />
-      </div>
-    );
+    return <Error />;
   }
 
   return (

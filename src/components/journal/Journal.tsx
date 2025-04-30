@@ -100,49 +100,43 @@ function Journal({ dateStr }: { dateStr: string }) {
 
   // Handle loading and error states
   if (isLoading) {
-    return (
-      <div className="mt-40">
-        <Loading />
-      </div>
-    );
+    return <Loading />;
   }
   if (error) {
     console.error(error);
-    return (
-      <div className="mt-24">
-        <Error />
-      </div>
-    );
+    return <Error />;
   }
 
   return (
-    <>
-      {/* Journal Entry */}
-      <div className="flex h-[calc(100vh-153px)] flex-col gap-4 p-6">
-        <textarea
-          ref={subjectTextareaRef}
-          className="w-full resize-none border-b border-neutral-800 pb-4 text-lg font-semibold outline-none"
-          placeholder="Subject"
-          onChange={handleUpdateSubject}
-          value={subject}
-          rows={1}
+    <div className="flex flex-1 flex-col p-4 md:p-6">
+      {/* Journal title */}
+      <textarea
+        ref={subjectTextareaRef}
+        className="w-full resize-none border-b border-neutral-800 pb-4 text-lg font-semibold outline-none"
+        placeholder="Subject"
+        onChange={handleUpdateSubject}
+        value={subject}
+        rows={1}
+      />
+
+      {/* Journal entry */}
+      <textarea
+        className="mt-4 w-full flex-1 resize-none overflow-auto outline-none"
+        placeholder="Entry"
+        onChange={handleUpdateEntry}
+        value={entry}
+      />
+
+      {/* Footer */}
+      <div className="mt-4 flex flex-shrink-0 justify-end">
+        <IconButton
+          buttonClassName="action-btn"
+          onClick={handleClearJournal}
+          icon={<Eraser />}
+          tooltipText="Clear"
         />
-        <textarea
-          className="flex-1 resize-none outline-none"
-          placeholder="Entry"
-          onChange={handleUpdateEntry}
-          value={entry}
-        />
-        <div className="z-10 flex justify-end">
-          <IconButton
-            buttonClassName="action-btn"
-            onClick={handleClearJournal}
-            icon={<Eraser />}
-            tooltipText="Clear"
-          />
-        </div>
       </div>
-    </>
+    </div>
   );
 }
 

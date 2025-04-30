@@ -2,7 +2,7 @@
   * Monthly View
   */
 .cal-header {
-  @apply sticky top-0 z-10 flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur;
+  @apply flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur;
 }
 
 .cal-arrow-btn {
@@ -14,9 +14,9 @@
 }
 
 .cal-days {
-  @apply sticky top-[59px] z-10 flex border-b border-neutral-800 py-2 backdrop-blur;
+  @apply flex border-b border-neutral-800 py-2 backdrop-blur;
 }
 
 .cal-cells {
-  @apply grid flex-1 grid-cols-7 grid-rows-6;
+  @apply grid grid-cols-7 grid-rows-6;
 }

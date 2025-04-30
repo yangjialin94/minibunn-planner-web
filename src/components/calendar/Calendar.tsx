@@ -17,6 +17,8 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 import { fetchTasksCompletionInRange } from "@/api/tasks";
+import Error from "@/components/elements/Error";
+import Loading from "@/components/elements/Loading";
 import { usePageStore } from "@/hooks/usePageStore";
 import { TaskCompletion } from "@/types/task";
 
@@ -155,20 +157,25 @@ function Calendar() {
     });
   }
 
+  // Handle loading and error states
+  if (isLoading) {
+    return <Loading />;
+  }
   if (error) {
-    console.error("Error fetching completions:", error);
+    console.error(error);
+    return <Error />;
   }
 
   return (
-    <div className="scrollable-content">
+    <>
       <Header calendarDate={calendarDate} setCalendarDate={setCalendarDate} />
+
       <Days calendarDate={calendarDate} />
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
+
+      <div className="overflow-y-auto">
         <Cells calendarDate={calendarDate} completions={completions} />
-      )}
-    </div>
+      </div>
+    </>
   );
 }
 

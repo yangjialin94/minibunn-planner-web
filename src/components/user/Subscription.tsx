@@ -72,7 +72,7 @@ function Subscription() {
   }
 
   return (
-    <div className="overflow-y-auto p-6">
+    <div className="overflow-y-auto p-4 md:p-6">
       <div className="flex w-full flex-col items-center justify-center gap-4 rounded-xl border border-neutral-800 p-4">
         <div className="flex w-full justify-between border-b border-neutral-400">
           <p className="font-semibold">Plan</p>

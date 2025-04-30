@@ -57,15 +57,13 @@ function UserPage() {
   }, [setPage]);
 
   return (
-    <div className="scrollable-content">
+    <>
       {/* Header */}
       <UserHeader userTab={userTab} setUserTab={setUserTab} />
 
       {/* Content */}
-      <div className="flex-1">
-        {userTab === "subscription" ? <Subscription /> : <Support />}
-      </div>
-    </div>
+      {userTab === "subscription" ? <Subscription /> : <Support />}
+    </>
   );
 }
 

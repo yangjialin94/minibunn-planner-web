@@ -40,7 +40,7 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
   return (
     <>
       {/* Header for larger screens */}
-      <div className="sticky top-0 z-20 hidden sm:block">
+      <div className="hidden sm:block">
         <div className="daily-header">
           <h2>{dateStr}</h2>
           <div className="flex items-center gap-1 lg:gap-2">
@@ -73,7 +73,7 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
       </div>
 
       {/* Header for smaller screens */}
-      <div className="sticky top-0 z-20 block sm:hidden">
+      <div className="block sm:hidden">
         <div className="flex flex-col">
           <div className="daily-header">
             <h2>{dateStr}</h2>
@@ -142,7 +142,7 @@ function DailyPage() {
   }
 
   return (
-    <div className="scrollable-content">
+    <>
       {/* Header */}
       <DailyHeader
         dateStr={dateStr}
@@ -151,14 +151,12 @@ function DailyPage() {
       />
 
       {/* Content */}
-      <div className="flex-1">
-        {dailyTab === "tasks" ? (
-          <Tasks dateStr={dateStr} />
-        ) : (
-          <Journal dateStr={dateStr} />
-        )}
-      </div>
-    </div>
+      {dailyTab === "tasks" ? (
+        <Tasks dateStr={dateStr} />
+      ) : (
+        <Journal dateStr={dateStr} />
+      )}
+    </>
   );
 }
 
