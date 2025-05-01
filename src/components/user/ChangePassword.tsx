@@ -49,7 +49,7 @@ function ChangePassword() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center">
+    <div className="auth-container">
       <div className="mx-auto flex w-full max-w-xs flex-col items-center">
         <button
           onClick={handleSubmit}

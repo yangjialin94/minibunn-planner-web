@@ -4,7 +4,7 @@ import React from "react";
 
 function Error() {
   return (
-    <div className="font-mali flex h-full w-full flex-col items-center justify-center space-y-8 text-center">
+    <div className="font-mali centered-container gap-8 text-center">
       <div className="animate-spin">
         <Image src="/minibunn-logo.svg" alt="logo" width={120} height={120} />
       </div>

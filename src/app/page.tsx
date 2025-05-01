@@ -19,7 +19,7 @@ function LoginPage() {
   }, [setPage]);
 
   return (
-    <div className="centered-container">
+    <div className="auth-container">
       <div className="mx-auto flex w-full max-w-xs flex-col items-center text-center">
         {/* Logo */}
         <div className="relative mb-4 h-12 w-12">

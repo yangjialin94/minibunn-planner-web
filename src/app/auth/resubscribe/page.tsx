@@ -53,7 +53,7 @@ function SubscribePage() {
   };
 
   return (
-    <div className="centered-container">
+    <div className="auth-container">
       <div className="mx-auto flex w-full max-w-xs flex-col items-center text-center">
         {/* Header */}
         <div className="mt-4 mb-6 text-center">

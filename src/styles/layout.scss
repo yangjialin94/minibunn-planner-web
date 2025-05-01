@@ -69,6 +69,14 @@ nav > a.selected {
 /**
  * Used in auth and pricing
  */
-.centered-container {
+.auth-container {
   @apply flex h-full flex-col overflow-scroll p-4 sm:p-8;
+}
+
+/**
+ * Dead center
+ * Might have cropped off part for high component
+ */
+.centered-container {
+  @apply flex h-full w-full flex-col items-center justify-center;
 }
