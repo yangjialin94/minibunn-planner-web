@@ -1,6 +1,7 @@
 import "@/styles/globals.scss";
 
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
 
@@ -38,6 +39,7 @@ export default function RootLayout({
           </AuthProvider>
         </ReactQueryProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
