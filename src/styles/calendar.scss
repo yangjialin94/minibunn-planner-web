@@ -17,6 +17,10 @@
   @apply flex border-b border-neutral-800 py-2 backdrop-blur;
 }
 
-.cal-cells {
+.cal-cells-5 {
+  @apply grid grid-cols-7 grid-rows-5;
+}
+
+.cal-cells-6 {
   @apply grid grid-cols-7 grid-rows-6;
 }

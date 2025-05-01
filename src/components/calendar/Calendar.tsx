@@ -87,11 +87,17 @@ function Cells({
 }) {
   const router = useRouter();
 
+  // Get the start date of the month and the previous Sunday
   const monthStart = startOfMonth(calendarDate); // first day of the month
   const startDate = startOfWeek(monthStart, { weekStartsOn: 0 }); // previous Sunday
 
+  // Check if the sixth week should be shown
+  const sixthWeekStart = addDays(startDate, 35); // day index 35 = Sunday of row 6
+  const showSixthWeek = isSameMonth(sixthWeekStart, monthStart);
+  const totalCells = showSixthWeek ? 42 : 35;
+
   const cells = [];
-  for (let i = 0; i < 42; i++) {
+  for (let i = 0; i < totalCells; i++) {
     const day = addDays(startDate, i);
     const dayFormatted = format(day, "d");
     const dateStr = format(day, "yyyy-MM-dd");
@@ -131,7 +137,9 @@ function Cells({
     );
   }
 
-  return <div className="cal-cells">{cells}</div>;
+  return (
+    <div className={showSixthWeek ? "cal-cells-6" : "cal-cells-5"}>{cells}</div>
+  );
 }
 
 function Calendar() {
@@ -141,8 +149,11 @@ function Calendar() {
   // Fetch tasks completion data for the current month
   const monthStart = startOfMonth(calendarDate);
   const monthEnd = addDays(monthStart, 42);
-  const startStr = format(monthStart, "yyyy-MM-dd");
+  const startDate = startOfWeek(monthStart, { weekStartsOn: 0 }); // previous Sunday
+  const startStr = format(startDate, "yyyy-MM-dd");
   const endStr = format(monthEnd, "yyyy-MM-dd");
+
+  console.log(`Fetching tasks completion from ${startStr} to ${endStr}`);
 
   const { data, error, isLoading } = useQuery<TaskCompletion[]>({
     queryKey: ["tasksCompletion", startStr, endStr],
