@@ -1,6 +1,6 @@
 # Minibunn Planner (Web)
 
-## Run
+## Local Run
 
 ```bash
 npm install
@@ -32,3 +32,18 @@ NEXT_PUBLIC_FIREBASE_APP_ID=
 ```bash
 firebase deploy --only hosting
 ```
+
+## Release
+
+1. Create an annotated tag
+
+   ```bash
+   git tag -a v1.0.0 -m "comment"
+   git push origin v1.0.0
+   ```
+
+2. Draft a GitHub Release on that tag
+   - Go to Releases → Draft a new release
+   - Select your new tag
+   - Fill in a “What’s changed” summary or changelog items
+   - Publish
