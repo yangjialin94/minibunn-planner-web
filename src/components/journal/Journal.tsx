@@ -46,7 +46,7 @@ function Journal({ dateStr }: { dateStr: string }) {
     const el = subjectTextareaRef.current;
     if (el) {
       el.style.height = "auto";
-      el.style.height = el.scrollHeight + "px";
+      el.style.height = el.scrollHeight + 2 + "px";
     }
   };
 

@@ -74,7 +74,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     const el = titleTextareaRef.current;
     if (el) {
       el.style.height = "auto";
-      el.style.height = el.scrollHeight + "px";
+      el.style.height = el.scrollHeight + 2 + "px";
     }
   };
 
