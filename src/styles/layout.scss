@@ -35,7 +35,7 @@ h2 {
   */
 
 aside {
-  @apply z-30 hidden min-h-[calc(100vh-94px)] flex-col justify-between border-r border-neutral-800 p-4 sm:flex md:w-[250px];
+  @apply z-30 hidden h-full flex-col justify-between border-r border-neutral-800 p-4 sm:flex md:w-[250px];
 }
 
 .sidebar-top {
@@ -70,5 +70,5 @@ nav > a.selected {
  * Used in auth and pricing
  */
 .centered-container {
-  @apply flex min-h-[calc(100vh-94px)] flex-col justify-center overflow-scroll p-4;
+  @apply flex h-full flex-col overflow-scroll p-4 sm:p-8;
 }
