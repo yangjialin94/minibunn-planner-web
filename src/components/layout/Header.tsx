@@ -6,6 +6,7 @@ import Link from "next/link";
 import React, { memo, useEffect, useState } from "react";
 
 import HeaderMenu from "@/components/modals/HeaderMenu";
+import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocal } from "@/utils/date";
 
 const MotionLink = motion.create(Link);
@@ -29,6 +30,8 @@ const TimeDisplay = memo(() => {
 TimeDisplay.displayName = "TimeDisplay";
 
 function Header() {
+  const page = usePageStore((state) => state.page);
+
   return (
     <header>
       {/* Logo */}
@@ -54,9 +57,7 @@ function Header() {
       </div>
 
       {/* Header Menu */}
-      <div className="flex sm:hidden">
-        <HeaderMenu />
-      </div>
+      <div className="flex sm:hidden">{page !== "auth" && <HeaderMenu />}</div>
     </header>
   );
 }
