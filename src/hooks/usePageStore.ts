@@ -7,14 +7,14 @@ type PageState = {
   calendarDate: Date; // date for the calendar
   dailyTab: "tasks" | "journal"; // tab for daily page
   taskFilter: string; // filter for tasks (e.g., "all", "completed", "incomplete")
-  userTab: "subscription" | "support"; // tab for user page
+  userTab: "subscription" | "support" | "password"; // tab for user page
   isModalOpen: boolean; // state for modal visibility
 
   setPage: (page: PageType) => void;
   setCalendarDate: (date: Date) => void;
   setDailyTab: (tab: "tasks" | "journal") => void;
   setTaskFilter: (filter: string) => void;
-  setUserTab: (tab: "subscription" | "support") => void;
+  setUserTab: (tab: "subscription" | "support" | "password") => void;
   setIsModalOpen: (isOpen: boolean) => void;
 };
 
@@ -30,6 +30,7 @@ export const usePageStore = create<PageState>((set) => ({
   setCalendarDate: (date: Date) => set({ calendarDate: date }),
   setDailyTab: (tab: "tasks" | "journal") => set({ dailyTab: tab }),
   setTaskFilter: (filter: string) => set({ taskFilter: filter }),
-  setUserTab: (tab: "subscription" | "support") => set({ userTab: tab }),
+  setUserTab: (tab: "subscription" | "support" | "password") =>
+    set({ userTab: tab }),
   setIsModalOpen: (isOpen: boolean) => set({ isModalOpen: isOpen }),
 }));

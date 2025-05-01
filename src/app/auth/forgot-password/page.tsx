@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import { auth } from "@/auth/firebaseClient"; // Handle sign in with email and password
+import { auth } from "@/auth/firebaseClient";
 import { NEXT_PUBLIC_WEB_URL } from "@/env";
 import { usePageStore } from "@/hooks/usePageStore";
 
@@ -65,7 +65,7 @@ function ForgotPasswordPage() {
       setEmail("");
       router.replace("/");
 
-      toast.success("Reset email sent!", {
+      toast.success("Reset link sent! Check your email.", {
         className: "bg-neutral-300 border-2 border-neutral-800 rounded-xl",
         progressClassName: "bg-green-500",
         autoClose: 2000,
@@ -73,6 +73,7 @@ function ForgotPasswordPage() {
       });
     } catch (error) {
       console.error("Error sending reset email", error);
+      setErrors({ ...errors, firebaseError: (error as Error).message });
     } finally {
       setLoading(false);
     }
@@ -150,7 +151,7 @@ function ForgotPasswordPage() {
             disabled={loading}
             className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
           >
-            {loading ? "Sending reset..." : "Reset"}
+            {loading ? "Sending link..." : "Submit"}
           </button>
 
           {errors.firebaseError && (

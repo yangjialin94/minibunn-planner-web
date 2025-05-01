@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { fetchUser } from "@/api/user";
 import { auth } from "@/auth/firebaseClient"; // Handle sign in with email and password
 import { usePageStore } from "@/hooks/usePageStore";
+import { useUserStore } from "@/hooks/useUserStore";
 
 /**
  * Register Page
@@ -25,6 +26,9 @@ function RegisterPage() {
     firebaseError: "",
   });
   const [loading, setLoading] = useState(false);
+
+  const setName = useUserStore((state) => state.setName);
+  const setEmail = useUserStore((state) => state.setEmail);
 
   // Set the page to auth
   useEffect(() => {
@@ -57,6 +61,10 @@ function RegisterPage() {
     try {
       await createUserWithEmailAndPassword(auth, form.email, form.password);
       const user = await fetchUser();
+
+      // Set user details in the store
+      setName(user.name);
+      setEmail(user.email);
 
       if (user.is_subscribed) {
         router.push("/calendar");

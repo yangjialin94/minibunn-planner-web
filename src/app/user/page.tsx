@@ -3,20 +3,21 @@
 import clsx from "clsx";
 import React, { useEffect } from "react";
 
+import ChangePassword from "@/components/user/ChangePassword";
 import Subscription from "@/components/user/Subscription";
 import Support from "@/components/user/Support";
 import { usePageStore } from "@/hooks/usePageStore";
 
 interface UserHeaderProps {
-  userTab: "subscription" | "support";
-  setUserTab: (tab: "subscription" | "support") => void;
+  userTab: "subscription" | "support" | "password";
+  setUserTab: (tab: "subscription" | "support" | "password") => void;
 }
 
 /**
  * User Header
  */
 function UserHeader({ userTab, setUserTab }: UserHeaderProps) {
-  const handleTabChange = (tab: "subscription" | "support") => {
+  const handleTabChange = (tab: "subscription" | "support" | "password") => {
     setUserTab(tab);
   };
 
@@ -29,6 +30,14 @@ function UserHeader({ userTab, setUserTab }: UserHeaderProps) {
         onClick={() => handleTabChange("subscription")}
       >
         Subscription
+      </button>
+      <button
+        className={clsx("user-tab-btn", {
+          selected: userTab === "password",
+        })}
+        onClick={() => handleTabChange("password")}
+      >
+        Password
       </button>
       <button
         className={clsx("user-tab-btn", {
@@ -62,7 +71,13 @@ function UserPage() {
       <UserHeader userTab={userTab} setUserTab={setUserTab} />
 
       {/* Content */}
-      {userTab === "subscription" ? <Subscription /> : <Support />}
+      {userTab === "subscription" ? (
+        <Subscription />
+      ) : userTab === "support" ? (
+        <Support />
+      ) : (
+        <ChangePassword />
+      )}
     </>
   );
 }
