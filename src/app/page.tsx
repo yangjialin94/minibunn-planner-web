@@ -60,7 +60,7 @@ function LoginPage() {
 
         {/* Forgot Password */}
         <Link
-          href="/auth/reset"
+          href="/auth/forgot-password"
           passHref
           className="mt-4 font-semibold text-neutral-500 underline-offset-8 hover:text-neutral-800 hover:underline"
         >

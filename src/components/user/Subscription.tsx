@@ -50,7 +50,7 @@ function Subscription() {
         className: "bg-neutral-300 border-2 border-neutral-800 rounded-xl",
         progressClassName: "bg-green-500",
         autoClose: 4000,
-        position: "bottom-left",
+        position: "bottom-center",
       });
 
       queryClient.invalidateQueries({ queryKey: ["subscription"] });

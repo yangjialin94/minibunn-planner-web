@@ -62,7 +62,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
         // User is signed out
         Cookies.remove("token");
         setUser(null);
-        router.replace("/");
 
         console.warn("No user — signed out.");
       }
@@ -72,16 +71,24 @@ function AuthProvider({ children }: { children: ReactNode }) {
     return () => unsubscribe();
   }, [queryClient, router]);
 
-  // Redirect to home if no token and on a protected route
+  // Redirect if user is not authenticated and trying to access a protected route
   useEffect(() => {
     const token = Cookies.get("token");
-    const isProtectedRoute = pathname === "/" || pathname.startsWith("/auth");
+    const path = pathname || "/";
 
-    if (typeof window !== "undefined" && !token && !isProtectedRoute) {
-      console.warn("No token — redirecting to home");
+    // public: only root and /auth/*
+    const isPublic =
+      path === "/" ||
+      path.startsWith("/auth") ||
+      path.startsWith("/_next") ||
+      path.startsWith("/favicon.ico");
+
+    // if this is NOT public, AND we have no token, go home
+    if (!token && !isPublic) {
+      console.warn(`No token for ${path}, redirecting home`);
       router.replace("/");
     }
-  }, [pathname, router, user]);
+  }, [pathname, router]);
 
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>

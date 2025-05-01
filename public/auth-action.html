@@ -1,0 +1,17 @@
+<!-- public/auth-action.html -->
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"/><title>Redirecting…</title></head>
+<body>
+  <script>
+    // Grab the continueUrl param and send the user on their way:
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('continueUrl');
+    if (redirect) {
+      window.location.href = redirect + window.location.search;
+    } else {
+      document.body.textContent = 'Invalid reset link.'
+    }
+  </script>
+</body>
+</html>

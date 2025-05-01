@@ -26,3 +26,9 @@ NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
 NEXT_PUBLIC_FIREBASE_APP_ID=
 ```
+
+## Deploy to Firebase
+
+```bash
+firebase deploy --only hosting
+```
