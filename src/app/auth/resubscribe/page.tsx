@@ -1,5 +1,6 @@
 "use client";
 
+import { Check } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -59,11 +60,18 @@ function SubscribePage() {
         <div className="mt-4 mb-6 text-center">
           <h1 className="mb-4 text-3xl font-bold">Plans & Pricing</h1>
           <ul className="mx-auto flex max-w-xs list-inside flex-col gap-1 text-center text-neutral-500">
-            <li className="underline underline-offset-4">
+            <li className="flex items-center gap-2">
+              <Check />
               Unlimited Tasks & Journals
             </li>
-            <li className="underline underline-offset-4">Progress Tracking</li>
-            <li className="underline underline-offset-4">Notes Management</li>
+            <li className="flex items-center gap-2">
+              <Check />
+              Progress Tracking
+            </li>
+            <li className="flex items-center gap-2">
+              <Check />
+              Notes Management
+            </li>
           </ul>
         </div>
 
