@@ -1,5 +1,9 @@
+html {
+  @apply h-[100dvh];
+}
+
 body {
-  @apply flex min-h-screen flex-col bg-neutral-100 p-4 text-sm text-neutral-800 lg:text-base;
+  @apply flex h-full flex-col bg-neutral-100 p-4 text-sm text-neutral-800 lg:text-base;
 }
 
 .main-container {
@@ -11,7 +15,7 @@ header {
 }
 
 .sidebar-main {
-  @apply flex h-[calc(100vh-94px)];
+  @apply flex h-[calc(100dvh-94px)];
 }
 
 main {
@@ -27,7 +31,7 @@ h2 {
 }
 
 .page-content {
-  @apply flex h-full flex-col rounded-xl;
+  @apply flex h-full flex-col;
 }
 
 /**

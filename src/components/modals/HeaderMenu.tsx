@@ -137,6 +137,10 @@ function HeaderMenu() {
                   <User />
                   <span>User</span>
                 </button>
+
+                {/* Divider */}
+                <hr className="w-full border-t-2 border-neutral-200" />
+
                 <button onClick={handleSignOut} className="sidebar-item">
                   <LogOut />
                   <span>Sign out</span>
