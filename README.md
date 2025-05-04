@@ -5,6 +5,9 @@
 ```bash
 npm install
 npm run dev
+
+# Test mobile
+ngrok http 3000
 ```
 
 ## Environment Variables
