@@ -27,6 +27,7 @@ const TimeDisplay = memo(() => {
 
   return <p>{currentLocalTime}</p>;
 });
+
 TimeDisplay.displayName = "TimeDisplay";
 
 function Header() {

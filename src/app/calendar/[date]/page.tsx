@@ -9,7 +9,11 @@ import React, { useEffect } from "react";
 import Journal from "@/components/journal/Journal";
 import Tasks from "@/components/task/Tasks";
 import { usePageStore } from "@/hooks/usePageStore";
-import { formatDateLocalNoTime, parseLocalDate } from "@/utils/date";
+import {
+  formatDateLocalNoTime,
+  formatDateWithWeekday,
+  parseLocalDate,
+} from "@/utils/date";
 
 interface DailyHeaderProps {
   dateStr: string;
@@ -24,6 +28,7 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
   const router = useRouter();
 
   const date = parseLocalDate(dateStr);
+  const headerDate = formatDateWithWeekday(dateStr);
 
   const handleTabChange = (tab: "tasks" | "journal") => {
     setDailyTab(tab);
@@ -42,7 +47,7 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
       {/* Header for larger screens */}
       <div className="hidden sm:block">
         <div className="daily-header">
-          <h2>{dateStr}</h2>
+          <h2>{headerDate}</h2>
           <div className="flex items-center gap-1 lg:gap-2">
             <button
               className={clsx("daily-tab-btn", {
@@ -76,7 +81,7 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
       <div className="block sm:hidden">
         <div className="flex flex-col">
           <div className="daily-header">
-            <h2>{dateStr}</h2>
+            <h2>{headerDate}</h2>
             <div className="flex items-center gap-1 lg:gap-2">
               <button className="daily-arrow-btn" onClick={handleClickPrev}>
                 <ChevronLeft />
