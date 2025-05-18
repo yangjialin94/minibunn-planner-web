@@ -9,6 +9,7 @@ const clientEnvSchema = z.object({
   // Subscription prices
   NEXT_PUBLIC_MONTHLY_SUBSCRIPTION_PRICE_ID: z.string().min(1),
   NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PRICE_ID: z.string().min(1),
+  NEXT_PUBLIC_LIFETIME_PRICE_ID: z.string().min(1),
 
   // Firebase config
   NEXT_PUBLIC_FIREBASE_API_KEY: z.string().min(1),
@@ -30,6 +31,7 @@ export const env = clientEnvSchema.parse({
     process.env.NEXT_PUBLIC_MONTHLY_SUBSCRIPTION_PRICE_ID,
   NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PRICE_ID:
     process.env.NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PRICE_ID,
+  NEXT_PUBLIC_LIFETIME_PRICE_ID: process.env.NEXT_PUBLIC_LIFETIME_PRICE_ID,
 
   // Firebase config
   NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -52,6 +54,7 @@ export const {
   // Subscription prices
   NEXT_PUBLIC_MONTHLY_SUBSCRIPTION_PRICE_ID,
   NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PRICE_ID,
+  NEXT_PUBLIC_LIFETIME_PRICE_ID,
 
   // Firebase config
   NEXT_PUBLIC_FIREBASE_API_KEY,

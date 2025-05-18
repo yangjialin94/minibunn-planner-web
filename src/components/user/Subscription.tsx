@@ -86,36 +86,37 @@ function Subscription() {
           </p>
         </div>
 
-        <div className="flex w-full justify-between border-b border-neutral-400">
-          <p className="font-semibold">
-            {data?.cancel_at_period_end
-              ? "Cancellation Date"
-              : "Next Billing Date"}
-          </p>
-          <p>{data?.period_end_date}</p>
-        </div>
-        {/* 
-        <div className="flex w-full justify-between border-b border-neutral-400">
-          <p className="font-semibold">Cancel at Period End</p>
-          <p>{data?.cancel_at_period_end ? "Yes" : "No"}</p>
-        </div> */}
-
-        {data?.cancel_at_period_end ? (
-          <Link
-            className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
-            href="/auth/resubscribe"
-          >
-            Renew Subscription
-          </Link>
-        ) : (
-          <button
-            disabled={canceling}
-            className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
-            onClick={handleUnsubscribe}
-          >
-            {canceling ? "Cancelling..." : "Cancel Subscription"}
-          </button>
+        {data?.plan_name !== "Lifetime Access" && (
+          <div className="flex w-full justify-between border-b border-neutral-400">
+            <p className="font-semibold">
+              {data?.cancel_at_period_end
+                ? "Cancellation Date"
+                : "Next Billing Date"}
+            </p>
+            <p>{data?.period_end_date}</p>
+          </div>
         )}
+
+        {data?.plan_name !== "Lifetime Access" &&
+          data?.cancel_at_period_end && (
+            <Link
+              className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
+              href="/auth/resubscribe"
+            >
+              Renew Subscription
+            </Link>
+          )}
+
+        {data?.plan_name !== "Lifetime Access" &&
+          data?.cancel_at_period_end && (
+            <button
+              disabled={canceling}
+              className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
+              onClick={handleUnsubscribe}
+            >
+              {canceling ? "Cancelling..." : "Cancel Subscription"}
+            </button>
+          )}
 
         {error && <p className="text-center text-sm text-red-500">{error}</p>}
       </div>
