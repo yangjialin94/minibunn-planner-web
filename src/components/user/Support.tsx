@@ -47,7 +47,7 @@ function Support() {
           <Link
             href={item.link}
             key={index}
-            className="rounded-xl border p-4 hover:border-2"
+            className="rounded-xl border p-4 hover:ring-2"
           >
             <div className="flex flex-col gap-2">
               <h2 className="text-lg font-semibold">{item.title}</h2>

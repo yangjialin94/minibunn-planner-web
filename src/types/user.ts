@@ -10,3 +10,8 @@ export type User = {
   subscription_status: string;
   is_subscribed: boolean;
 };
+
+export type UserUpdate = {
+  name?: string;
+  // email?: string;
+};

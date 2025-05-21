@@ -7,7 +7,6 @@ import { useState } from "react";
 
 import { fetchUser } from "@/api/user";
 import { auth } from "@/auth/firebaseClient";
-import { useUserStore } from "@/hooks/useUserStore";
 
 /**
  * Sign In Form
@@ -22,9 +21,6 @@ function SignInForm() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-
-  const setName = useUserStore((state) => state.setName);
-  const setEmail = useUserStore((state) => state.setEmail);
 
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,10 +48,6 @@ function SignInForm() {
     try {
       await signInWithEmailAndPassword(auth, form.email, form.password);
       const user = await fetchUser();
-
-      // Set user details in the store
-      setName(user.name);
-      setEmail(user.email);
 
       if (user.is_subscribed) {
         router.push("/calendar");

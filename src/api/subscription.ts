@@ -38,14 +38,14 @@ export async function fetchSubscriptionStatus(): Promise<Subscription> {
 /**
  * Cancel subscription.
  */
-export async function cancelSubscription(): Promise<string> {
-  const res = await apiFetch(
-    `${NEXT_PUBLIC_API_URL}/api/stripe/cancel-subscription/`,
-    {
-      method: "POST",
-    },
-  );
-  if (!res.ok) throw new Error("Failed to cancel subscription");
-  const data = await res.json();
-  return data.message;
-}
+// export async function cancelSubscription(): Promise<string> {
+//   const res = await apiFetch(
+//     `${NEXT_PUBLIC_API_URL}/api/stripe/cancel-subscription/`,
+//     {
+//       method: "POST",
+//     },
+//   );
+//   if (!res.ok) throw new Error("Failed to cancel subscription");
+//   const data = await res.json();
+//   return data.message;
+// }

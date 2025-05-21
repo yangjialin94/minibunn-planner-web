@@ -7,16 +7,12 @@ import React from "react";
 
 import { fetchUser } from "@/api/user";
 import { auth } from "@/auth/firebaseClient";
-import { useUserStore } from "@/hooks/useUserStore";
 
 /**
  * Google Sign In Button
  */
 function GoogleSignInButton() {
   const router = useRouter();
-
-  const setName = useUserStore((state) => state.setName);
-  const setEmail = useUserStore((state) => state.setEmail);
 
   // Handle Google sign in
   const handleGoogleSignIn = async () => {
@@ -25,10 +21,6 @@ function GoogleSignInButton() {
     try {
       await signInWithPopup(auth, provider);
       const user = await fetchUser();
-
-      // Set user details in the store
-      setName(user.name);
-      setEmail(user.email);
 
       if (user.is_subscribed) {
         router.push("/calendar");

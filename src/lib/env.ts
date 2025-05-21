@@ -6,7 +6,7 @@ const clientEnvSchema = z.object({
   NEXT_PUBLIC_API_URL: z.string().url(),
   NEXT_PUBLIC_ENVIRONMENT: z.enum(["dev", "qa", "prod"]),
 
-  // Subscription prices
+  // Subscription
   NEXT_PUBLIC_MONTHLY_SUBSCRIPTION_PRICE_ID: z.string().min(1),
   NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PRICE_ID: z.string().min(1),
   NEXT_PUBLIC_LIFETIME_PRICE_ID: z.string().min(1),
@@ -18,6 +18,7 @@ const clientEnvSchema = z.object({
   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: z.string().min(1),
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: z.string().min(1),
   NEXT_PUBLIC_FIREBASE_APP_ID: z.string().min(1),
+  NEXT_PUBLIC_CUSTOMER_PORTAL_LINK: z.string().min(1),
 });
 
 // Validate the env vars at build time
@@ -43,6 +44,8 @@ export const env = clientEnvSchema.parse({
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID:
     process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  NEXT_PUBLIC_CUSTOMER_PORTAL_LINK:
+    process.env.NEXT_PUBLIC_CUSTOMER_PORTAL_LINK,
 });
 
 // Convenient named exports ↓ no need to dot‑access each time
@@ -63,6 +66,7 @@ export const {
   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   NEXT_PUBLIC_FIREBASE_APP_ID,
+  NEXT_PUBLIC_CUSTOMER_PORTAL_LINK,
 } = env;
 
 export type Env = z.infer<typeof clientEnvSchema>;

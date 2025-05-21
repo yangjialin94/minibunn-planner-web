@@ -3,21 +3,20 @@
 import clsx from "clsx";
 import React, { useEffect } from "react";
 
-import ChangePassword from "@/components/user/ChangePassword";
-import Subscription from "@/components/user/Subscription";
+import Account from "@/components/user/Account";
 import Support from "@/components/user/Support";
 import { usePageStore } from "@/hooks/usePageStore";
 
 interface UserHeaderProps {
-  userTab: "subscription" | "support" | "password";
-  setUserTab: (tab: "subscription" | "support" | "password") => void;
+  userTab: "account" | "support";
+  setUserTab: (tab: "account" | "support") => void;
 }
 
 /**
  * User Header
  */
 function UserHeader({ userTab, setUserTab }: UserHeaderProps) {
-  const handleTabChange = (tab: "subscription" | "support" | "password") => {
+  const handleTabChange = (tab: "account" | "support") => {
     setUserTab(tab);
   };
 
@@ -25,19 +24,11 @@ function UserHeader({ userTab, setUserTab }: UserHeaderProps) {
     <div className="user-header">
       <button
         className={clsx("user-tab-btn", {
-          selected: userTab === "subscription",
+          selected: userTab === "account",
         })}
-        onClick={() => handleTabChange("subscription")}
+        onClick={() => handleTabChange("account")}
       >
-        Subscription
-      </button>
-      <button
-        className={clsx("user-tab-btn", {
-          selected: userTab === "password",
-        })}
-        onClick={() => handleTabChange("password")}
-      >
-        Password
+        Account
       </button>
       <button
         className={clsx("user-tab-btn", {
@@ -71,12 +62,12 @@ function UserPage() {
       <UserHeader userTab={userTab} setUserTab={setUserTab} />
 
       {/* Content */}
-      {userTab === "subscription" ? (
-        <Subscription />
+      {userTab === "account" ? (
+        <Account />
       ) : userTab === "support" ? (
         <Support />
       ) : (
-        <ChangePassword />
+        <h1>Page is not found</h1>
       )}
     </>
   );
