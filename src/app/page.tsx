@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
@@ -12,11 +13,21 @@ import { usePageStore } from "@/hooks/usePageStore";
  * Login Page
  */
 function LoginPage() {
+  const router = useRouter();
+
+  // Set the page
   const setPage = usePageStore((state) => state.setPage);
 
   useEffect(() => {
     setPage("auth");
   }, [setPage]);
+
+  // Check if the user is already logged in
+  useEffect(() => {
+    if (document.cookie.includes("token")) {
+      router.replace("/calendar");
+    }
+  }, [router]);
 
   return (
     <div className="auth-container">
