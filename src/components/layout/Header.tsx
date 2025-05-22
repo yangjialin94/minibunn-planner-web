@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { memo, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import HeaderMenu from "@/components/modals/HeaderMenu";
 import { usePageStore } from "@/hooks/usePageStore";
@@ -11,7 +11,7 @@ import { formatDateLocal } from "@/utils/date";
 
 const MotionLink = motion.create(Link);
 
-const TimeDisplay = memo(() => {
+const TimeDisplay = () => {
   const [currentLocalTime, setCurrentLocalTime] = useState(() =>
     formatDateLocal(new Date()),
   );
@@ -26,9 +26,7 @@ const TimeDisplay = memo(() => {
   }, []);
 
   return <p>{currentLocalTime}</p>;
-});
-
-TimeDisplay.displayName = "TimeDisplay";
+};
 
 function Header() {
   const page = usePageStore((state) => state.page);
