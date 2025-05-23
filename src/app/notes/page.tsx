@@ -14,18 +14,21 @@ import { useAuth } from "@/hooks/useAuth";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Note, NoteCreate } from "@/types/note";
 
+interface NotesHeaderProps {
+  data: Note[];
+  topRef: React.RefObject<HTMLDivElement | null>;
+}
+
 /**
  * Notes Header
  */
-function NotesHeader({ data }: { data: Note[] }) {
-  // Refs
-  const topRef = useRef<HTMLDivElement>(null);
-
+function NotesHeader({ data, topRef }: NotesHeaderProps) {
   // Query client
   const queryClient = useQueryClient();
 
   // Handle scroll to top
   const scrollToTop = () => {
+    console.log("Scrolling to top", topRef.current);
     if (topRef.current) {
       topRef.current.scrollIntoView({
         behavior: "smooth",
@@ -77,9 +80,6 @@ function NotesHeader({ data }: { data: Note[] }) {
           />
         )}
       </div>
-
-      {/* Ref for the top */}
-      <div ref={topRef} className="invisible h-0" />
     </>
   );
 }
@@ -88,6 +88,9 @@ function NotesHeader({ data }: { data: Note[] }) {
  * Notes Page
  */
 function NotesPage() {
+  // Refs
+  const topRef = useRef<HTMLDivElement>(null);
+
   // Page state
   const setPage = usePageStore((state) => state.setPage);
 
@@ -119,10 +122,10 @@ function NotesPage() {
   return (
     <>
       {/* Header */}
-      <NotesHeader data={data} />
+      <NotesHeader data={data} topRef={topRef} />
 
       {/* Notes List */}
-      <Notes data={data} />
+      <Notes data={data} topRef={topRef} />
     </>
   );
 }

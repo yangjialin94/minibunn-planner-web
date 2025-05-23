@@ -13,10 +13,15 @@ import { updateNote } from "@/api/notes";
 import NoteItem from "@/components/note/NoteItem";
 import { Note } from "@/types/note";
 
+interface NotesProps {
+  data: Note[];
+  topRef: React.RefObject<HTMLDivElement | null>;
+}
+
 /**
  * Sortable Item List for Notes
  */
-function Notes({ data }: { data: Note[] }) {
+function Notes({ data, topRef }: NotesProps) {
   const [orderedNotes, setOrderedNotes] = useState<Note[]>([]);
 
   // Query client
@@ -60,6 +65,10 @@ function Notes({ data }: { data: Note[] }) {
 
   return (
     <div className="overflow-y-auto p-4 md:p-6">
+      {/* Ref for the top */}
+      <div ref={topRef} />
+
+      {/* Notes */}
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext
           items={orderedNotes}
