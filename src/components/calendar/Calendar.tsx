@@ -14,13 +14,14 @@ import {
 } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { fetchTasksCompletionInRange } from "@/api/tasks";
 import Error from "@/components/elements/Error";
 import Loading from "@/components/elements/Loading";
 import { usePageStore } from "@/hooks/usePageStore";
 import { TaskCompletion } from "@/types/task";
+import { formatDateLocalNoTime } from "@/utils/date";
 
 /**
  * Header component for the calendar
@@ -87,6 +88,24 @@ function Cells({
 }) {
   const router = useRouter();
 
+  // Track the current date
+  const [today, setToday] = useState(formatDateLocalNoTime(new Date()));
+
+  useEffect(() => {
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0); // set to next midnight
+
+    const msUntilMidnight = midnight.getTime() - now.getTime();
+
+    // Set a timeout to update the date at midnight
+    const timeout = setTimeout(() => {
+      setToday(formatDateLocalNoTime(new Date()));
+    }, msUntilMidnight);
+
+    return () => clearTimeout(timeout);
+  }, [today]);
+
   // Get the start date of the month and the previous Sunday
   const monthStart = startOfMonth(calendarDate); // first day of the month
   const startDate = startOfWeek(monthStart, { weekStartsOn: 0 }); // previous Sunday
@@ -102,7 +121,7 @@ function Cells({
     const dayFormatted = format(day, "d");
     const dateStr = format(day, "yyyy-MM-dd");
     const isCurrentMonth = isSameMonth(day, monthStart);
-    const isToday = isSameDay(day, new Date());
+    const isToday = isSameDay(day, today);
     const summary = completions[dateStr];
 
     cells.push(
