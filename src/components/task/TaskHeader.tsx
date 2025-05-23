@@ -11,6 +11,7 @@ import { Task, TaskCreate } from "@/types/task";
 interface TaskHeaderProps {
   tasks: Task[];
   dateStr: string;
+  topRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const options = [
@@ -19,10 +20,7 @@ const options = [
   { id: "completed", label: "Completed" },
 ];
 
-function TaskHeader({ tasks, dateStr }: TaskHeaderProps) {
-  // Refs
-  const topRef = React.useRef<HTMLDivElement | null>(null);
-
+function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
   // Page store
   const taskFilter = usePageStore((state) => state.taskFilter);
   const setTaskFilter = usePageStore((state) => state.setTaskFilter);

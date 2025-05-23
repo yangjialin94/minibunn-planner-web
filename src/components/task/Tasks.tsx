@@ -8,7 +8,7 @@ import {
 } from "@dnd-kit/sortable";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { fetchTasksInRange } from "@/api/tasks";
 import { updateTask } from "@/api/tasks";
@@ -24,6 +24,9 @@ import { Task } from "@/types/task";
  * Sortable Item List for Tasks
  */
 function Tasks({ dateStr }: { dateStr: string }) {
+  // Refs
+  const topRef = useRef<HTMLDivElement>(null);
+
   // Page store
   const taskFilter = usePageStore((state) => state.taskFilter);
 
@@ -90,10 +93,14 @@ function Tasks({ dateStr }: { dateStr: string }) {
   return (
     <>
       {/* Header */}
-      <TaskHeader tasks={orderedTasks} dateStr={dateStr} />
+      <TaskHeader tasks={orderedTasks} dateStr={dateStr} topRef={topRef} />
 
       {/* Task List */}
       <div className="overflow-y-auto p-4 md:p-6">
+        {/* Ref for the top */}
+        <div ref={topRef} />
+
+        {/* Tasks */}
         <DndContext
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}

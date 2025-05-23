@@ -28,7 +28,6 @@ function NotesHeader({ data, topRef }: NotesHeaderProps) {
 
   // Handle scroll to top
   const scrollToTop = () => {
-    console.log("Scrolling to top", topRef.current);
     if (topRef.current) {
       topRef.current.scrollIntoView({
         behavior: "smooth",
