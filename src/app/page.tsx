@@ -1,5 +1,6 @@
 "use client";
 
+import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -24,7 +25,8 @@ function LoginPage() {
 
   // Check if the user is already logged in
   useEffect(() => {
-    if (document.cookie.includes("token")) {
+    if (Cookies.get("token")) {
+      console.log("User is already logged in");
       router.replace("/calendar");
     }
   }, [router]);
