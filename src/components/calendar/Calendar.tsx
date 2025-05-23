@@ -6,7 +6,6 @@ import {
   addDays,
   addMonths,
   format,
-  isSameDay,
   isSameMonth,
   startOfMonth,
   startOfWeek,
@@ -121,7 +120,7 @@ function Cells({
     const dayFormatted = format(day, "d");
     const dateStr = format(day, "yyyy-MM-dd");
     const isCurrentMonth = isSameMonth(day, monthStart);
-    const isToday = isSameDay(day, today);
+    const isToday = dateStr === today;
     const summary = completions[dateStr];
 
     cells.push(
