@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { addDays, subDays } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import Journal from "@/components/journal/Journal";
 import Tasks from "@/components/task/Tasks";
@@ -128,29 +128,12 @@ function DailyPage() {
   const setPage = usePageStore((state) => state.setPage);
   const dailyTab = usePageStore((state) => state.dailyTab);
   const setDailyTab = usePageStore((state) => state.setDailyTab);
+  const today = usePageStore((state) => state.today);
 
-  // Track the current date
-  const [today, setToday] = useState(formatDateLocalNoTime(new Date()));
-
-  useEffect(() => {
-    const now = new Date();
-    const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0); // set to next midnight
-
-    const msUntilMidnight = midnight.getTime() - now.getTime();
-
-    // Set a timeout to update the date at midnight
-    const timeout = setTimeout(() => {
-      setToday(formatDateLocalNoTime(new Date()));
-    }, msUntilMidnight);
-
-    return () => clearTimeout(timeout);
-  }, [today]);
-
-  // Set the current date
+  // Get the selected date or default to today
   const dateStr = date ? (Array.isArray(date) ? date[0] : date) : today;
 
-  // Track the current page
+  // Check if the selected date is today
   useEffect(() => {
     if (dateStr === today) {
       setPage("today");

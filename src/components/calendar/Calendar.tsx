@@ -13,14 +13,13 @@ import {
 } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { fetchTasksCompletionInRange } from "@/api/tasks";
 import Error from "@/components/elements/Error";
 import Loading from "@/components/elements/Loading";
 import { usePageStore } from "@/hooks/usePageStore";
 import { TaskCompletion } from "@/types/task";
-import { formatDateLocalNoTime } from "@/utils/date";
 
 /**
  * Header component for the calendar
@@ -86,24 +85,7 @@ function Cells({
   completions: Record<string, TaskCompletion>;
 }) {
   const router = useRouter();
-
-  // Track the current date
-  const [today, setToday] = useState(formatDateLocalNoTime(new Date()));
-
-  useEffect(() => {
-    const now = new Date();
-    const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0); // set to next midnight
-
-    const msUntilMidnight = midnight.getTime() - now.getTime();
-
-    // Set a timeout to update the date at midnight
-    const timeout = setTimeout(() => {
-      setToday(formatDateLocalNoTime(new Date()));
-    }, msUntilMidnight);
-
-    return () => clearTimeout(timeout);
-  }, [today]);
+  const today = usePageStore((state) => state.today);
 
   // Get the start date of the month and the previous Sunday
   const monthStart = startOfMonth(calendarDate); // first day of the month
@@ -134,11 +116,12 @@ function Cells({
         <div
           className={clsx(
             "absolute top-1 right-1 flex size-4 items-center justify-center rounded-full text-sm md:size-8 md:border lg:top-2 lg:right-2 lg:p-4",
-            { "border-neutral-300 text-neutral-300": !isCurrentMonth },
             {
               "border-neutral-800 text-neutral-800": isCurrentMonth && !isToday,
-            },
-            {
+              "border-neutral-300 text-neutral-300":
+                !isCurrentMonth && !isToday,
+              "border-neutral-300 font-bold text-green-500 md:bg-green-300 md:text-neutral-800":
+                !isCurrentMonth && isToday,
               "border-neutral-800 font-bold text-green-500 md:bg-green-300 md:text-neutral-800":
                 isCurrentMonth && isToday,
             },
