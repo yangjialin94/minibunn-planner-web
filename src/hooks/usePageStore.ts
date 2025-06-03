@@ -23,33 +23,57 @@ type PageState = {
 };
 
 export const usePageStore = create<PageState>((set) => {
-  // Function to update the today at midnight
-  const midnightUpdate = () => {
+  // Function to update today's date if it has changed
+  const startDateCheckLoop = () => {
+    // Skip if running on the server
+    if (typeof window === "undefined") return;
+
+    const checkDateChange = () => {
+      const currentStr = formatDateLocalNoTime(new Date());
+      const currentToday = usePageStore.getState().today;
+
+      if (currentStr !== currentToday) {
+        console.log("🟢 Detected date change, updating today to:", currentStr);
+        usePageStore.getState().setToday(currentStr);
+      }
+
+      requestAnimationFrame(checkDateChange); // Schedule the next check
+    };
+
+    requestAnimationFrame(checkDateChange); // Start the loop
+  };
+
+  // Start the timeout to update today's date at midnight
+  const scheduleMidnightUpdate = () => {
+    // Skip if running on the server
+    if (typeof window === "undefined") return;
+
+    // Get current date and calculate next midnight
     const now = new Date();
     const nextMidnight = new Date();
     nextMidnight.setHours(24, 0, 0, 0);
 
     // Calculate milliseconds until next midnight with 1000ms buffer
     const msUntilMidnight = nextMidnight.getTime() - now.getTime() + 1000;
-
-    // Testing: Log for debugging
-    // console.log("⏰ Scheduling midnight update in:", msUntilMidnight, "ms");
-    // console.log("🕒 Current time:", now.toLocaleString());
-    // console.log("🌙 Next midnight target:", nextMidnight.toLocaleString());
+    console.log("⏰ Scheduling midnight update in:", msUntilMidnight, "ms");
 
     // Set a timeout to update the today date at midnight
     setTimeout(() => {
       const newTodayStr = formatDateLocalNoTime(new Date());
-      console.log("Updating today to:", newTodayStr);
+      console.log("🌙 Midnight update: setting today to:", newTodayStr);
       set({ today: newTodayStr });
 
       // Schedule the next midnight update
-      midnightUpdate();
+      scheduleMidnightUpdate();
     }, msUntilMidnight);
   };
 
+  // Initialize today's date in "YYYY-MM-DD" format
+  const todayStr = formatDateLocalNoTime(new Date());
+
   // Start the midnight timer immediately on store creation
-  midnightUpdate();
+  startDateCheckLoop();
+  scheduleMidnightUpdate();
 
   return {
     page: "calendar",
@@ -58,7 +82,7 @@ export const usePageStore = create<PageState>((set) => {
     taskFilter: "all",
     userTab: "account",
     isModalOpen: false,
-    today: formatDateLocalNoTime(new Date()),
+    today: todayStr,
 
     setPage: (page: PageType) => set({ page: page }),
     setCalendarDate: (date: Date) => set({ calendarDate: date }),
