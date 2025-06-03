@@ -27,6 +27,9 @@ function Journal({ dateStr }: { dateStr: string }) {
   // Refs
   const subjectTextareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // First load state
+  const [firstLoad, setFirstLoad] = useState(true);
+
   // Check if the user is authenticated
   const { user } = useAuth();
   const tokenReady = !!user;
@@ -52,14 +55,15 @@ function Journal({ dateStr }: { dateStr: string }) {
 
   // Load journal entry into state and resize the textarea
   useEffect(() => {
-    if (data) {
+    if (data && firstLoad) {
       setId(data.id);
       setSubject(data.subject);
       setEntry(data.entry);
+      setFirstLoad(false);
     }
 
     resizeSubjectTextarea();
-  }, [data]);
+  }, [data, firstLoad]);
 
   // Handle the journal update
   const { mutate: mutateJournal } = useMutation({
