@@ -12,6 +12,7 @@ type PageState = {
   userTab: "account" | "support"; // tab for user page
   isModalOpen: boolean; // state for modal visibility
   today: string; // current date in "YYYY-MM-DD" format
+  notesFilter: string; // search term for notes
 
   setPage: (page: PageType) => void;
   setCalendarDate: (date: Date) => void;
@@ -20,6 +21,7 @@ type PageState = {
   setUserTab: (tab: "account" | "support") => void;
   setIsModalOpen: (isOpen: boolean) => void;
   setToday: (date: string) => void;
+  setNotesFilter: (searchTerm: string) => void;
 };
 
 export const usePageStore = create<PageState>((set) => {
@@ -83,6 +85,7 @@ export const usePageStore = create<PageState>((set) => {
     userTab: "account",
     isModalOpen: false,
     today: todayStr,
+    notesFilter: "",
 
     setPage: (page: PageType) => set({ page: page }),
     setCalendarDate: (date: Date) => set({ calendarDate: date }),
@@ -91,5 +94,6 @@ export const usePageStore = create<PageState>((set) => {
     setUserTab: (tab: "account" | "support") => set({ userTab: tab }),
     setIsModalOpen: (isOpen: boolean) => set({ isModalOpen: isOpen }),
     setToday: (date: string) => set({ today: date }),
+    setNotesFilter: (searchTerm: string) => set({ notesFilter: searchTerm }),
   };
 });

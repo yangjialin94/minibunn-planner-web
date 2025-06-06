@@ -11,10 +11,16 @@ import IconButton from "@/components/elements/IconButton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Note } from "@/types/note";
 
+interface NoteItemProps {
+  id: number;
+  note: Note;
+  isDraggable: boolean;
+}
+
 /**
  * Sortable Item for Notes
  */
-function NoteItem({ id, note }: { id: number; note: Note }) {
+function NoteItem({ id, note, isDraggable }: NoteItemProps) {
   // Detail
   const [detail, setDetail] = useState(note.detail);
   const debouncedDetail = useDebounce(detail, 300);
@@ -126,12 +132,14 @@ function NoteItem({ id, note }: { id: number; note: Note }) {
         {...listeners}
         className="peer absolute top-1/2 -left-4 z-10 hidden -translate-y-1/2 transform group-hover:block"
       >
-        <div className="relative">
-          <button className="peer cursor-grab rounded-full border border-neutral-800 bg-neutral-100 p-2 hover:bg-neutral-300 hover:ring">
-            <GripVertical size={16} />
-          </button>
-          <div className="tool-tip top">Drag</div>
-        </div>
+        {isDraggable && (
+          <div className="relative">
+            <button className="peer cursor-grab rounded-full border border-neutral-800 bg-neutral-100 p-2 hover:bg-neutral-300 hover:ring">
+              <GripVertical size={16} />
+            </button>
+            <div className="tool-tip top">Drag</div>
+          </div>
+        )}
       </div>
 
       {/* Note item */}

@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 
 import { updateNote } from "@/api/notes";
 import NoteItem from "@/components/note/NoteItem";
+import { usePageStore } from "@/hooks/usePageStore";
 import { Note } from "@/types/note";
 
 interface NotesProps {
@@ -22,7 +23,12 @@ interface NotesProps {
  * Sortable Item List for Notes
  */
 function Notes({ data, topRef }: NotesProps) {
+  // Ordered notes state
   const [orderedNotes, setOrderedNotes] = useState<Note[]>([]);
+
+  // Page store
+  const notesFilter = usePageStore((state) => state.notesFilter);
+  const isDraggable = notesFilter.trim() === "" ? true : false;
 
   // Query client
   const queryClient = useQueryClient();
@@ -76,7 +82,23 @@ function Notes({ data, topRef }: NotesProps) {
         >
           <div className="flex flex-col flex-wrap gap-6">
             {orderedNotes.map((note) => {
-              return <NoteItem key={note.id} id={note.id} note={note} />;
+              console.log(note);
+              if (
+                notesFilter &&
+                !note.date.toLowerCase().includes(notesFilter.toLowerCase()) &&
+                !note.detail.toLowerCase().includes(notesFilter.toLowerCase())
+              ) {
+                return null;
+              }
+
+              return (
+                <NoteItem
+                  key={note.id}
+                  id={note.id}
+                  note={note}
+                  isDraggable={isDraggable}
+                />
+              );
             })}
           </div>
         </SortableContext>
