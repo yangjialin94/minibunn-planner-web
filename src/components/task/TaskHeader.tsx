@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
-import { CalendarPlus, LoaderCircle } from "lucide-react";
+import { CalendarPlus, LoaderCircle, SquareCheck } from "lucide-react";
 import React from "react";
 
 import { createTask } from "@/api/tasks";
@@ -47,6 +47,9 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
     onSuccess: () => {
       // Invalidate the tasks query to refresh the data
       queryClient.invalidateQueries({ queryKey: ["tasks", dateStr] });
+      queryClient.invalidateQueries({
+        queryKey: ["tasksCompletion", dateStr],
+      });
 
       // Scroll to the top after a short delay
       setTimeout(() => {
@@ -70,13 +73,13 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
       {/* Header */}
       <div className="task-header">
         {/* Filter buttons */}
-        <div className="flex gap-1 lg:gap-2">
+        <div className="flex gap-2">
           {options.map((option) => (
             <button
               key={option.id}
-              className={clsx("rounded-full border px-2 py-1 lg:px-3 lg:py-2", {
-                "pointer-events-none bg-neutral-200": taskFilter === option.id,
-                "border-transparent hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200":
+              className={clsx("rounded-full px-3 py-2", {
+                "pointer-events-none bg-neutral-300": taskFilter === option.id,
+                "hover:cursor-pointer hover:bg-neutral-300":
                   taskFilter !== option.id,
               })}
               onClick={() => setTaskFilter(option.id)}
@@ -87,13 +90,20 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
         </div>
 
         {/* Progress */}
-        <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:transform">
-          {tasks && (
-            <p className="font-medium">
+        {tasks && tasks.length > 0 && (
+          <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:transform">
+            <span
+              className={clsx(
+                "flex items-center text-base",
+                { "text-green-600": completedTasks.length === tasks.length },
+                { "text-red-600": completedTasks.length < tasks.length },
+              )}
+            >
+              <SquareCheck className="mr-1" size={20} />
               {completedTasks.length}/{tasks.length}
-            </p>
-          )}
-        </div>
+            </span>
+          </div>
+        )}
 
         {/* Create task buttons */}
         <div className="flex gap-2">
@@ -105,7 +115,7 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
             <IconButton
               buttonClassName="action-btn"
               onClick={handleCreateTask}
-              icon={<CalendarPlus />}
+              icon={<CalendarPlus size={20} />}
               tooltipText="Create"
             />
           )}

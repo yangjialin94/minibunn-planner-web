@@ -2,25 +2,29 @@
   * Monthly View
   */
 .cal-header {
-  @apply flex items-center justify-between border-b border-neutral-800 px-4 py-2 backdrop-blur;
+  @apply flex items-center justify-between border-b border-neutral-300 px-4 py-2;
 }
 
 .cal-arrow-btn {
-  @apply rounded-full border border-transparent p-1 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200 lg:p-2;
+  @apply rounded-full p-2 hover:cursor-pointer hover:bg-neutral-300;
 }
 
 .cal-btn {
-  @apply rounded-full border border-transparent px-2 py-1 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200 lg:px-3 lg:py-2;
+  @apply rounded-full px-3 py-2 hover:cursor-pointer hover:bg-neutral-300;
 }
 
 .cal-days {
-  @apply flex border-b border-neutral-800 py-2 backdrop-blur;
+  @apply flex border-b border-neutral-300 py-2;
+}
+
+.cal-cells {
+  @apply grid h-full w-full gap-[1px] bg-neutral-300;
 }
 
 .cal-cells-5 {
-  @apply grid grid-cols-7 grid-rows-5;
+  @apply grid-cols-7 grid-rows-5;
 }
 
 .cal-cells-6 {
-  @apply grid grid-cols-7 grid-rows-6;
+  @apply grid-cols-7 grid-rows-6;
 }

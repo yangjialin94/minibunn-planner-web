@@ -66,7 +66,7 @@ function ForgotPasswordPage() {
       router.replace("/");
 
       toast.success("Reset link sent! Check your email.", {
-        className: "bg-neutral-300 border-2 border-neutral-800 rounded-xl",
+        className: "bg-neutral-300 border-2 border-neutral-300 rounded-xl",
         progressClassName: "bg-green-500",
         autoClose: 2000,
         position: "bottom-center",
@@ -123,9 +123,9 @@ function ForgotPasswordPage() {
         {/* Reset Form */}
         <form
           onSubmit={handleSubmit}
-          className="flex w-full flex-col items-center space-y-4 rounded-xl border border-neutral-800 p-4"
+          className="flex w-full flex-col items-center space-y-4 rounded-xl border border-neutral-300 p-4"
         >
-          <div className="flex w-full flex-col gap-2 border-b border-neutral-400">
+          <div className="flex w-full flex-col gap-2 border-b border-neutral-300">
             <input
               type="email"
               name="email"
@@ -149,7 +149,7 @@ function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={loading}
-            className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
+            className="flex w-full items-center justify-center rounded-full border border-transparent bg-white py-2 font-semibold hover:border-neutral-300 hover:bg-neutral-300"
           >
             {loading ? "Sending link..." : "Submit"}
           </button>

@@ -2,22 +2,26 @@
  * Buttons
  */
 .action-btn {
-  @apply rounded-full border border-transparent p-1 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200 lg:p-2;
+  @apply rounded-full border border-transparent p-2 hover:cursor-pointer hover:border-neutral-300 hover:bg-neutral-300;
 }
 
 .reverse-action-btn {
-  @apply rounded-full border border-transparent bg-neutral-200 p-1 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-100 lg:p-2;
+  @apply rounded-full border border-transparent bg-neutral-300 p-2 hover:cursor-pointer hover:border-neutral-300 hover:bg-white;
 }
 
 .spinning-btn {
   @apply pointer-events-none animate-spin rounded-full p-2;
 }
 
+.menu-btn {
+  @apply flex w-full items-center gap-2 rounded-xl px-3 py-2 hover:bg-neutral-300;
+}
+
 /**
  * Tool tips
  */
 .tool-tip {
-  @apply pointer-events-none absolute z-10 gap-2 rounded-xl bg-neutral-400 px-2 py-1 text-center text-sm whitespace-nowrap opacity-0 transition-opacity delay-300 duration-150 peer-hover:opacity-100;
+  @apply pointer-events-none absolute z-10 gap-2 rounded-xl bg-neutral-300 px-2 py-1 text-center text-sm whitespace-nowrap opacity-0 transition-opacity delay-300 duration-150 peer-hover:opacity-100;
 
   &.top {
     @apply bottom-full left-1/2 mb-1 -translate-x-1/2 transform;
@@ -40,5 +44,5 @@
  * Slider
  */
 .slider {
-  @apply w-full appearance-none rounded-full [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-neutral-700 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-neutral-700;
+  @apply w-full appearance-none rounded-full [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-neutral-300 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-neutral-300;
 }

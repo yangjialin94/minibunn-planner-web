@@ -1,5 +1,6 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Menu, Transition } from "@headlessui/react"; // Import Menu and Transition from Headless UI
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { addDays } from "date-fns";
@@ -8,6 +9,7 @@ import {
   GripVertical,
   Layers2,
   LoaderCircle,
+  MoreVertical,
   SquareArrowRight,
   Trash2,
   Undo2,
@@ -15,7 +17,6 @@ import {
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { createTask, deleteTask, updateTask } from "@/api/tasks";
-import IconButton from "@/components/elements/IconButton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Task, TaskCreate } from "@/types/task";
@@ -93,16 +94,6 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     resizeNoteTextarea();
   }, [task]);
 
-  // Scroll to the item when editing
-  const handleCenterItem = () => {
-    if (itemRef.current) {
-      itemRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-  };
-
   // Handle the task update
   const { mutate: mutateUpdate } = useMutation({
     mutationFn: (taskId: number) =>
@@ -123,6 +114,9 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     onSuccess: () => {
       // Invalidate the tasks query to refresh the data
       queryClient.invalidateQueries({ queryKey: ["tasks", task.date] });
+      queryClient.invalidateQueries({
+        queryKey: ["tasksCompletion", task.date],
+      });
     },
     onError: (error) => {
       console.error("Error updating task status:", error);
@@ -130,7 +124,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
   });
 
   // Handle the task creation
-  const { mutate: mutateCreate, isPending: isCreating } = useMutation({
+  const { mutate: mutateCreate } = useMutation({
     mutationFn: (newTask: TaskCreate) => createTask(newTask),
     onSuccess: () => {
       // Invalidate the tasks query to refresh the data
@@ -160,6 +154,9 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
     onSuccess: () => {
       // Invalidate the tasks query to refresh the data
       queryClient.invalidateQueries({ queryKey: ["tasks", task.date] });
+      queryClient.invalidateQueries({
+        queryKey: ["tasksCompletion", task.date],
+      });
     },
     onError: (error) => {
       console.error("Error updating task:", error);
@@ -226,38 +223,37 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
       style={style}
       className="group relative cursor-default"
     >
-      {/* Drag handle */}
-      <div
-        {...attributes}
-        {...listeners}
-        className="peer absolute top-1/2 -left-4 z-10 hidden -translate-y-1/2 transform group-hover:block"
-      >
-        <div className="relative">
-          <button className="peer cursor-grab rounded-full border border-neutral-800 bg-neutral-100 p-2 hover:bg-neutral-300 hover:ring">
-            <GripVertical size={16} />
-          </button>
-          <div className="tool-tip top">Drag</div>
-        </div>
-      </div>
-
       {/* Task item */}
       <div
         className={clsx(
-          "relative flex flex-col rounded-xl border border-neutral-800 p-2 peer-hover:ring hover:ring lg:p-4",
+          "relative flex items-start rounded-xl border border-neutral-300 p-2 hover:ring",
           {
-            "bg-neutral-100": !task.is_completed,
-            "bg-neutral-200": task.is_completed,
+            "bg-white": !task.is_completed,
+            "bg-neutral-300": task.is_completed,
           },
         )}
       >
+        {/* Drag handle */}
+        <div {...attributes} {...listeners} className="w-8">
+          {/* <button className="relative hidden transform cursor-grab rounded-full p-2 group-hover:block hover:bg-neutral-300"> */}
+          <button className="relative cursor-grab rounded-full p-2 hover:bg-neutral-300">
+            <GripVertical size={20} />
+          </button>
+        </div>
+
         {/* Task inputs */}
-        <div className="flex flex-col gap-2 px-2 md:gap-4 md:px-4">
+        <div className="flex flex-1 flex-col gap-2 px-4">
           <textarea
             ref={titleTextareaRef}
-            className="w-full resize-none border-b border-neutral-800 pb-2 text-base font-semibold outline-none sm:text-lg lg:pb-4"
+            className={clsx(
+              "w-full resize-none border-b pt-1 pb-2 text-base font-semibold outline-none",
+              {
+                "border-neutral-300": !task.is_completed,
+                "border-white": task.is_completed,
+              },
+            )}
             placeholder="Title"
             onChange={handleUpdateTitle}
-            onFocus={handleCenterItem}
             value={title}
             rows={1}
             disabled={task.is_completed}
@@ -265,72 +261,104 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
 
           <textarea
             ref={noteTextareaRef}
-            className="w-full resize-none outline-none"
+            className="w-full resize-none pb-2 outline-none"
             placeholder="Note"
             onChange={handleUpdateNote}
-            onFocus={handleCenterItem}
             value={note}
             rows={1}
             disabled={task.is_completed}
           />
         </div>
 
-        {/* Task actions */}
+        {/* Task action menu */}
         {isUpdating || isDeleting || isMoving ? (
           <div className="flex justify-center pt-2">
             <div className="spinning-btn">
-              <LoaderCircle />
+              <LoaderCircle size={20} />
             </div>
           </div>
         ) : (
-          <div className="flex items-center justify-between pt-2">
-            <IconButton
-              buttonClassName={clsx({
-                "action-btn": !task.is_completed,
-                "reverse-action-btn": task.is_completed,
-              })}
-              onClick={handleDeleteTask}
-              icon={<Trash2 />}
-              tooltipText="Delete"
-            />
-            <div className="flex items-center">
-              {isCreating ? (
-                <div className="spinning-btn">
-                  <LoaderCircle />
-                </div>
-              ) : (
-                <IconButton
-                  buttonClassName="action-btn"
-                  onClick={handleDuplicateTask}
-                  icon={<Layers2 />}
-                  tooltipText="Duplicate to next day"
-                />
-              )}
-              {!task.is_completed ? (
-                <>
-                  <IconButton
-                    buttonClassName="action-btn"
-                    onClick={handleMoveTask}
-                    icon={<SquareArrowRight />}
-                    tooltipText="Move to next day"
-                  />
-                  <IconButton
-                    buttonClassName="action-btn"
-                    onClick={handleCompleteTask}
-                    icon={<Check />}
-                    tooltipText="Complete"
-                  />
-                </>
-              ) : (
-                <IconButton
-                  buttonClassName="reverse-action-btn"
-                  onClick={handleCompleteTask}
-                  icon={<Undo2 />}
-                  tooltipText="Incomplete"
-                />
-              )}
+          <Menu as="div" className="relative mr-2 -ml-1">
+            {/* Menu Toggle Button */}
+            <div className="w-8">
+              {/* <Menu.Button className="action-btn hidden group-hover:block"> */}
+              <Menu.Button className="action-btn">
+                <MoreVertical size={20} />
+              </Menu.Button>
             </div>
-          </div>
+
+            {/* Dropdown Panel with Transition */}
+            <Transition
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="ring-opacity-5 absolute right-0 z-50 mt-2 w-52 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black focus:outline-none">
+                <div className="p-1">
+                  {!task.is_completed ? (
+                    <Menu.Item key={`complete-${id}`}>
+                      {() => (
+                        <button
+                          className="menu-btn"
+                          onClick={handleCompleteTask}
+                        >
+                          <Check size={20} />
+                          Complete
+                        </button>
+                      )}
+                    </Menu.Item>
+                  ) : (
+                    <Menu.Item key={`incomplete-${id}`}>
+                      {() => (
+                        <button
+                          className="menu-btn"
+                          onClick={handleCompleteTask}
+                        >
+                          <Undo2 size={20} />
+                          Incomplete
+                        </button>
+                      )}
+                    </Menu.Item>
+                  )}
+
+                  <Menu.Item key={`duplicate-${id}`}>
+                    {() => (
+                      <button
+                        className="menu-btn"
+                        onClick={handleDuplicateTask}
+                      >
+                        <Layers2 size={20} />
+                        Duplicate to next day
+                      </button>
+                    )}
+                  </Menu.Item>
+
+                  {!task.is_completed && (
+                    <Menu.Item key={`move-${id}`}>
+                      {() => (
+                        <button className="menu-btn" onClick={handleMoveTask}>
+                          <SquareArrowRight size={20} />
+                          Move to next day
+                        </button>
+                      )}
+                    </Menu.Item>
+                  )}
+
+                  <Menu.Item key={`trash-${id}`}>
+                    {() => (
+                      <button className="menu-btn" onClick={handleDeleteTask}>
+                        <Trash2 size={20} />
+                        Delete
+                      </button>
+                    )}
+                  </Menu.Item>
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu>
         )}
       </div>
     </div>

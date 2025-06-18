@@ -11,7 +11,7 @@ import {
   startOfWeek,
   subMonths,
 } from "date-fns";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, SquareCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -41,7 +41,7 @@ function Header({
           className="cal-arrow-btn"
           onClick={() => setCalendarDate(subMonths(calendarDate, 1))}
         >
-          <ChevronLeft />
+          <ChevronLeft size={20} />
         </button>
         <button className="cal-btn" onClick={() => setCalendarDate(new Date())}>
           Today
@@ -50,7 +50,7 @@ function Header({
           className="cal-arrow-btn"
           onClick={() => setCalendarDate(addMonths(calendarDate, 1))}
         >
-          <ChevronRight />
+          <ChevronRight size={20} />
         </button>
       </div>
     </div>
@@ -108,29 +108,33 @@ function Cells({
     cells.push(
       <div
         key={dateStr}
-        className="relative aspect-square cursor-pointer border border-neutral-200 hover:bg-neutral-200"
+        className="relative cursor-pointer bg-white hover:bg-neutral-300"
         onClick={() => {
           router.push(`/calendar/${dateStr}`);
         }}
       >
         <div
           className={clsx(
-            "absolute top-1 right-1 flex size-4 items-center justify-center rounded-full text-sm md:size-8 md:border lg:top-2 lg:right-2 lg:p-4",
+            "absolute top-2 right-2 flex size-2 items-center justify-center rounded-full p-3",
             {
-              "border-neutral-800 text-neutral-800": isCurrentMonth && !isToday,
-              "border-neutral-300 text-neutral-300":
-                !isCurrentMonth && !isToday,
-              "border-neutral-300 font-bold text-green-500 md:bg-green-300 md:text-neutral-800":
-                !isCurrentMonth && isToday,
-              "border-neutral-800 font-bold text-green-500 md:bg-green-300 md:text-neutral-800":
-                isCurrentMonth && isToday,
+              "font-bold text-yellow-500 md:bg-yellow-300 md:text-neutral-800":
+                isToday,
+              "text-neutral-800": isCurrentMonth && !isToday,
+              "text-neutral-300": !isCurrentMonth && !isToday,
             },
           )}
         >
           {dayFormatted}
         </div>
         {summary && (
-          <div className="absolute bottom-0 left-0 rounded px-1 text-sm font-thin text-neutral-500 sm:text-xl md:text-2xl lg:bottom-2 lg:left-2 lg:text-4xl xl:text-5xl">
+          <div
+            className={clsx(
+              "absolute bottom-2 left-2 flex items-center rounded px-1",
+              { "text-green-600": summary.completed === summary.total },
+              { "text-red-600": summary.completed < summary.total },
+            )}
+          >
+            <SquareCheck className="mr-1 inline-block" size={16} />
             {summary.completed}/{summary.total}
           </div>
         )}
@@ -139,7 +143,14 @@ function Cells({
   }
 
   return (
-    <div className={showSixthWeek ? "cal-cells-6" : "cal-cells-5"}>{cells}</div>
+    <div
+      className={clsx("cal-cells", {
+        "cal-cells-6": showSixthWeek,
+        "cal-cells-5": !showSixthWeek,
+      })}
+    >
+      {cells}
+    </div>
   );
 }
 
@@ -184,9 +195,7 @@ function Calendar() {
 
       <Days calendarDate={calendarDate} />
 
-      <div className="overflow-y-auto">
-        <Cells calendarDate={calendarDate} completions={completions} />
-      </div>
+      <Cells calendarDate={calendarDate} completions={completions} />
     </>
   );
 }

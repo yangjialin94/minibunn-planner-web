@@ -1,15 +1,12 @@
 "use client";
 
-import { motion } from "motion/react";
+import { PanelRightClose, PanelRightOpen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import HeaderMenu from "@/components/modals/HeaderMenu";
 import { usePageStore } from "@/hooks/usePageStore";
 import { formatDateLocal } from "@/utils/date";
-
-const MotionLink = motion.create(Link);
 
 const TimeDisplay = () => {
   const [currentLocalTime, setCurrentLocalTime] = useState(() =>
@@ -29,34 +26,44 @@ const TimeDisplay = () => {
 };
 
 function Header() {
-  const page = usePageStore((state) => state.page);
+  // State management for sidebar visibility
+  const isSidebarOpen = usePageStore((state) => state.isSidebarOpen);
+  const switchSidebarOpen = usePageStore((state) => state.switchSidebarOpen);
 
   return (
     <header>
-      {/* Logo */}
-      <MotionLink
-        href="https://www.minibunnplanner.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center gap-4"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        <Image
-          src="/minibunn-planner-logo.svg"
-          alt="logo"
-          width={100}
-          height={100}
-        />
-      </MotionLink>
+      <div className="flex gap-4">
+        <button
+          onClick={() => switchSidebarOpen()}
+          className="rounded-full px-2.5 py-2 hover:cursor-pointer hover:bg-neutral-300"
+        >
+          {isSidebarOpen ? (
+            <PanelRightOpen size={20} />
+          ) : (
+            <PanelRightClose size={20} />
+          )}
+        </button>
+
+        {/* Logo */}
+        <Link
+          href="https://www.minibunnplanner.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-4"
+        >
+          <Image
+            src="/minibunn-planner-logo.svg"
+            alt="logo"
+            width={100}
+            height={100}
+          />
+        </Link>
+      </div>
 
       {/* Time Display */}
       <div className="hidden sm:flex">
         <TimeDisplay />
       </div>
-
-      {/* Header Menu */}
-      <div className="flex sm:hidden">{page !== "auth" && <HeaderMenu />}</div>
     </header>
   );
 }

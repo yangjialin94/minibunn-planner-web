@@ -65,9 +65,9 @@ function SignInForm() {
   return (
     <form
       onSubmit={handleSignin}
-      className="flex w-full flex-col items-center space-y-4 rounded-xl border border-neutral-800 p-4"
+      className="flex w-full flex-col items-center space-y-4 rounded-xl border border-neutral-300 p-4"
     >
-      <div className="flex w-full flex-col gap-2 border-b border-neutral-400">
+      <div className="flex w-full flex-col gap-2 border-b border-neutral-300">
         <input
           type="email"
           name="email"
@@ -85,7 +85,7 @@ function SignInForm() {
         )}
       </div>
 
-      <div className="flex w-full flex-col gap-2 border-b border-neutral-400">
+      <div className="flex w-full flex-col gap-2 border-b border-neutral-300">
         <input
           type="password"
           name="password"
@@ -106,7 +106,7 @@ function SignInForm() {
       <button
         type="submit"
         disabled={loading}
-        className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
+        className="flex w-full items-center justify-center rounded-full border border-transparent bg-white py-2 font-semibold hover:border-neutral-300 hover:bg-neutral-300"
       >
         {loading ? "Signing in..." : "Sign in"}
       </button>
