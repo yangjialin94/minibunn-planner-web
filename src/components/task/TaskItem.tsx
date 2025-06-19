@@ -234,15 +234,19 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
         )}
       >
         {/* Drag handle */}
-        <div {...attributes} {...listeners} className="w-8">
-          {/* <button className="relative hidden transform cursor-grab rounded-full p-2 group-hover:block hover:bg-neutral-300"> */}
-          <button className="relative cursor-grab rounded-full p-2 hover:bg-neutral-300">
-            <GripVertical size={20} />
-          </button>
-        </div>
+        <button
+          {...attributes}
+          {...listeners}
+          className={clsx("relative mr-1 cursor-grab", {
+            "action-btn": !task.is_completed,
+            "reverse-action-btn": task.is_completed,
+          })}
+        >
+          <GripVertical size={20} />
+        </button>
 
         {/* Task inputs */}
-        <div className="flex flex-1 flex-col gap-2 px-4">
+        <div className="flex flex-1 flex-col gap-2">
           <textarea
             ref={titleTextareaRef}
             className={clsx(
@@ -278,16 +282,26 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
             </div>
           </div>
         ) : (
-          <Menu as="div" className="relative mr-2 -ml-1">
+          <Menu as="div" className="relative">
             {/* Menu Toggle Button */}
-            <div className="w-8">
-              {/* <Menu.Button className="action-btn hidden group-hover:block"> */}
-              <Menu.Button className="action-btn">
-                <MoreVertical size={20} />
-              </Menu.Button>
-            </div>
+            <Menu.Button
+              className={({ open }) =>
+                clsx(
+                  {
+                    "action-btn": !task.is_completed,
+                    "reverse-action-btn": task.is_completed,
+                  },
+                  {
+                    "bg-neutral-300": open && !task.is_completed,
+                    "bg-white": open && task.is_completed,
+                  },
+                )
+              }
+            >
+              <MoreVertical size={20} />
+            </Menu.Button>
 
-            {/* Dropdown Panel with Transition */}
+            {/* Dropdown Panel */}
             <Transition
               enter="transition ease-out duration-100"
               enterFrom="transform opacity-0 scale-95"

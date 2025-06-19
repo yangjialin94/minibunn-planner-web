@@ -48,7 +48,7 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
       <div className="hidden sm:block">
         <div className="daily-header">
           <h2 className="pl-2">{headerDate}</h2>
-          <div className="flex items-center gap-2 lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:transform">
+          <div className="flex items-center gap-2">
             <button
               className={clsx("daily-tab-btn", {
                 selected: dailyTab === "tasks",

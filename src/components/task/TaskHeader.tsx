@@ -72,8 +72,9 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
     <>
       {/* Header */}
       <div className="task-header">
-        {/* Filter buttons */}
+        {/* Left */}
         <div className="flex gap-2">
+          {/* Filter buttons */}
           {options.map((option) => (
             <button
               key={option.id}
@@ -87,25 +88,23 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
               {option.label}
             </button>
           ))}
-        </div>
 
-        {/* Progress */}
-        {tasks && tasks.length > 0 && (
-          <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:transform">
-            <span
+          {/* Progress */}
+          {tasks && tasks.length > 0 && (
+            <div
               className={clsx(
-                "flex items-center text-base",
+                "ml-0 flex items-center text-base sm:ml-8",
                 { "text-green-600": completedTasks.length === tasks.length },
                 { "text-red-600": completedTasks.length < tasks.length },
               )}
             >
               <SquareCheck className="mr-1" size={20} />
               {completedTasks.length}/{tasks.length}
-            </span>
-          </div>
-        )}
+            </div>
+          )}
+        </div>
 
-        {/* Create task buttons */}
+        {/* Right: Create task buttons */}
         <div className="flex gap-2">
           {isCreating ? (
             <div className="spinning-btn">

@@ -31,7 +31,7 @@ h2 {
 }
 
 .page-content {
-  @apply mx-4 flex h-full flex-col overflow-hidden rounded-xl border border-neutral-300;
+  @apply flex h-full flex-col overflow-hidden rounded-xl border-neutral-300 sm:mx-4 sm:border;
 }
 
 /**
