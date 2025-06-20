@@ -15,6 +15,14 @@
 
 .menu-btn {
   @apply flex w-full items-center gap-2 rounded-xl px-3 py-2 hover:bg-neutral-300;
+
+  &.green {
+    @apply hover:bg-green-300;
+  }
+
+  &.red {
+    @apply hover:bg-red-300;
+  }
 }
 
 /**

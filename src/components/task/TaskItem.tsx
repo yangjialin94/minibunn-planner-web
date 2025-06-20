@@ -310,13 +310,13 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="ring-opacity-5 absolute right-0 z-50 mt-2 w-52 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black focus:outline-none">
+              <Menu.Items className="ring-opacity-5 absolute right-0 z-50 mt-2 w-52 origin-top-right rounded-xl bg-white shadow-2xl focus:outline-none">
                 <div className="p-1">
                   {!task.is_completed ? (
                     <Menu.Item key={`complete-${id}`}>
                       {() => (
                         <button
-                          className="menu-btn"
+                          className="menu-btn green"
                           onClick={handleCompleteTask}
                         >
                           <Check size={20} />
@@ -363,7 +363,10 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
 
                   <Menu.Item key={`trash-${id}`}>
                     {() => (
-                      <button className="menu-btn" onClick={handleDeleteTask}>
+                      <button
+                        className="menu-btn red"
+                        onClick={handleDeleteTask}
+                      >
                         <Trash2 size={20} />
                         Delete
                       </button>
