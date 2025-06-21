@@ -70,7 +70,7 @@ function Notes({ data, topRef }: NotesProps) {
   };
 
   return (
-    <div className="overflow-y-auto p-4 md:p-6">
+    <div className="overflow-y-auto p-4">
       {/* Ref for the top */}
       <div ref={topRef} />
 
@@ -80,7 +80,7 @@ function Notes({ data, topRef }: NotesProps) {
           items={orderedNotes}
           strategy={verticalListSortingStrategy}
         >
-          <div className="flex flex-col flex-wrap gap-6">
+          <div className="flex flex-col flex-wrap gap-4">
             {orderedNotes.map((note) => {
               console.log(note);
               if (

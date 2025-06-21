@@ -47,8 +47,8 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
       {/* Header for larger screens */}
       <div className="hidden sm:block">
         <div className="daily-header">
-          <h2>{headerDate}</h2>
-          <div className="flex items-center gap-1 lg:gap-2">
+          <h2 className="pl-2">{headerDate}</h2>
+          <div className="flex items-center gap-2">
             <button
               className={clsx("daily-tab-btn", {
                 selected: dailyTab === "tasks",
@@ -66,12 +66,12 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
               Journal
             </button>
           </div>
-          <div className="flex items-center gap-1 lg:gap-2">
+          <div className="flex items-center gap-2">
             <button className="daily-arrow-btn" onClick={handleClickPrev}>
-              <ChevronLeft />
+              <ChevronLeft size={20} />
             </button>
             <button className="daily-arrow-btn" onClick={handleClickNext}>
-              <ChevronRight />
+              <ChevronRight size={20} />
             </button>
           </div>
         </div>
@@ -82,17 +82,17 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
         <div className="flex flex-col">
           <div className="daily-header">
             <h2>{headerDate}</h2>
-            <div className="flex items-center gap-1 lg:gap-2">
+            <div className="flex items-center gap-2">
               <button className="daily-arrow-btn" onClick={handleClickPrev}>
-                <ChevronLeft />
+                <ChevronLeft size={20} />
               </button>
               <button className="daily-arrow-btn" onClick={handleClickNext}>
-                <ChevronRight />
+                <ChevronRight size={20} />
               </button>
             </div>
           </div>
           <div className="daily-header-single">
-            <div className="flex items-center gap-1 lg:gap-2">
+            <div className="flex items-center gap-2">
               <button
                 className={clsx("daily-tab-btn", {
                   selected: dailyTab === "tasks",

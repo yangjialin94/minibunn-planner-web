@@ -65,7 +65,7 @@ function SubscribePage() {
         <div className="mt-4 mb-8 text-center">
           <h1 className="mb-8 text-3xl font-bold">Plans & Pricing</h1>
 
-          <ul className="mx-auto flex max-w-sm list-inside flex-col gap-1 text-neutral-500 sm:text-sm">
+          <ul className="mx-auto flex max-w-sm list-inside flex-col gap-1 text-neutral-500">
             <li className="flex items-center justify-center gap-2">
               <Check className="h-4 w-4" />
               Unlimited Tasks & Journals
@@ -89,7 +89,7 @@ function SubscribePage() {
               handleSubscribe(NEXT_PUBLIC_MONTHLY_SUBSCRIPTION_PRICE_ID)
             }
             disabled={loading}
-            className="flex flex-col items-center rounded-xl border p-6 text-center hover:bg-neutral-200 hover:ring"
+            className="flex flex-col items-center rounded-xl border border-neutral-300 p-6 text-center hover:ring"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -103,7 +103,7 @@ function SubscribePage() {
               handleSubscribe(NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PRICE_ID)
             }
             disabled={loading}
-            className="flex flex-col items-center rounded-xl border p-6 text-center hover:bg-neutral-200 hover:ring"
+            className="flex flex-col items-center rounded-xl border border-neutral-300 p-6 text-center hover:ring"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -119,7 +119,7 @@ function SubscribePage() {
           <motion.button
             onClick={() => handleSubscribe(NEXT_PUBLIC_LIFETIME_PRICE_ID)}
             disabled={loading}
-            className="flex flex-col items-center rounded-xl border p-6 text-center hover:bg-neutral-200 hover:ring"
+            className="flex flex-col items-center rounded-xl border border-neutral-300 p-6 text-center hover:ring"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -129,7 +129,7 @@ function SubscribePage() {
             <span className="mb-2 text-lg font-semibold">Lifetime Access</span>
             <span className="mb-3 text-3xl font-bold">$29.99</span>
             <span className="text-sm text-neutral-500">One-time payment</span>
-            <span className="mt-2 text-xs text-neutral-400">
+            <span className="mt-2 text-xs text-neutral-300">
               🎁 Limited-time lifetime pricing
             </span>
           </motion.button>
@@ -137,7 +137,7 @@ function SubscribePage() {
 
         {/* Home button */}
         <Link
-          className="mt-8 flex w-full max-w-sm items-center justify-center rounded-full border border-transparent bg-neutral-100 px-4 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
+          className="mt-8 flex w-full max-w-sm items-center justify-center rounded-full border border-transparent bg-white px-4 py-2 font-semibold hover:border-neutral-300 hover:bg-neutral-300"
           href="/"
         >
           Back to Home

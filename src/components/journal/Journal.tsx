@@ -112,11 +112,11 @@ function Journal({ dateStr }: { dateStr: string }) {
   }
 
   return (
-    <div className="flex flex-1 flex-col p-4 md:p-6">
+    <div className="flex flex-1 flex-col p-6">
       {/* Journal title */}
       <textarea
         ref={subjectTextareaRef}
-        className="w-full resize-none border-b border-neutral-800 pb-4 text-lg font-semibold outline-none"
+        className="w-full resize-none border-b border-neutral-300 pb-4 text-lg font-semibold outline-none"
         placeholder="Subject"
         onChange={handleUpdateSubject}
         value={subject}

@@ -13,6 +13,7 @@ type PageState = {
   isModalOpen: boolean; // state for modal visibility
   today: string; // current date in "YYYY-MM-DD" format
   notesFilter: string; // search term for notes
+  isSidebarOpen: boolean; // sidebar visibility state
 
   setPage: (page: PageType) => void;
   setCalendarDate: (date: Date) => void;
@@ -22,6 +23,7 @@ type PageState = {
   setIsModalOpen: (isOpen: boolean) => void;
   setToday: (date: string) => void;
   setNotesFilter: (searchTerm: string) => void;
+  switchSidebarOpen: (show?: boolean) => void;
 };
 
 export const usePageStore = create<PageState>((set) => {
@@ -86,6 +88,7 @@ export const usePageStore = create<PageState>((set) => {
     isModalOpen: false,
     today: todayStr,
     notesFilter: "",
+    isSidebarOpen: false,
 
     setPage: (page: PageType) => set({ page: page }),
     setCalendarDate: (date: Date) => set({ calendarDate: date }),
@@ -95,5 +98,9 @@ export const usePageStore = create<PageState>((set) => {
     setIsModalOpen: (isOpen: boolean) => set({ isModalOpen: isOpen }),
     setToday: (date: string) => set({ today: date }),
     setNotesFilter: (searchTerm: string) => set({ notesFilter: searchTerm }),
+    switchSidebarOpen: (show?: boolean) =>
+      set((state) => ({
+        isSidebarOpen: typeof show === "boolean" ? show : !state.isSidebarOpen,
+      })),
   };
 });

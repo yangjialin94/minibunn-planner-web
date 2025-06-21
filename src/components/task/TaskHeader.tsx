@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
-import { CalendarPlus, LoaderCircle } from "lucide-react";
+import { CalendarPlus, LoaderCircle, SquareCheck } from "lucide-react";
 import React from "react";
 
 import { createTask } from "@/api/tasks";
-import IconButton from "@/components/elements/IconButton";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Task, TaskCreate } from "@/types/task";
 
@@ -47,6 +46,9 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
     onSuccess: () => {
       // Invalidate the tasks query to refresh the data
       queryClient.invalidateQueries({ queryKey: ["tasks", dateStr] });
+      queryClient.invalidateQueries({
+        queryKey: ["tasksCompletion", dateStr],
+      });
 
       // Scroll to the top after a short delay
       setTimeout(() => {
@@ -69,14 +71,15 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
     <>
       {/* Header */}
       <div className="task-header">
-        {/* Filter buttons */}
-        <div className="flex gap-1 lg:gap-2">
+        {/* Left */}
+        <div className="flex gap-2">
+          {/* Filter buttons */}
           {options.map((option) => (
             <button
               key={option.id}
-              className={clsx("rounded-full border px-2 py-1 lg:px-3 lg:py-2", {
-                "pointer-events-none bg-neutral-200": taskFilter === option.id,
-                "border-transparent hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200":
+              className={clsx("rounded-full px-3 py-2", {
+                "pointer-events-none bg-neutral-300": taskFilter === option.id,
+                "hover:cursor-pointer hover:bg-neutral-300":
                   taskFilter !== option.id,
               })}
               onClick={() => setTaskFilter(option.id)}
@@ -84,30 +87,32 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
               {option.label}
             </button>
           ))}
-        </div>
 
-        {/* Progress */}
-        <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2 lg:transform">
-          {tasks && (
-            <p className="font-medium">
+          {/* Progress */}
+          {tasks && tasks.length > 0 && (
+            <div
+              className={clsx(
+                "ml-0 flex items-center text-base sm:ml-8",
+                { "text-green-600": completedTasks.length === tasks.length },
+                { "text-red-600": completedTasks.length < tasks.length },
+              )}
+            >
+              <SquareCheck className="mr-1" size={20} />
               {completedTasks.length}/{tasks.length}
-            </p>
+            </div>
           )}
         </div>
 
-        {/* Create task buttons */}
+        {/* Right: Create task buttons */}
         <div className="flex gap-2">
           {isCreating ? (
             <div className="spinning-btn">
-              <LoaderCircle />
+              <LoaderCircle size={20} />
             </div>
           ) : (
-            <IconButton
-              buttonClassName="action-btn"
-              onClick={handleCreateTask}
-              icon={<CalendarPlus />}
-              tooltipText="Create"
-            />
+            <button className="action-btn" onClick={handleCreateTask}>
+              <CalendarPlus size={20} />
+            </button>
           )}
         </div>
       </div>

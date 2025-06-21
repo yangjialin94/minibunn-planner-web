@@ -41,13 +41,13 @@ function Subscription() {
   return (
     <div>
       <h1 className="mb-4">Subscription</h1>
-      <div className="flex w-full flex-col items-center justify-center gap-4 rounded-xl border border-neutral-800 p-4">
-        <div className="flex w-full justify-between border-b border-neutral-400">
+      <div className="flex w-full flex-col items-center justify-center gap-4 rounded-xl border border-neutral-300 p-4">
+        <div className="flex w-full justify-between border-b border-neutral-300">
           <p className="font-semibold">Plan</p>
           <p>{data?.plan_name}</p>
         </div>
 
-        <div className="flex w-full justify-between border-b border-neutral-400">
+        <div className="flex w-full justify-between border-b border-neutral-300">
           <p className="font-semibold">Price</p>
           <p>
             {data?.price_amount} {data?.price_currency}
@@ -55,7 +55,7 @@ function Subscription() {
         </div>
 
         {data?.plan_name !== "Lifetime Access" && (
-          <div className="flex w-full justify-between border-b border-neutral-400">
+          <div className="flex w-full justify-between border-b border-neutral-300">
             <p className="font-semibold">
               {data?.cancel_at_period_end
                 ? "Cancellation Date"
@@ -67,7 +67,7 @@ function Subscription() {
 
         {data?.plan_name !== "Lifetime Access" && (
           <Link
-            className="flex w-full items-center justify-center rounded-full border border-transparent bg-neutral-100 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-200"
+            className="flex w-full items-center justify-center rounded-full border border-transparent bg-white py-2 font-semibold hover:border-neutral-300 hover:bg-neutral-300"
             href={NEXT_PUBLIC_CUSTOMER_PORTAL_LINK}
             target="_blank"
             rel="noopener noreferrer"

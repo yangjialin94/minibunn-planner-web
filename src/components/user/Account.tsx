@@ -10,7 +10,7 @@ import Subscription from "./Subscription";
  */
 function Account() {
   return (
-    <div className="space-y-8 overflow-y-auto p-4 md:p-6">
+    <div className="space-y-4 overflow-y-auto p-4">
       {/* Personal Section */}
       <Personal />
 

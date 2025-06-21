@@ -96,7 +96,7 @@ function Tasks({ dateStr }: { dateStr: string }) {
       <TaskHeader tasks={orderedTasks} dateStr={dateStr} topRef={topRef} />
 
       {/* Task List */}
-      <div className="overflow-y-auto p-4 md:p-6">
+      <div className="overflow-y-auto p-4 pb-36">
         {/* Ref for the top */}
         <div ref={topRef} />
 
@@ -109,7 +109,7 @@ function Tasks({ dateStr }: { dateStr: string }) {
             items={orderedTasks}
             strategy={verticalListSortingStrategy}
           >
-            <div className="flex flex-col flex-wrap gap-6">
+            <div className="flex flex-col flex-wrap gap-4">
               {orderedTasks.map((task) => {
                 if (taskFilter === "completed" && !task.is_completed)
                   return null;

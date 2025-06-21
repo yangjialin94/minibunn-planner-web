@@ -3,19 +3,19 @@ html {
 }
 
 body {
-  @apply flex h-full flex-col bg-neutral-100 p-4 text-sm text-neutral-800 lg:text-base;
+  @apply flex h-full flex-col bg-white text-sm text-neutral-800;
 }
 
 .main-container {
-  @apply flex-1 overflow-hidden rounded-xl border border-neutral-800;
+  @apply flex-1 overflow-hidden;
 }
 
 header {
-  @apply flex h-[60px] items-center justify-between border-b border-neutral-800 p-4;
+  @apply flex h-[60px] items-center justify-between p-4;
 }
 
 .sidebar-main {
-  @apply flex h-[calc(100dvh-94px)];
+  @apply flex h-[calc(100dvh-74px)];
 }
 
 main {
@@ -23,15 +23,15 @@ main {
 }
 
 h1 {
-  @apply text-xl font-semibold lg:text-2xl;
+  @apply text-xl font-semibold;
 }
 
 h2 {
-  @apply text-lg font-semibold lg:text-xl;
+  @apply text-lg;
 }
 
 .page-content {
-  @apply flex h-full flex-col;
+  @apply flex h-full flex-col overflow-hidden rounded-xl border-neutral-300 sm:mx-4 sm:border;
 }
 
 /**
@@ -39,7 +39,7 @@ h2 {
   */
 
 aside {
-  @apply z-30 hidden h-full flex-col justify-between border-r border-neutral-800 p-4 sm:flex md:w-[250px];
+  @apply fixed z-30 flex h-[calc(100dvh-60px)] w-[250px] flex-col justify-between bg-white py-4 pr-4 pl-4 md:relative md:h-full md:pr-0;
 }
 
 .sidebar-top {
@@ -51,23 +51,23 @@ aside {
 }
 
 nav > a {
-  @apply flex gap-2 rounded-xl border border-transparent px-2 py-1 hover:border-neutral-800 hover:bg-neutral-200 lg:px-3 lg:py-2;
+  @apply flex items-center justify-between rounded-xl px-3 py-2 text-sm hover:bg-neutral-300;
 }
 
 nav > a.selected {
-  @apply pointer-events-none flex gap-2 rounded-xl border border-neutral-800 bg-neutral-200 px-2 py-1 lg:px-3 lg:py-2;
+  @apply pointer-events-none flex items-center gap-2 rounded-xl bg-neutral-300 px-3 py-2 text-sm;
 }
 
 .navBtn {
-  @apply flex gap-2 rounded-xl border border-transparent px-2 py-1 hover:border-neutral-800 hover:bg-neutral-200 lg:px-3 lg:py-2;
+  @apply flex items-center gap-2 rounded-xl px-3 py-2 hover:bg-neutral-300;
 }
 
 .navBtn.selected {
-  @apply pointer-events-none flex gap-2 rounded-xl border border-neutral-800 bg-neutral-200 px-2 py-1 lg:px-3 lg:py-2;
+  @apply pointer-events-none flex items-center gap-2 rounded-xl bg-neutral-300 px-3 py-2;
 }
 
 .sidebar-item {
-  @apply flex w-full gap-2 rounded-xl border border-transparent px-2 py-1 hover:cursor-pointer hover:border-neutral-800 hover:bg-neutral-200 lg:px-3 lg:py-2;
+  @apply flex w-full items-center gap-2 rounded-xl px-3 py-2 hover:cursor-pointer hover:bg-neutral-300;
 }
 
 /**

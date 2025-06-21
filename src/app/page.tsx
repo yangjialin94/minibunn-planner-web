@@ -66,7 +66,7 @@ function LoginPage() {
         <SignInForm />
 
         {/* Divider */}
-        <hr className="my-8 w-full border-t-2 border-neutral-200" />
+        <hr className="my-8 w-full border-t-2 border-neutral-300" />
 
         {/* Google Sign In */}
         <GoogleSignInButton />
