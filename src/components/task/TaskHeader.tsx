@@ -4,7 +4,6 @@ import { CalendarPlus, LoaderCircle, SquareCheck } from "lucide-react";
 import React from "react";
 
 import { createTask } from "@/api/tasks";
-import IconButton from "@/components/elements/IconButton";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Task, TaskCreate } from "@/types/task";
 
@@ -108,15 +107,12 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
         <div className="flex gap-2">
           {isCreating ? (
             <div className="spinning-btn">
-              <LoaderCircle />
+              <LoaderCircle size={20} />
             </div>
           ) : (
-            <IconButton
-              buttonClassName="action-btn"
-              onClick={handleCreateTask}
-              icon={<CalendarPlus size={20} />}
-              tooltipText="Create"
-            />
+            <button className="action-btn" onClick={handleCreateTask}>
+              <CalendarPlus size={20} />
+            </button>
           )}
         </div>
       </div>

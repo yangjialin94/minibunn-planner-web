@@ -70,7 +70,7 @@ function SubscribePage() {
             You&apos;ll only be billed after your trial ends.
           </p>
 
-          <ul className="mx-auto flex max-w-sm list-inside flex-col gap-1 text-neutral-500 sm:text-sm">
+          <ul className="mx-auto flex max-w-sm list-inside flex-col gap-1 text-sm text-neutral-500">
             <li className="flex items-center justify-center gap-2">
               <Check className="h-4 w-4" />
               Unlimited Tasks & Journals
@@ -94,7 +94,7 @@ function SubscribePage() {
               handleSubscribe(NEXT_PUBLIC_MONTHLY_SUBSCRIPTION_PRICE_ID)
             }
             disabled={loading}
-            className="flex flex-col items-center rounded-xl border p-6 text-center hover:bg-neutral-300 hover:ring"
+            className="flex flex-col items-center rounded-xl border border-neutral-300 p-6 text-center hover:ring"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -114,7 +114,7 @@ function SubscribePage() {
               handleSubscribe(NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PRICE_ID)
             }
             disabled={loading}
-            className="flex flex-col items-center rounded-xl border p-6 text-center hover:bg-neutral-300 hover:ring"
+            className="flex flex-col items-center rounded-xl border border-neutral-300 p-6 text-center hover:ring"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -138,7 +138,7 @@ function SubscribePage() {
           <motion.button
             onClick={() => handleSubscribe(NEXT_PUBLIC_LIFETIME_PRICE_ID)}
             disabled={loading}
-            className="flex flex-col items-center rounded-xl border p-6 text-center hover:bg-neutral-300 hover:ring"
+            className="flex flex-col items-center rounded-xl border border-neutral-300 p-6 text-center hover:ring"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -156,7 +156,7 @@ function SubscribePage() {
 
         {/* Home button */}
         <Link
-          className="mt-8 flex w-full max-w-sm items-center justify-center rounded-full border border-transparent bg-white px-4 py-2 font-semibold hover:border-neutral-300 hover:bg-neutral-300"
+          className="mt-8 flex w-full max-w-sm items-center justify-center rounded-full border border-transparent bg-white px-4 py-2 font-semibold hover:border-neutral-800 hover:bg-neutral-300"
           href="/"
         >
           Back to Home

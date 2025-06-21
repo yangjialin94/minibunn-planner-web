@@ -3,11 +3,11 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
 import { GripVertical, LoaderCircle, Trash2 } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { deleteNote, updateNote } from "@/api/notes";
-import IconButton from "@/components/elements/IconButton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Note } from "@/types/note";
 
@@ -126,26 +126,25 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
       style={style}
       className="group relative cursor-default"
     >
-      {/* Drag handle */}
-      <div
-        {...attributes}
-        {...listeners}
-        className="peer absolute top-1/2 -left-4 z-10 hidden -translate-y-1/2 transform group-hover:block"
-      >
-        {isDraggable && (
-          <div className="relative">
-            <button className="peer cursor-grab rounded-full border border-neutral-300 bg-white p-2 hover:bg-neutral-300 hover:ring">
-              <GripVertical size={16} />
-            </button>
-            <div className="tool-tip top">Drag</div>
-          </div>
-        )}
-      </div>
-
       {/* Note item */}
-      <div className="relative flex flex-col gap-2 rounded-xl border border-neutral-300 p-2 peer-hover:ring hover:ring lg:p-4">
+      <div className="relative flex items-start rounded-xl border border-neutral-300 bg-white p-2 hover:ring">
+        {/* Drag handle */}
+        {isDraggable && (
+          <button
+            {...attributes}
+            {...listeners}
+            className="action-btn relative mr-1 cursor-grab"
+          >
+            <GripVertical size={20} />
+          </button>
+        )}
+
         {/* Note Detail */}
-        <div className="flex px-4">
+        <div
+          className={clsx("flex flex-1 flex-col gap-4 py-1", {
+            "ml-2": !isDraggable,
+          })}
+        >
           <textarea
             ref={DetailTextareaRef}
             className="w-full resize-none outline-none"
@@ -155,25 +154,18 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
             value={detail}
             rows={1}
           />
+          <p className="text-neutral-500">{note.date}</p>
         </div>
 
         {/* Action Buttons */}
         {isDeleting ? (
-          <div className="flex justify-center">
-            <div className="spinning-btn">
-              <LoaderCircle />
-            </div>
+          <div className="spinning-btn">
+            <LoaderCircle size={20} />
           </div>
         ) : (
-          <div className="flex items-center justify-between">
-            <p className="ml-4 text-neutral-500">{note.date}</p>
-            <IconButton
-              buttonClassName="action-btn"
-              onClick={handleDeleteNote}
-              icon={<Trash2 />}
-              tooltipText="Delete"
-            />
-          </div>
+          <button className="action-btn red" onClick={handleDeleteNote}>
+            <Trash2 size={20} />
+          </button>
         )}
       </div>
     </div>

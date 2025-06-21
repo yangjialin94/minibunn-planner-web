@@ -2,13 +2,13 @@
  * User Page
  */
 .user-header {
-  @apply sticky top-0 z-20 flex items-center justify-center gap-2 border-b border-neutral-300 px-4 py-2;
+  @apply sticky top-0 flex items-center justify-center gap-2 border-b border-neutral-300 px-4 py-2;
 }
 
 .user-tab-btn {
-  @apply rounded-full border border-transparent px-2 py-1 hover:cursor-pointer hover:border-neutral-300 hover:bg-neutral-300 lg:px-3 lg:py-2;
+  @apply rounded-full px-3 py-2 hover:cursor-pointer hover:bg-neutral-300;
 }
 
 .user-tab-btn.selected {
-  @apply pointer-events-none rounded-full border border-neutral-300 bg-neutral-300 px-2 py-1 lg:px-3 lg:py-2;
+  @apply pointer-events-none rounded-full bg-neutral-300 px-3 py-2;
 }

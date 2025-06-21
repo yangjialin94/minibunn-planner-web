@@ -35,7 +35,7 @@ function GoogleSignInButton() {
   return (
     <button
       onClick={handleGoogleSignIn}
-      className="flex w-full items-center justify-center rounded-full border bg-white py-2 font-semibold hover:border-neutral-300 hover:bg-neutral-300"
+      className="flex w-full items-center justify-center rounded-full border border-neutral-300 bg-white py-2 font-semibold hover:bg-neutral-300"
     >
       <Image
         className="mr-3"

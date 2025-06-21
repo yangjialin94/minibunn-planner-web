@@ -3,6 +3,14 @@
  */
 .action-btn {
   @apply rounded-full p-2 hover:cursor-pointer hover:bg-neutral-300;
+
+  &.green {
+    @apply hover:bg-green-300;
+  }
+
+  &.red {
+    @apply hover:bg-red-300;
+  }
 }
 
 .reverse-action-btn {

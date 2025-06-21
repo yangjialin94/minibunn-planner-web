@@ -1,16 +1,9 @@
 "use client";
 
-// import dynamic from "next/dynamic";
 import React from "react";
 
 import SideBar from "@/components/layout/SideBar";
 import { usePageStore } from "@/hooks/usePageStore";
-
-// dynamic imports SideBar to prevent SSR
-// const SideBar = dynamic(() => import("@/components/layout/SideBar"), {
-//   ssr: false,
-//   loading: () => <div className="sidebar-loading">Loading...</div>,
-// });
 
 /**
  * Content component (used in layout.tsx)

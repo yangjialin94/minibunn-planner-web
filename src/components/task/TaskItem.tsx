@@ -276,10 +276,8 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
 
         {/* Task action menu */}
         {isUpdating || isDeleting || isMoving ? (
-          <div className="flex justify-center pt-2">
-            <div className="spinning-btn">
-              <LoaderCircle size={20} />
-            </div>
+          <div className="spinning-btn">
+            <LoaderCircle size={20} />
           </div>
         ) : (
           <Menu as="div" className="relative">
@@ -310,7 +308,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="ring-opacity-5 absolute right-0 z-50 mt-2 w-52 origin-top-right rounded-xl bg-white shadow-2xl focus:outline-none">
+              <Menu.Items className="ring-opacity-5 absolute right-0 z-50 mt-2 w-52 origin-top-right rounded-xl bg-white shadow-xl focus:outline-none">
                 <div className="p-1">
                   {!task.is_completed ? (
                     <Menu.Item key={`complete-${id}`}>

@@ -5,7 +5,6 @@ import { ClipboardPlus, LoaderCircle } from "lucide-react";
 import React from "react";
 
 import { createNote } from "@/api/notes";
-import IconButton from "@/components/elements/IconButton";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Note, NoteCreate } from "@/types/note";
 
@@ -81,7 +80,7 @@ function NotesHeader({ data, topRef }: NotesHeaderProps) {
           <input
             type="text"
             placeholder="Search notes..."
-            className="h-10 rounded-xl border px-3 focus:ring focus:outline-none"
+            className="h-8 rounded-xl border border-neutral-300 px-3 focus:ring focus:outline-none"
             value={notesFilter}
             onChange={handleSearchNotes}
           />
@@ -90,16 +89,12 @@ function NotesHeader({ data, topRef }: NotesHeaderProps) {
         {/* Create Note Button */}
         {isCreating ? (
           <div className="spinning-btn">
-            <LoaderCircle />
+            <LoaderCircle size={20} />
           </div>
         ) : (
-          <IconButton
-            buttonClassName="action-btn"
-            onClick={handleCreateNote}
-            icon={<ClipboardPlus />}
-            tooltipText="Create"
-            placement="bottom"
-          />
+          <button className="action-btn" onClick={handleCreateNote}>
+            <ClipboardPlus size={20} />
+          </button>
         )}
       </div>
     </>

@@ -27,22 +27,25 @@ const TimeDisplay = () => {
 
 function Header() {
   // State management for sidebar visibility
+  const page = usePageStore((state) => state.page);
   const isSidebarOpen = usePageStore((state) => state.isSidebarOpen);
   const switchSidebarOpen = usePageStore((state) => state.switchSidebarOpen);
 
   return (
     <header>
       <div className="flex gap-4">
-        <button
-          onClick={() => switchSidebarOpen()}
-          className="rounded-full px-2.5 py-2 hover:cursor-pointer hover:bg-neutral-300"
-        >
-          {isSidebarOpen ? (
-            <PanelRightOpen size={20} />
-          ) : (
-            <PanelRightClose size={20} />
-          )}
-        </button>
+        {page !== "auth" && (
+          <button
+            onClick={() => switchSidebarOpen()}
+            className="rounded-full px-2.5 py-2 hover:cursor-pointer hover:bg-neutral-300"
+          >
+            {isSidebarOpen ? (
+              <PanelRightOpen size={20} />
+            ) : (
+              <PanelRightClose size={20} />
+            )}
+          </button>
+        )}
 
         {/* Logo */}
         <Link
