@@ -8,6 +8,7 @@ import { GripVertical, LoaderCircle, Trash2 } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { deleteNote, updateNote } from "@/api/notes";
+import RichTextEditor from "@/components/elements/RichTextEditor";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Note } from "@/types/note";
 
@@ -25,9 +26,12 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
   const [detail, setDetail] = useState(note.detail);
   const debouncedDetail = useDebounce(detail, 300);
 
+  // Note editor focus and hover states
+  const [isFocused, setIsFocused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
   // Refs
   const itemRef = useRef<HTMLDivElement>(null);
-  const DetailTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Handle the note detail change
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -50,32 +54,6 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
     transform: CSS.Transform.toString(transform),
     transition,
     pointerEvents: "auto",
-  };
-
-  // Resize the textarea based on the content
-  const resizeDetailTextarea = () => {
-    const el = DetailTextareaRef.current;
-    if (el) {
-      el.style.height = "auto";
-      el.style.height = el.scrollHeight + "px";
-    }
-  };
-
-  // Reset the textarea height
-  useEffect(() => {
-    setTimeout(() => {
-      resizeDetailTextarea();
-    }, 0);
-  }, [note]);
-
-  // Scroll to the item when editing
-  const handleCenterItem = () => {
-    if (itemRef.current) {
-      itemRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
   };
 
   // Handle the note update
@@ -107,14 +85,6 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
     }
   }, [debouncedDetail, mutateUpdate, note.detail, note.id]);
 
-  // Handle the note update - local state
-  const handleUpdateDetail = async (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    setDetail(e.target.value);
-    resizeDetailTextarea();
-  };
-
   // Handle the note deletion
   const handleDeleteNote = async () => {
     mutateDelete(note.id);
@@ -125,35 +95,40 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
       ref={setCombinedRef}
       style={style}
       className="group relative cursor-default"
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Note item */}
-      <div className="relative flex items-start rounded-xl border border-neutral-300 bg-white p-2 hover:ring">
+      <div className="relative flex items-center rounded-xl border border-neutral-300 px-2 py-4 hover:ring">
         {/* Drag handle */}
         {isDraggable && (
           <button
             {...attributes}
             {...listeners}
-            className="action-btn relative mr-1 cursor-grab"
+            className={clsx("action-btn relative mr-1 cursor-grab", {
+              invisible: !isFocused && !isHovered,
+            })}
           >
             <GripVertical size={20} />
           </button>
         )}
 
-        {/* Note Detail */}
+        {/* Note editor */}
         <div
-          className={clsx("flex flex-1 flex-col gap-4 py-1", {
+          className={clsx("flex flex-1 flex-col gap-4 py-2", {
             "ml-2": !isDraggable,
           })}
         >
-          <textarea
-            ref={DetailTextareaRef}
-            className="w-full resize-none outline-none"
-            placeholder="Detail"
-            onChange={handleUpdateDetail}
-            onFocus={handleCenterItem}
-            value={detail}
-            rows={1}
+          {/* Note entry */}
+          <RichTextEditor
+            html={detail}
+            onChange={setDetail}
+            placeholder="Type your note here..."
           />
+
+          {/* Note creation date */}
           <p className="text-neutral-500">{note.date}</p>
         </div>
 
@@ -163,7 +138,12 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
             <LoaderCircle size={20} />
           </div>
         ) : (
-          <button className="action-btn red" onClick={handleDeleteNote}>
+          <button
+            className={clsx("action-btn red", {
+              invisible: !isFocused && !isHovered,
+            })}
+            onClick={handleDeleteNote}
+          >
             <Trash2 size={20} />
           </button>
         )}

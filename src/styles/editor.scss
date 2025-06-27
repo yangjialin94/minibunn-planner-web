@@ -1,0 +1,26 @@
+/**
+ * Rich text editor
+ */
+.toolbar-btn {
+  @apply rounded-xl p-1 text-black hover:bg-neutral-300;
+}
+
+.toolbar-btn:hover {
+  @apply hover:bg-neutral-300 hover:text-black;
+}
+
+.toolbar-btn.is-active {
+  @apply bg-neutral-300 text-black;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9a9a9a;
+  pointer-events: none;
+  height: 0;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}

@@ -17,6 +17,7 @@ import {
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { createTask, deleteTask, updateTask } from "@/api/tasks";
+import RichTextEditor from "@/components/elements/RichTextEditor";
 import { useDebounce } from "@/hooks/useDebounce";
 import { usePageStore } from "@/hooks/usePageStore";
 import { Task, TaskCreate } from "@/types/task";
@@ -34,10 +35,12 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
   const [note, setNote] = useState(task.note);
   const debouncedNote = useDebounce(note, 300);
 
+  // Note editor focus and hover states
+  const [isFocused, setIsFocused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
   // Refs
   const itemRef = useRef<HTMLDivElement>(null);
-  const titleTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const noteTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Page store
   const isModalOpen = usePageStore((state) => state.isModalOpen);
@@ -69,30 +72,6 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
   const dateStr = task.date;
   const nextDate = parseLocalDate(task.date); // Date
   const nextDateStr = formatDateLocalNoTime(addDays(nextDate, 1)); // String
-
-  // Resize the title textarea based on the content
-  const resizeTitleTextarea = () => {
-    const el = titleTextareaRef.current;
-    if (el) {
-      el.style.height = "auto";
-      el.style.height = el.scrollHeight + 2 + "px";
-    }
-  };
-
-  // Resize the note textarea based on the content
-  const resizeNoteTextarea = () => {
-    const el = noteTextareaRef.current;
-    if (el) {
-      el.style.height = "auto";
-      el.style.height = el.scrollHeight + "px";
-    }
-  };
-
-  // Reset the textarea height
-  useEffect(() => {
-    resizeTitleTextarea();
-    resizeNoteTextarea();
-  }, [task]);
 
   // Handle the task update
   const { mutate: mutateUpdate } = useMutation({
@@ -178,19 +157,8 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
   ]);
 
   // Handle the task title update - local state
-  const handleUpdateTitle = async (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
+  const handleUpdateTitle = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-    resizeTitleTextarea();
-  };
-
-  // Handle the task note update
-  const handleUpdateNote = async (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    setNote(e.target.value);
-    resizeNoteTextarea();
   };
 
   // Handle the task completion toggle
@@ -222,11 +190,15 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
       ref={setCombinedRef}
       style={style}
       className="group relative cursor-default"
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Task item */}
       <div
         className={clsx(
-          "relative flex items-start rounded-xl border border-neutral-300 p-2 hover:ring",
+          "relative flex items-center rounded-xl border border-neutral-300 px-2 py-4 hover:ring",
           {
             "bg-white": !task.is_completed,
             "bg-neutral-300": task.is_completed,
@@ -237,40 +209,41 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
         <button
           {...attributes}
           {...listeners}
-          className={clsx("relative mr-1 cursor-grab", {
-            "action-btn": !task.is_completed,
-            "reverse-action-btn": task.is_completed,
-          })}
+          className={clsx(
+            "relative mr-1 cursor-grab",
+            {
+              "action-btn": !task.is_completed,
+              "reverse-action-btn": task.is_completed,
+            },
+            {
+              invisible: !isFocused && !isHovered,
+            },
+          )}
         >
           <GripVertical size={20} />
         </button>
 
-        {/* Task inputs */}
-        <div className="flex flex-1 flex-col gap-2">
-          <textarea
-            ref={titleTextareaRef}
+        {/* Task editor */}
+        <div className="w-full">
+          {/* Task title */}
+          <input
             className={clsx(
-              "w-full resize-none border-b pt-1 pb-2 text-base font-semibold outline-none",
+              "mb-2 w-full text-base font-semibold overflow-ellipsis outline-none",
               {
                 "border-neutral-300": !task.is_completed,
                 "border-white": task.is_completed,
               },
             )}
-            placeholder="Title"
+            placeholder="Type your title here..."
             onChange={handleUpdateTitle}
             value={title}
-            rows={1}
-            disabled={task.is_completed}
           />
 
-          <textarea
-            ref={noteTextareaRef}
-            className="w-full resize-none pb-2 outline-none"
-            placeholder="Note"
-            onChange={handleUpdateNote}
-            value={note}
-            rows={1}
-            disabled={task.is_completed}
+          {/* Task entry */}
+          <RichTextEditor
+            html={note}
+            onChange={setNote}
+            placeholder="Type your note here..."
           />
         </div>
 
@@ -293,6 +266,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
                     "bg-neutral-300": open && !task.is_completed,
                     "bg-white": open && task.is_completed,
                   },
+                  { invisible: !isFocused && !isHovered },
                 )
               }
             >
@@ -308,7 +282,7 @@ function TaskItem({ id, task }: { id: number; task: Task }) {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="ring-opacity-5 absolute right-0 z-50 mt-2 w-52 origin-top-right rounded-xl bg-white shadow-xl focus:outline-none">
+              <Menu.Items className="absolute right-0 z-50 mt-2 w-52 origin-top-right rounded-xl border border-neutral-300 bg-white">
                 <div className="p-1">
                   {!task.is_completed ? (
                     <Menu.Item key={`complete-${id}`}>
