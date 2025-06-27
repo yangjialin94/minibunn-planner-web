@@ -101,7 +101,7 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Note item */}
-      <div className="relative flex items-center rounded-xl border border-neutral-300 px-2 py-4 hover:ring">
+      <div className="relative flex items-center rounded-xl border border-neutral-300 bg-white px-2 py-4 hover:ring">
         {/* Drag handle */}
         {isDraggable && (
           <button
