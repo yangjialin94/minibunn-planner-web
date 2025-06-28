@@ -56,6 +56,11 @@ function RichTextEditor({
       Color,
       Placeholder.configure({ placeholder }),
     ],
+    editorProps: {
+      attributes: {
+        class: "font-mali h-full w-full break-all",
+      },
+    },
     content: html,
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
     onSelectionUpdate: ({ editor }) => {
@@ -250,7 +255,7 @@ function RichTextEditor({
         )}
 
       {/* Editor Content */}
-      <EditorContent editor={editor} className="font-mali h-full w-full" />
+      <EditorContent editor={editor} />
     </div>
   );
 }
