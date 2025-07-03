@@ -96,7 +96,7 @@ function Tasks({ dateStr }: { dateStr: string }) {
       <TaskHeader tasks={orderedTasks} dateStr={dateStr} topRef={topRef} />
 
       {/* Task List */}
-      <div className="overflow-y-auto pb-28">
+      <div className="overflow-y-auto pb-32">
         {/* Ref for the top */}
         <div ref={topRef} />
 
