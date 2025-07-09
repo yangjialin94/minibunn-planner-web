@@ -39,7 +39,7 @@ function Personal() {
   });
 
   // Name
-  const [name, setName] = useState(data?.name || "");
+  const [name, setName] = useState("");
   const [nameChanged, setNameChanged] = useState(false);
   const debouncedName = useDebounce(name, 300);
 
@@ -49,7 +49,7 @@ function Personal() {
   // Update name in state
   useEffect(() => {
     if (data) {
-      setName(data.name);
+      setName(data.name || "");
       setId(data.id);
     }
   }, [data]);
@@ -132,6 +132,7 @@ function Personal() {
           <input
             className="font-inter focus:font-mali text-end hover:cursor-pointer focus:cursor-text focus:pl-2 focus:text-start"
             value={name}
+            placeholder="Enter your name"
             onChange={handleNameChange}
           />
         </div>

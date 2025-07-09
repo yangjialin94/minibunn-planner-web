@@ -9,6 +9,7 @@ import React, { useEffect } from "react";
 import Journal from "@/components/journal/Journal";
 import Tasks from "@/components/task/Tasks";
 import { usePageStore } from "@/hooks/usePageStore";
+import { useUserStore } from "@/hooks/useUserStore";
 import {
   formatDateLocalNoTime,
   formatDateWithWeekday,
@@ -22,6 +23,17 @@ interface DailyHeaderProps {
 }
 
 /**
+ * Premium Badge component
+ */
+const PremiumBadge = () => {
+  return (
+    <span className="ml-2 rounded-full border-2 border-yellow-400 bg-yellow-100 px-2 py-0.5 text-xs font-bold text-yellow-700 shadow-sm">
+      VIP
+    </span>
+  );
+};
+
+/**
  * Daily Header
  */
 function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
@@ -29,6 +41,9 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
 
   const date = parseLocalDate(dateStr);
   const headerDate = formatDateWithWeekday(dateStr);
+
+  // Check if user is subscribed
+  const isSubscribed = useUserStore((state) => state.isSubscribed);
 
   const handleTabChange = (tab: "tasks" | "journal") => {
     setDailyTab(tab);
@@ -63,7 +78,10 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
               })}
               onClick={() => handleTabChange("journal")}
             >
-              Journal
+              <span className="flex items-center">
+                Journal
+                {!isSubscribed && <PremiumBadge />}
+              </span>
             </button>
           </div>
           <div className="flex items-center gap-2">
@@ -107,7 +125,10 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
                 })}
                 onClick={() => handleTabChange("journal")}
               >
-                Journal
+                <span className="flex items-center">
+                  Journal
+                  {!isSubscribed && <PremiumBadge />}
+                </span>
               </button>
             </div>
           </div>

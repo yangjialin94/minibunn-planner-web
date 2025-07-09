@@ -7,9 +7,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { fetchUser } from "@/api/user";
-import { auth } from "@/auth/firebaseClient"; // Handle sign in with email and password
+import { auth } from "@/auth/firebaseClient";
 import { usePageStore } from "@/hooks/usePageStore";
+import { getFirebaseErrorMessage } from "@/utils/firebaseErrorParser";
 
 /**
  * Register Page
@@ -56,16 +56,12 @@ function RegisterPage() {
 
     try {
       await createUserWithEmailAndPassword(auth, form.email, form.password);
-      const user = await fetchUser();
-
-      if (user.is_subscribed) {
-        router.push("/calendar");
-      } else {
-        router.push("/auth/subscribe");
-      }
+      // User data will be automatically fetched and set by AuthProvider
+      // Navigate to calendar (home) page for all new users
+      router.push("/calendar");
     } catch (error) {
       console.error("Error with Google register", error);
-      setErrors({ ...errors, firebaseError: (error as Error).message });
+      setErrors({ ...errors, firebaseError: getFirebaseErrorMessage(error) });
     } finally {
       setLoading(false);
     }
@@ -138,14 +134,14 @@ function RegisterPage() {
               className={clsx(
                 "w-full rounded-xl border px-4 py-2 outline-none",
                 {
-                  "border-transparent": !errors.email,
-                  "border-red-500": errors.email,
+                  "border-transparent": !errors.password,
+                  "border-red-500": errors.password,
                 },
               )}
               required
             />
-            {errors.email && (
-              <p className="py-2 pl-4 text-red-500">{errors.email}</p>
+            {errors.password && (
+              <p className="py-2 pl-4 text-red-500">{errors.password}</p>
             )}
           </div>
 

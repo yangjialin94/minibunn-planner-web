@@ -54,10 +54,6 @@ src/
 
 - **Reset Password**: `/auth/reset`
 
-- **Subscribe**: `/auth/subscribe`
-
-- **Resubscribe**: `/auth/resubscribe`
-
 ### Main Pages
 
 - **Home**: `/`
@@ -140,6 +136,62 @@ npm run dev
 
 # Test on Mobile
 ngrok http 3000
+```
+
+## Validation
+
+Run these commands after making changes to ensure everything is working correctly:
+
+### Essential Checks
+
+```bash
+# Install dependencies
+npm install
+
+# Run linting and fix issues
+npm run lint
+
+# Type checking
+npx tsc --noEmit
+
+# Build the project
+npm run build
+```
+
+### Security & Dependencies
+
+```bash
+# Check for security vulnerabilities
+npm audit
+
+# Fix vulnerabilities (if any)
+npm audit fix
+
+# Check for unused dependencies (optional)
+npx depcheck --ignores="@types/*,eslint-*,prettier-*,tailwindcss,typescript,clsx" --skip-missing
+```
+
+### Development Server
+
+```bash
+# Start development server
+npm run dev
+
+# Access the application at http://localhost:3000
+```
+
+### Pre-deployment Checklist
+
+```bash
+# 1. Run all essential checks
+npm run lint && npx tsc --noEmit && npm run build
+
+# 2. Check security
+npm audit
+
+# 3. Verify no console errors in browser
+# 4. Test key user flows (auth, tasks, notes)
+# 5. Test responsive design on mobile
 ```
 
 ## Environment Variables

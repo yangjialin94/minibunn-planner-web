@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 
 import Loading from "@/components/elements/Loading";
 import { usePageStore } from "@/hooks/usePageStore";
+import { getFirebaseErrorMessage } from "@/utils/firebaseErrorParser";
 
 function ResetForm() {
   const setPage = usePageStore((state) => state.setPage);
@@ -84,7 +85,7 @@ function ResetForm() {
       router.push("/");
     } catch (error) {
       console.error("Error with Firebase", error);
-      setError((error as Error).message);
+      setError(getFirebaseErrorMessage(error));
     } finally {
       setLoading(false);
     }

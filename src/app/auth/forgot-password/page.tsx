@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { auth } from "@/auth/firebaseClient";
 import { NEXT_PUBLIC_WEB_URL } from "@/env";
 import { usePageStore } from "@/hooks/usePageStore";
+import { getFirebaseErrorMessage } from "@/utils/firebaseErrorParser";
 
 /**
  * Forgot Password Page
@@ -73,7 +74,7 @@ function ForgotPasswordPage() {
       });
     } catch (error) {
       console.error("Error sending reset email", error);
-      setErrors({ ...errors, firebaseError: (error as Error).message });
+      setErrors({ ...errors, firebaseError: getFirebaseErrorMessage(error) });
     } finally {
       setLoading(false);
     }

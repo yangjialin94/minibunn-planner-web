@@ -13,6 +13,7 @@ import { fetchTasksCompletionInRange } from "@/api/tasks";
 import { auth } from "@/auth/firebaseClient";
 import { useIsMd } from "@/hooks/useMediaQuery";
 import { usePageStore } from "@/hooks/usePageStore";
+import { useUserStore } from "@/hooks/useUserStore";
 import { TaskCompletion } from "@/types/task";
 import { formatDateLocalNoTime } from "@/utils/date";
 
@@ -22,6 +23,7 @@ interface SidebarLinkProps {
   icon: React.ReactNode;
   text: string;
   status?: string;
+  isPremium?: boolean;
 }
 
 interface SidebarButtonProps {
@@ -29,6 +31,20 @@ interface SidebarButtonProps {
   icon: React.ReactNode;
   text: string;
 }
+
+/**
+ * PremiumBadge component
+ */
+const PremiumBadge = ({ text = "VIP" }: { text: string }) => {
+  return (
+    <span
+      className="rounded-full border-2 border-yellow-400 bg-yellow-100 px-1.5 py-0.5 text-xs font-bold whitespace-nowrap text-yellow-700 shadow-sm"
+      aria-label={`${text} feature`}
+    >
+      {text}
+    </span>
+  );
+};
 
 /**
  * SidebarLink component
@@ -39,9 +55,13 @@ const SidebarLink = ({
   icon,
   text,
   status,
+  isPremium = false,
 }: SidebarLinkProps) => {
   // Check if the screen size is medium or larger
   const isMed = useIsMd();
+
+  // Check if the user is subscribed
+  const isSubscribed = useUserStore((state) => state.isSubscribed);
 
   // Function to handle navigation if not on medium or larger screens
   const onHandleNav = () => {
@@ -55,14 +75,18 @@ const SidebarLink = ({
       <nav>
         <Link
           href={href}
-          className={clsx("peer flex items-center", selected && "selected")}
+          className={clsx(
+            "peer flex w-full items-center justify-between",
+            selected && "selected",
+          )}
           onClick={onHandleNav}
         >
-          <span className="flex gap-2">
+          <span className="flex items-center gap-2">
             {icon}
             <span>{text}</span>
           </span>
-          <span>{status}</span>
+          {status && <span>{status}</span>}
+          {isPremium && !isSubscribed && <PremiumBadge text="VIP" />}
         </Link>
       </nav>
     </div>
@@ -151,6 +175,7 @@ function SideBar() {
           href="/notes"
           icon={<Notebook size={20} />}
           text="Notes"
+          isPremium={true}
         />
         <SidebarLink
           selected={page === "user"}

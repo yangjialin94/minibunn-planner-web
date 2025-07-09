@@ -9,8 +9,10 @@ import { fetchOrCreateJournalByDate, updateJournal } from "@/api/journals";
 import Error from "@/components/elements/Error";
 import Loading from "@/components/elements/Loading";
 import RichTextEditor from "@/components/elements/RichTextEditor";
+import Plans from "@/components/subscription/Plans";
 import { useAuth } from "@/hooks/useAuth";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useUserStore } from "@/hooks/useUserStore";
 
 function Journal({ dateStr }: { dateStr: string }) {
   // Subject
@@ -24,6 +26,9 @@ function Journal({ dateStr }: { dateStr: string }) {
   // Id and first load state
   const [id, setId] = useState<number>(0);
   const [firstLoad, setFirstLoad] = useState(true);
+
+  // Zustand state for user subscription
+  const isSubscribed = useUserStore((state) => state.isSubscribed);
 
   // Check for query client
   const { user } = useAuth();
@@ -43,6 +48,7 @@ function Journal({ dateStr }: { dateStr: string }) {
       setId(data.id);
       setSubject(data.subject || "");
       setEntry(data.entry || "");
+
       setFirstLoad(false);
     }
   }, [data, firstLoad]);
@@ -66,6 +72,11 @@ function Journal({ dateStr }: { dateStr: string }) {
       mutateJournal(id);
     }
   }, [id, mutateJournal, debouncedSubject, debouncedEntry, firstLoad]);
+
+  // Handle unsubscribed users
+  if (!isSubscribed) {
+    return <Plans />;
+  }
 
   // Handle the journal entry update
   const handleUpdateSubject = (e: React.ChangeEvent<HTMLInputElement>) => {

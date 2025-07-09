@@ -6,7 +6,9 @@ import Cookies from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 
+import { fetchUser } from "@/api/user";
 import { auth } from "@/auth/firebaseClient";
+import { useUserStore } from "@/hooks/useUserStore";
 
 // Maximum session duration in days
 const SESSION_DURATION_DAYS = 7;
@@ -28,6 +30,11 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const [user, setUser] = useState<FirebaseUser | null>(null);
 
+  // User store actions
+  const setName = useUserStore((state) => state.setName);
+  const setEmail = useUserStore((state) => state.setEmail);
+  const setIsSubscribed = useUserStore((state) => state.setIsSubscribed);
+
   // Handle firebase token changes
   useEffect(() => {
     const unsubscribe = onIdTokenChanged(auth, async (firebaseUser) => {
@@ -44,6 +51,12 @@ function AuthProvider({ children }: { children: ReactNode }) {
             await signOut(auth);
             Cookies.remove("token");
             setUser(null);
+
+            // Clear User state
+            setName("");
+            setEmail("");
+            setIsSubscribed(false);
+
             router.push("/");
 
             console.warn("Session expired.");
@@ -56,6 +69,21 @@ function AuthProvider({ children }: { children: ReactNode }) {
         Cookies.set("token", token, { expires: SESSION_DURATION_DAYS });
         setUser(firebaseUser);
 
+        // Fetch and update user data in User store
+        try {
+          const userData = await fetchUser();
+          setName(userData.name);
+          setEmail(userData.email);
+          setIsSubscribed(userData.is_subscribed);
+          console.log("User data updated:", userData);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          // If we can't fetch user data, clear the state
+          setName("");
+          setEmail("");
+          setIsSubscribed(false);
+        }
+
         // Invalidate React Query cache
         queryClient.invalidateQueries();
       } else {
@@ -63,13 +91,18 @@ function AuthProvider({ children }: { children: ReactNode }) {
         Cookies.remove("token");
         setUser(null);
 
+        // Clear User state
+        setName("");
+        setEmail("");
+        setIsSubscribed(false);
+
         console.warn("No user — signed out.");
       }
     });
 
     // Clean up the listener on unmount
     return () => unsubscribe();
-  }, [queryClient, router]);
+  }, [queryClient, router, setName, setEmail, setIsSubscribed]);
 
   // Redirect if user is not authenticated and trying to access a protected route
   useEffect(() => {

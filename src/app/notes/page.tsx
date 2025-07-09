@@ -8,8 +8,10 @@ import Error from "@/components/elements/Error";
 import Loading from "@/components/elements/Loading";
 import Notes from "@/components/note/Notes";
 import NotesHeader from "@/components/note/NotesHeader";
+import Plans from "@/components/subscription/Plans";
 import { useAuth } from "@/hooks/useAuth";
 import { usePageStore } from "@/hooks/usePageStore";
+import { useUserStore } from "@/hooks/useUserStore";
 
 /**
  * Notes Page
@@ -18,8 +20,9 @@ function NotesPage() {
   // Refs
   const topRef = useRef<HTMLDivElement>(null);
 
-  // Page state
+  // Zustand States
   const setPage = usePageStore((state) => state.setPage);
+  const isSubscribed = useUserStore((state) => state.isSubscribed);
 
   // Set the page
   useEffect(() => {
@@ -34,18 +37,26 @@ function NotesPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["notes"],
     queryFn: () => fetchNotes(),
-    enabled: tokenReady,
+    enabled: tokenReady && isSubscribed,
   });
 
-  // Handle loading and error states
+  // Handle unsubscribed users
+  if (!isSubscribed) {
+    return <Plans />;
+  }
+
+  // Handle loading state
   if (data === undefined || isLoading) {
     return <Loading />;
   }
+
+  // Handle error state
   if (error) {
     console.error(error);
     return <Error />;
   }
 
+  // Render the notes page
   return (
     <>
       {/* Header */}
