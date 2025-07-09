@@ -7,7 +7,6 @@ import { useState } from "react";
 import { fetchPaymentUrl } from "@/api/subscription";
 import { NEXT_PUBLIC_WEB_URL } from "@/env";
 import {
-  NEXT_PUBLIC_LIFETIME_PRICE_ID,
   NEXT_PUBLIC_MONTHLY_SUBSCRIPTION_PRICE_ID,
   NEXT_PUBLIC_YEARLY_SUBSCRIPTION_PRICE_ID,
 } from "@/env";
@@ -33,10 +32,7 @@ function Plans() {
     try {
       const data = {
         price_id: priceId,
-        mode:
-          priceId === NEXT_PUBLIC_LIFETIME_PRICE_ID
-            ? "payment"
-            : "subscription",
+        mode: "subscription",
         success_url: `${NEXT_PUBLIC_WEB_URL}/calendar`,
         cancel_url: `${NEXT_PUBLIC_WEB_URL}`,
       };
