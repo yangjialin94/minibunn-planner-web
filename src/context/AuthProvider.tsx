@@ -34,6 +34,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const setName = useUserStore((state) => state.setName);
   const setEmail = useUserStore((state) => state.setEmail);
   const setIsSubscribed = useUserStore((state) => state.setIsSubscribed);
+  const clearStore = useUserStore((state) => state.clearStore);
 
   // Handle firebase token changes
   useEffect(() => {
@@ -53,9 +54,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
             setUser(null);
 
             // Clear User state
-            setName("");
-            setEmail("");
-            setIsSubscribed(false);
+            clearStore();
 
             router.push("/");
 
@@ -79,9 +78,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         } catch (error) {
           console.error("Error fetching user data:", error);
           // If we can't fetch user data, clear the state
-          setName("");
-          setEmail("");
-          setIsSubscribed(false);
+          clearStore();
         }
 
         // Invalidate React Query cache
@@ -92,9 +89,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
 
         // Clear User state
-        setName("");
-        setEmail("");
-        setIsSubscribed(false);
+        clearStore();
 
         console.warn("No user — signed out.");
       }
@@ -102,7 +97,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
     // Clean up the listener on unmount
     return () => unsubscribe();
-  }, [queryClient, router, setName, setEmail, setIsSubscribed]);
+  }, [queryClient, router, setName, setEmail, setIsSubscribed, clearStore]);
 
   // Redirect if user is not authenticated and trying to access a protected route
   useEffect(() => {
