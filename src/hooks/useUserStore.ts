@@ -26,8 +26,6 @@ export const useUserStore = create<UserState>()(
     }),
     {
       name: "user-store",
-      // Optional: you can specify which parts of the state to persist
-      // partialize: (state) => ({ name: state.name, email: state.email, isSubscribed: state.isSubscribed }),
     },
   ),
 );
