@@ -34,6 +34,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const setName = useUserStore((state) => state.setName);
   const setEmail = useUserStore((state) => state.setEmail);
   const setIsSubscribed = useUserStore((state) => state.setIsSubscribed);
+  const setIsUserDataLoaded = useUserStore(
+    (state) => state.setIsUserDataLoaded,
+  );
   const clearStore = useUserStore((state) => state.clearStore);
 
   // Handle firebase token changes
@@ -74,6 +77,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
           setName(userData.name);
           setEmail(userData.email);
           setIsSubscribed(userData.is_subscribed);
+          setIsUserDataLoaded(true);
           console.log("User data updated:", userData);
         } catch (error) {
           console.error("Error fetching user data:", error);
@@ -97,7 +101,15 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
     // Clean up the listener on unmount
     return () => unsubscribe();
-  }, [queryClient, router, setName, setEmail, setIsSubscribed, clearStore]);
+  }, [
+    queryClient,
+    router,
+    setName,
+    setEmail,
+    setIsSubscribed,
+    setIsUserDataLoaded,
+    clearStore,
+  ]);
 
   // Redirect if user is not authenticated and trying to access a protected route
   useEffect(() => {

@@ -7,33 +7,33 @@ import clsx from "clsx";
 import { GripVertical, LoaderCircle, Trash2 } from "lucide-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-import { deleteNote, updateNote } from "@/api/notes";
+import { deleteBacklog, updateBacklog } from "@/api/backlogs";
 import RichTextEditor from "@/components/elements/RichTextEditor";
 import { useDebounce } from "@/hooks/useDebounce";
-import { Note } from "@/types/note";
+import { Backlog } from "@/types/backlog";
 
-interface NoteItemProps {
+interface BacklogItemProps {
   id: number;
-  note: Note;
+  backlog: Backlog;
   isDraggable: boolean;
 }
 
 /**
- * Sortable Item for Notes
+ * Sortable Item for Backlogs
  */
-function NoteItem({ id, note, isDraggable }: NoteItemProps) {
+function BacklogItem({ id, backlog, isDraggable }: BacklogItemProps) {
   // Detail
-  const [detail, setDetail] = useState(note.detail);
+  const [detail, setDetail] = useState(backlog.detail);
   const debouncedDetail = useDebounce(detail, 300);
 
-  // Note editor focus and hover states
+  // Backlog editor focus and hover states
   const [isFocused, setIsFocused] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   // Refs
   const itemRef = useRef<HTMLDivElement>(null);
 
-  // Handle the note detail change
+  // Handle the backlog detail change
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
@@ -56,38 +56,39 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
     pointerEvents: "auto",
   };
 
-  // Handle the note update
+  // Handle the backlog update
   const { mutate: mutateUpdate } = useMutation({
-    mutationFn: (noteId: number) => updateNote(noteId, { detail: detail }),
+    mutationFn: (backlogId: number) =>
+      updateBacklog(backlogId, { detail: detail }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      queryClient.invalidateQueries({ queryKey: ["backlogs"] });
     },
     onError: (error) => {
-      console.error("Error updating note:", error);
+      console.error("Error updating backlog:", error);
     },
   });
 
-  // Handle the note deletion
+  // Handle the backlog deletion
   const { mutate: mutateDelete, isPending: isDeleting } = useMutation({
-    mutationFn: (noteId: number) => deleteNote(noteId),
+    mutationFn: (backlogId: number) => deleteBacklog(backlogId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      queryClient.invalidateQueries({ queryKey: ["backlogs"] });
     },
     onError: (error) => {
-      console.error("Error deleting note:", error);
+      console.error("Error deleting backlog:", error);
     },
   });
 
-  // Handle the note update - API call
+  // Handle the backlog update - API call
   useEffect(() => {
-    if (debouncedDetail !== note.detail) {
-      mutateUpdate(note.id);
+    if (debouncedDetail !== backlog.detail) {
+      mutateUpdate(backlog.id);
     }
-  }, [debouncedDetail, mutateUpdate, note.detail, note.id]);
+  }, [debouncedDetail, mutateUpdate, backlog.detail, backlog.id]);
 
-  // Handle the note deletion
-  const handleDeleteNote = async () => {
-    mutateDelete(note.id);
+  // Handle the backlog deletion
+  const handleDeleteBacklog = async () => {
+    mutateDelete(backlog.id);
   };
 
   return (
@@ -100,7 +101,7 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Note item */}
+      {/* Backlog item */}
       <div className="relative flex items-center rounded-xl border border-neutral-300 bg-white px-2 py-4 hover:ring">
         {/* Drag handle */}
         {isDraggable && (
@@ -115,21 +116,21 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
           </button>
         )}
 
-        {/* Note editor */}
+        {/* Backlog editor */}
         <div
           className={clsx("flex flex-1 flex-col gap-4 py-2", {
             "ml-2": !isDraggable,
           })}
         >
-          {/* Note entry */}
+          {/* Backlog entry */}
           <RichTextEditor
             html={detail}
             onChange={setDetail}
-            placeholder="Type your note here..."
+            placeholder="Type your backlog here..."
           />
 
-          {/* Note creation date */}
-          <p className="text-neutral-500">{note.date}</p>
+          {/* Backlog creation date */}
+          <p className="text-neutral-500">{backlog.date}</p>
         </div>
 
         {/* Action Buttons */}
@@ -142,7 +143,7 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
             className={clsx("action-btn red", {
               invisible: !isFocused && !isHovered,
             })}
-            onClick={handleDeleteNote}
+            onClick={handleDeleteBacklog}
           >
             <Trash2 size={20} />
           </button>
@@ -152,4 +153,4 @@ function NoteItem({ id, note, isDraggable }: NoteItemProps) {
   );
 }
 
-export default NoteItem;
+export default BacklogItem;

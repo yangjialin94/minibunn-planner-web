@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Eraser } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-import { fetchOrCreateJournalByDate, updateJournal } from "@/api/journals";
+import { fetchOrCreateNoteByDate, updateNote } from "@/api/notes";
 import Error from "@/components/elements/Error";
 import Loading from "@/components/elements/Loading";
 import RichTextEditor from "@/components/elements/RichTextEditor";
@@ -14,11 +14,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useUserStore } from "@/hooks/useUserStore";
 
-function Journal({ dateStr }: { dateStr: string }) {
-  // Subject
-  const [subject, setSubject] = useState<string>("");
-  const debouncedSubject = useDebounce(subject, 300);
-
+function Note({ dateStr }: { dateStr: string }) {
   // Entry
   const [entry, setEntry] = useState<string>("");
   const debouncedEntry = useDebounce(entry, 300);
@@ -29,68 +25,56 @@ function Journal({ dateStr }: { dateStr: string }) {
 
   // Zustand state for user subscription
   const isSubscribed = useUserStore((state) => state.isSubscribed);
+  const isUserDataLoaded = useUserStore((state) => state.isUserDataLoaded);
 
   // Check for query client
   const { user } = useAuth();
   const tokenReady = !!user;
   const queryClient = useQueryClient();
 
-  // Fetch or create journal entry
+  // Fetch or create note entry
   const { data, isLoading, error } = useQuery({
-    queryKey: ["journal", dateStr],
-    queryFn: () => fetchOrCreateJournalByDate(dateStr),
+    queryKey: ["note", dateStr],
+    queryFn: () => fetchOrCreateNoteByDate(dateStr),
     enabled: tokenReady,
   });
 
-  // Load journal entry into state and resize the textarea
+  // Load note entry into state and resize the textarea
   useEffect(() => {
     if (data && firstLoad) {
       setId(data.id);
-      setSubject(data.subject || "");
       setEntry(data.entry || "");
 
       setFirstLoad(false);
     }
   }, [data, firstLoad]);
 
-  // Handle the journal update
-  const { mutate: mutateJournal } = useMutation({
-    mutationFn: (journalId: number) =>
-      updateJournal(journalId, { subject: subject, entry: entry }),
+  // Handle the note update
+  const { mutate: mutateNote } = useMutation({
+    mutationFn: (noteId: number) => updateNote(noteId, { entry: entry }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["journal", dateStr] });
-      console.log("Journal updated successfully.");
+      queryClient.invalidateQueries({ queryKey: ["note", dateStr] });
+      console.log("Note updated successfully.");
     },
     onError: (error) => {
-      console.error("Error updating journal:", error);
+      console.error("Error updating note:", error);
     },
   });
 
-  // Handle the journal update - API call
+  // Handle the note update - API call
   useEffect(() => {
     if (!firstLoad && id !== null) {
-      mutateJournal(id);
+      mutateNote(id);
     }
-  }, [id, mutateJournal, debouncedSubject, debouncedEntry, firstLoad]);
+  }, [id, mutateNote, debouncedEntry, firstLoad]);
 
-  // Handle unsubscribed users
-  if (!isSubscribed) {
+  // Handle unsubscribed users (only show pricing if user data is loaded and user is not subscribed)
+  if (isUserDataLoaded && !isSubscribed) {
     return <Plans />;
   }
 
-  // Handle the journal entry update
-  const handleUpdateSubject = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSubject(e.target.value);
-  };
-
-  // Handle clear journal
-  const handleClearJournal = () => {
-    setSubject("");
-    setEntry("");
-  };
-
-  // Handle loading and error states
-  if (isLoading) {
+  // Handle loading and error states (show loading if user data is not loaded or if data is loading)
+  if (!isUserDataLoaded || isLoading) {
     return <Loading />;
   }
   if (error) {
@@ -98,20 +82,17 @@ function Journal({ dateStr }: { dateStr: string }) {
     return <Error />;
   }
 
+  // Handle clear note
+  const handleClearNote = () => {
+    setEntry("");
+  };
+
   return (
     <div className="flex flex-1 flex-col px-6 pt-4">
       {/* Editor container */}
       <div className="overflow-y-auto">
-        {/* Journal title */}
-        <input
-          className="w-full text-lg font-semibold overflow-ellipsis outline-none"
-          placeholder="Subject"
-          onChange={handleUpdateSubject}
-          value={subject}
-        />
-
-        {/* Journal entry */}
-        <div className="mt-4 h-[calc(100dvh-296px)] sm:h-[calc(100dvh-256px)]">
+        {/* Note entry */}
+        <div className="mt-4 h-[calc(100dvh-270px)] sm:h-[calc(100dvh-230px)]">
           <RichTextEditor
             html={entry}
             onChange={setEntry}
@@ -122,7 +103,7 @@ function Journal({ dateStr }: { dateStr: string }) {
 
       {/* Footer */}
       <div className="mt-4 flex justify-end">
-        <button className="action-btn" onClick={handleClearJournal}>
+        <button className="action-btn" onClick={handleClearNote}>
           <Eraser />
         </button>
       </div>
@@ -130,4 +111,4 @@ function Journal({ dateStr }: { dateStr: string }) {
   );
 }
 
-export default Journal;
+export default Note;

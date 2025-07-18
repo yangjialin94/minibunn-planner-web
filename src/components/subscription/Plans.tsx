@@ -76,13 +76,13 @@ function Plans() {
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100">
                   <X className="h-3 w-3 text-red-600" />
                 </div>
-                <span className="text-gray-400">Journal Keeping</span>
+                <span className="text-gray-400">Note Keeping</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100">
                   <X className="h-3 w-3 text-red-600" />
                 </div>
-                <span className="text-gray-400">Notes Management</span>
+                <span className="text-gray-400">Backlogs Management</span>
               </li>
             </ul>
             <div className="mt-auto">
@@ -127,13 +127,13 @@ function Plans() {
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100">
                   <Check className="h-3 w-3 text-green-600" />
                 </div>
-                <span className="text-gray-700">Journal Keeping</span>
+                <span className="text-gray-700">Note Keeping</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100">
                   <Check className="h-3 w-3 text-green-600" />
                 </div>
-                <span className="text-gray-700">Notes Management</span>
+                <span className="text-gray-700">Backlogs Management</span>
               </li>
             </ul>
             <div className="mt-auto">
@@ -181,13 +181,13 @@ function Plans() {
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100">
                   <Check className="h-3 w-3 text-green-600" />
                 </div>
-                <span className="text-gray-700">Journal Keeping</span>
+                <span className="text-gray-700">Note Keeping</span>
               </li>
               <li className="flex items-center gap-3">
                 <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100">
                   <Check className="h-3 w-3 text-green-600" />
                 </div>
-                <span className="text-gray-700">Notes Management</span>
+                <span className="text-gray-700">Backlogs Management</span>
               </li>
             </ul>
             <div className="mt-auto">

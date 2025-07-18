@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-import Journal from "@/components/journal/Journal";
+import Note from "@/components/note/Note";
 import Tasks from "@/components/task/Tasks";
 import { usePageStore } from "@/hooks/usePageStore";
 import { useUserStore } from "@/hooks/useUserStore";
@@ -18,8 +18,8 @@ import {
 
 interface DailyHeaderProps {
   dateStr: string;
-  dailyTab: "tasks" | "journal";
-  setDailyTab: (tab: "tasks" | "journal") => void;
+  dailyTab: "tasks" | "note";
+  setDailyTab: (tab: "tasks" | "note") => void;
 }
 
 /**
@@ -45,7 +45,7 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
   // Check if user is subscribed
   const isSubscribed = useUserStore((state) => state.isSubscribed);
 
-  const handleTabChange = (tab: "tasks" | "journal") => {
+  const handleTabChange = (tab: "tasks" | "note") => {
     setDailyTab(tab);
   };
 
@@ -74,12 +74,12 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
             </button>
             <button
               className={clsx("daily-tab-btn", {
-                selected: dailyTab === "journal",
+                selected: dailyTab === "note",
               })}
-              onClick={() => handleTabChange("journal")}
+              onClick={() => handleTabChange("note")}
             >
               <span className="flex items-center">
-                Journal
+                Note
                 {!isSubscribed && <PremiumBadge />}
               </span>
             </button>
@@ -121,12 +121,12 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
               </button>
               <button
                 className={clsx("daily-tab-btn", {
-                  selected: dailyTab === "journal",
+                  selected: dailyTab === "note",
                 })}
-                onClick={() => handleTabChange("journal")}
+                onClick={() => handleTabChange("note")}
               >
                 <span className="flex items-center">
-                  Journal
+                  Note
                   {!isSubscribed && <PremiumBadge />}
                 </span>
               </button>
@@ -181,7 +181,7 @@ function DailyPage() {
       {dailyTab === "tasks" ? (
         <Tasks dateStr={dateStr} />
       ) : (
-        <Journal dateStr={dateStr} />
+        <Note dateStr={dateStr} />
       )}
     </>
   );

@@ -2,27 +2,27 @@ import { create } from "zustand";
 
 import { formatDateLocalNoTime } from "@/utils/date";
 
-type PageType = "auth" | "calendar" | "today" | "daily" | "notes" | "user";
+type PageType = "auth" | "calendar" | "today" | "daily" | "backlogs" | "user";
 
 type PageState = {
   page: PageType; // current page of the app
   calendarDate: Date; // date for the calendar
-  dailyTab: "tasks" | "journal"; // tab for daily page
+  dailyTab: "tasks" | "note"; // tab for daily page
   taskFilter: string; // filter for tasks (e.g., "all", "completed", "incomplete")
   userTab: "account" | "support"; // tab for user page
   isModalOpen: boolean; // state for modal visibility
   today: string; // current date in "YYYY-MM-DD" format
-  notesFilter: string; // search term for notes
+  backlogsFilter: string; // search term for backlogs
   isSidebarOpen: boolean; // sidebar visibility state
 
   setPage: (page: PageType) => void;
   setCalendarDate: (date: Date) => void;
-  setDailyTab: (tab: "tasks" | "journal") => void;
+  setDailyTab: (tab: "tasks" | "note") => void;
   setTaskFilter: (filter: string) => void;
   setUserTab: (tab: "account" | "support") => void;
   setIsModalOpen: (isOpen: boolean) => void;
   setToday: (date: string) => void;
-  setNotesFilter: (searchTerm: string) => void;
+  setBacklogsFilter: (searchTerm: string) => void;
   switchSidebarOpen: (show?: boolean) => void;
 };
 
@@ -87,17 +87,18 @@ export const usePageStore = create<PageState>((set) => {
     userTab: "account",
     isModalOpen: false,
     today: todayStr,
-    notesFilter: "",
+    backlogsFilter: "",
     isSidebarOpen: false,
 
     setPage: (page: PageType) => set({ page: page }),
     setCalendarDate: (date: Date) => set({ calendarDate: date }),
-    setDailyTab: (tab: "tasks" | "journal") => set({ dailyTab: tab }),
+    setDailyTab: (tab: "tasks" | "note") => set({ dailyTab: tab }),
     setTaskFilter: (filter: string) => set({ taskFilter: filter }),
     setUserTab: (tab: "account" | "support") => set({ userTab: tab }),
     setIsModalOpen: (isOpen: boolean) => set({ isModalOpen: isOpen }),
     setToday: (date: string) => set({ today: date }),
-    setNotesFilter: (searchTerm: string) => set({ notesFilter: searchTerm }),
+    setBacklogsFilter: (searchTerm: string) =>
+      set({ backlogsFilter: searchTerm }),
     switchSidebarOpen: (show?: boolean) =>
       set((state) => ({
         isSidebarOpen: typeof show === "boolean" ? show : !state.isSidebarOpen,
