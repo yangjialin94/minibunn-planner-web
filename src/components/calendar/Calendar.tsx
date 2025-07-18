@@ -11,7 +11,7 @@ import {
   startOfWeek,
   subMonths,
 } from "date-fns";
-import { ChevronLeft, ChevronRight, SquareCheck } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -108,34 +108,31 @@ function Cells({
     cells.push(
       <div
         key={dateStr}
-        className="relative cursor-pointer bg-white hover:bg-neutral-300"
+        className="cal-cell"
         onClick={() => {
           router.push(`/calendar/${dateStr}`);
         }}
       >
         <div
-          className={clsx(
-            "absolute top-2 right-2 flex size-2 items-center justify-center rounded-full p-3",
-            {
-              "font-bold text-yellow-500 md:bg-yellow-300 md:text-neutral-800":
-                isToday,
-              "text-neutral-800": isCurrentMonth && !isToday,
-              "text-neutral-300": !isCurrentMonth && !isToday,
-            },
-          )}
+          className={clsx("cal-day-number", {
+            today: isToday,
+            "current-month": isCurrentMonth && !isToday,
+            "other-month": !isCurrentMonth && !isToday,
+          })}
         >
           {dayFormatted}
         </div>
         {summary && (
-          <div
-            className={clsx(
-              "absolute bottom-2 left-2 flex items-center rounded px-1",
-              { "text-green-600": summary.completed === summary.total },
-              { "text-red-600": summary.completed < summary.total },
-            )}
-          >
-            <SquareCheck className="mr-1 inline-block" size={16} />
-            {summary.completed}/{summary.total}
+          <div className="cal-mini-progress-container">
+            <div
+              className={clsx("cal-mini-progress-fill", {
+                completed: summary.completed === summary.total,
+                "in-progress": summary.completed < summary.total,
+              })}
+              style={{
+                width: `${(summary.completed / summary.total) * 100}%`,
+              }}
+            />
           </div>
         )}
       </div>,

@@ -8,7 +8,7 @@ type PageState = {
   page: PageType; // current page of the app
   calendarDate: Date; // date for the calendar
   dailyTab: "tasks" | "note"; // tab for daily page
-  taskFilter: string; // filter for tasks (e.g., "all", "completed", "incomplete")
+  taskFilter: string; // filter for tasks (e.g., "all", "incomplete")
   userTab: "account" | "support"; // tab for user page
   isModalOpen: boolean; // state for modal visibility
   today: string; // current date in "YYYY-MM-DD" format

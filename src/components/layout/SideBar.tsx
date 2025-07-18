@@ -174,7 +174,7 @@ function SideBar() {
           selected={page === "backlogs"}
           href="/backlogs"
           icon={<Notebook size={20} />}
-          text="Backlogs"
+          text="Backlog"
           isPremium={true}
         />
         <SidebarLink

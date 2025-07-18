@@ -25,6 +25,42 @@
   @apply relative flex items-center justify-between border-b border-neutral-300 px-4 py-2;
 }
 
+/**
+ * Progress Bar
+ */
+.progress-container {
+  @apply flex flex-1 items-center justify-center px-4;
+}
+
+.progress-bar {
+  @apply relative h-6 w-full max-w-sm rounded-full bg-neutral-300;
+}
+
+.progress-fill {
+  @apply h-full rounded-full transition-all duration-300 ease-in-out;
+}
+
+.progress-fill.completed {
+  @apply bg-green-500;
+}
+
+.progress-fill.in-progress {
+  @apply bg-blue-500;
+}
+
+.progress-text {
+  @apply absolute inset-0 flex items-center justify-center font-medium;
+}
+
+.progress-text.zero-progress {
+  @apply text-black;
+}
+
+.progress-text.with-progress {
+  @apply absolute inset-y-0 flex items-center justify-center font-medium text-white;
+  left: 0;
+}
+
 .note-footer {
   @apply absolute relative right-0 bottom-0 left-0;
 }

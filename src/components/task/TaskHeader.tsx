@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
-import { CalendarPlus, LoaderCircle, SquareCheck } from "lucide-react";
+import { CalendarPlus, Eye, EyeOff, LoaderCircle } from "lucide-react";
 import React from "react";
 
 import { createTask } from "@/api/tasks";
@@ -13,15 +13,11 @@ interface TaskHeaderProps {
   topRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const options = [
-  { id: "all", label: "All" },
-  { id: "incomplete", label: "Active" },
-  { id: "completed", label: "Completed" },
-];
-
 function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
   // Page store
-  const taskFilter = usePageStore((state) => state.taskFilter);
+  const showCompletedTasks = usePageStore(
+    (state) => state.taskFilter !== "incomplete",
+  );
   const setTaskFilter = usePageStore((state) => state.setTaskFilter);
 
   // Query client
@@ -60,6 +56,11 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
     },
   });
 
+  // Handle toggle completed tasks visibility
+  const handleToggleCompletedTasks = () => {
+    setTaskFilter(showCompletedTasks ? "incomplete" : "all");
+  };
+
   // Handle the task creation button click
   const handleCreateTask = async () => {
     mutateCreate({
@@ -73,35 +74,52 @@ function TaskHeader({ tasks, dateStr, topRef }: TaskHeaderProps) {
       <div className="task-header">
         {/* Left */}
         <div className="flex gap-2">
-          {/* Filter buttons */}
-          {options.map((option) => (
-            <button
-              key={option.id}
-              className={clsx("rounded-full px-3 py-2", {
-                "pointer-events-none bg-neutral-300": taskFilter === option.id,
-                "hover:cursor-pointer hover:bg-neutral-300":
-                  taskFilter !== option.id,
-              })}
-              onClick={() => setTaskFilter(option.id)}
-            >
-              {option.label}
-            </button>
-          ))}
-
-          {/* Progress */}
-          {tasks && tasks.length > 0 && (
-            <div
-              className={clsx(
-                "ml-0 flex items-center text-base sm:ml-8",
-                { "text-green-600": completedTasks.length === tasks.length },
-                { "text-red-600": completedTasks.length < tasks.length },
-              )}
-            >
-              <SquareCheck className="mr-1" size={20} />
-              {completedTasks.length}/{tasks.length}
-            </div>
-          )}
+          {/* Toggle completed tasks button */}
+          <button
+            className="action-btn"
+            onClick={handleToggleCompletedTasks}
+            title={
+              showCompletedTasks
+                ? "Hide completed tasks"
+                : "Show completed tasks"
+            }
+          >
+            {showCompletedTasks ? <Eye size={16} /> : <EyeOff size={16} />}
+          </button>
         </div>
+
+        {/* Middle: Progress Bar */}
+        {tasks && tasks.length > 0 && (
+          <div className="progress-container">
+            <div className="progress-bar">
+              <div
+                className={clsx("progress-fill", {
+                  completed: completedTasks.length === tasks.length,
+                  "in-progress":
+                    completedTasks.length > 0 &&
+                    completedTasks.length < tasks.length,
+                })}
+                style={{
+                  width: `${(completedTasks.length / tasks.length) * 100}%`,
+                }}
+              />
+              {completedTasks.length === 0 ? (
+                <span className="progress-text zero-progress">
+                  {completedTasks.length}/{tasks.length}
+                </span>
+              ) : (
+                <span
+                  className="progress-text with-progress"
+                  style={{
+                    width: `${(completedTasks.length / tasks.length) * 100}%`,
+                  }}
+                >
+                  {completedTasks.length}/{tasks.length}
+                </span>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Right: Create task buttons */}
         <div className="flex gap-2">

@@ -28,3 +28,45 @@
 .cal-cells-6 {
   @apply grid-cols-7 grid-rows-6;
 }
+
+/**
+ * Calendar Cell Styling
+ */
+.cal-cell {
+  @apply relative cursor-pointer bg-white hover:bg-neutral-300;
+}
+
+.cal-day-number {
+  @apply absolute top-2 right-2 flex size-2 items-center justify-center rounded-full p-3;
+}
+
+.cal-day-number.today {
+  @apply font-bold text-yellow-500 md:bg-yellow-300 md:text-neutral-800;
+}
+
+.cal-day-number.current-month {
+  @apply text-neutral-800;
+}
+
+.cal-day-number.other-month {
+  @apply text-neutral-300;
+}
+
+/**
+ * Mini Progress Bar in Calendar Cell
+ */
+.cal-mini-progress-container {
+  @apply absolute right-2 bottom-2 left-2 h-2 rounded-full bg-neutral-300;
+}
+
+.cal-mini-progress-fill {
+  @apply h-full rounded-full transition-all duration-300 ease-in-out;
+}
+
+.cal-mini-progress-fill.completed {
+  @apply bg-green-500;
+}
+
+.cal-mini-progress-fill.in-progress {
+  @apply bg-blue-500;
+}

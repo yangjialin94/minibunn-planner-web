@@ -61,16 +61,16 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
     <>
       {/* Header for larger screens */}
       <div className="hidden sm:block">
-        <div className="daily-header">
+        <div className="daily-header relative">
           <h2 className="pl-2">{headerDate}</h2>
-          <div className="flex items-center gap-2">
+          <div className="absolute left-1/2 flex -translate-x-1/2 transform items-center gap-2">
             <button
               className={clsx("daily-tab-btn", {
                 selected: dailyTab === "tasks",
               })}
               onClick={() => handleTabChange("tasks")}
             >
-              Tasks
+              Task
             </button>
             <button
               className={clsx("daily-tab-btn", {
@@ -117,7 +117,7 @@ function DailyHeader({ dateStr, dailyTab, setDailyTab }: DailyHeaderProps) {
                 })}
                 onClick={() => handleTabChange("tasks")}
               >
-                Tasks
+                Task
               </button>
               <button
                 className={clsx("daily-tab-btn", {
