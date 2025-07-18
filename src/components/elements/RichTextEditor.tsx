@@ -2,12 +2,13 @@
 
 import Color from "@tiptap/extension-color";
 import Placeholder from "@tiptap/extension-placeholder";
+import Strike from "@tiptap/extension-strike";
 import TextStyle from "@tiptap/extension-text-style";
 import UnderlineExtension from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import clsx from "clsx";
-import { Bold, Italic, Palette, Underline } from "lucide-react";
+import { Bold, Italic, Palette, Strikethrough, Underline } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -54,8 +55,10 @@ function RichTextEditor({
         bulletList: false,
         orderedList: false,
         listItem: false,
+        strike: false, // Disable StarterKit's strike to use our own
       }),
       UnderlineExtension,
+      Strike,
       TextStyle,
       Color,
       Placeholder.configure({ placeholder }),
@@ -218,6 +221,17 @@ function RichTextEditor({
           })}
         >
           <Underline size={16} />
+        </button>
+        <button
+          onClick={() => {
+            editor.chain().focus().toggleStrike().run();
+            setShowColorPalette(false);
+          }}
+          className={clsx("toolbar-btn", {
+            "is-active": editor.isActive("strike"),
+          })}
+        >
+          <Strikethrough size={16} />
         </button>
         <div className="relative">
           <button
